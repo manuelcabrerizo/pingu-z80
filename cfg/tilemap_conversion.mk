@@ -38,6 +38,8 @@
 # Conversion 
 #$(eval $(call TMX2DATA, CONVERT, tmxfile, array )) 
 
+$(eval $(call TMX2DATA, SET_OUTPUTS     , hs s       ))
+$(eval $(call TMX2DATA, CONVERT, tilemaps/test_00.tmx, tilemap_00)) 
 
 ##
 ## OLD MACROS (For compatibility)

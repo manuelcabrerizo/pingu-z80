@@ -54,29 +54,30 @@ Symbol Table
     Key_U   =  0405     |     Key_V   =  8006     |     Key_W   =  0807 
     Key_X   =  8007     |     Key_Y   =  0805     |     Key_Z   =  8008 
     PAL_INKR=  0040     |     PAL_PENR=  0000     |     PPI_PORT=  00F5 
-    _pre_pal   **** GX  |     cpct_pag=  0000     |     cpct_pag=  0010 
-    cpct_pag=  0020     |     cpct_pag=  0030     |     cpct_set   **** GX
-    cpct_set   **** GX  |     cpct_set   **** GX  |     drawSoli   **** GX
-    drawSpri   **** GX  |     drawTile   **** GX  |     ent_data=  000C 
+    _pre_pal   **** GX  |     _tile_ti   **** GX  |     _tilemap   **** GX
+    cpct_pag=  0000     |     cpct_pag=  0010     |     cpct_pag=  0020 
+    cpct_pag=  0030     |     cpct_set   **** GX  |     cpct_set   **** GX
+    cpct_set   **** GX  |     drawSoli   **** GX  |     drawSpri   **** GX
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]
 
 Symbol Table
 
-    ent_dx  =  0004     |     ent_dy  =  0005     |     ent_h   =  0003 
-    ent_next=  000C     |     ent_oldP=  0008     |     ent_oldp=  000A 
-    ent_size=  000E     |     ent_tex =  0006     |     ent_w   =  0002 
-    ent_x   =  0000     |     ent_y   =  0001     |     entity_m   **** GX
-    entity_m   **** GX  |     entity_m   **** GX  |     entity_m   **** GX
-    entity_m=  000A     |     firmware=  0038     |     getScree   **** GX
-    opc_DI  =  00F3     |     opc_EI  =  00FB     |     opc_JR  =  0018 
-    opc_LD_D=  0016     |   0 render_s   0009 GR  |   0 render_s   0036 R
-  0 render_s   0053 GR  |     setDrawT   **** GX  |   0 set_crtc   0000 R
+    drawTile   **** GX  |     ent_data=  000C     |     ent_dx  =  0004 
+    ent_dy  =  0005     |     ent_h   =  0003     |     ent_next=  000C 
+    ent_oldP=  0008     |     ent_oldP=  000A     |     ent_size=  000E 
+    ent_tex =  0006     |     ent_w   =  0002     |     ent_x   =  0000 
+    ent_y   =  0001     |     entity_m   **** GX  |     entity_m   **** GX
+    entity_m   **** GX  |     entity_m   **** GX  |     entity_m=  000A 
+    firmware=  0038     |     getScree   **** GX  |     opc_DI  =  00F3 
+    opc_EI  =  00FB     |     opc_JR  =  0018     |     opc_LD_D=  0016 
+  0 render_s   006A GR  |   0 render_s   0009 GR  |   0 render_s   0036 R
+  0 render_s   0080 GR  |     setDrawT   **** GX  |   0 set_crtc   0000 R
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
 Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE      size   5A   flags    0
+   0 _CODE      size   8A   flags    0
 

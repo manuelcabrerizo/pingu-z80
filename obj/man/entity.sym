@@ -63,7 +63,7 @@ Hexadecimal [16-Bits]
 
 Symbol Table
 
-    ent_oldP=  0008     |     ent_oldp=  000A     |     ent_size=  000E 
+    ent_oldP=  0008     |     ent_oldP=  000A     |     ent_size=  000E 
     ent_tex =  0006     |     ent_w   =  0002     |     ent_x   =  0000 
     ent_y   =  0001     |   0 entities   0005 GR  |   0 entity_c   0000 R
   0 entity_i   013C R   |   0 entity_m   00F7 R   |   0 entity_m   00C7 R

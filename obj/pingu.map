@@ -18,60 +18,81 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000000  l__INITIALIZER                  
      00000000  s__CABS                         
      00000000  s__DABS                         
-     000006D8  l__CODE                         
+     00000AC3  l__CODE                         
      00004000  s__CODE                         
-     000046D8  s__DATA                         
-     000046D8  s__GSFINAL                      
-     000046D8  s__GSINIT                       
-     000046D8  s__HOME                         
-     000046D8  s__INITIALIZED                  
-     000046D8  s__INITIALIZER                  
+     00004AC3  s__DATA                         
+     00004AC3  s__GSFINAL                      
+     00004AC3  s__GSINIT                       
+     00004AC3  s__HOME                         
+     00004AC3  s__INITIALIZED                  
+     00004AC3  s__INITIALIZER                  
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00004000    000006D8 =        1752. bytes (REL,CON)
+_CODE                               00004000    00000AC3 =        2755. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00004000  _spr_tileset                       pingu
-     00004008  _spr_pingu_0                       pingu
-     000040C8  _spr_pingu_1                       pingu
-     00004188  _spr_pingu_2                       pingu
-     00004248  _spr_pingu_3                       pingu
-     00004308  _pre_palette                       face
-     00004318  _pre_tileset                       face
-     0000431A  _pre_face                          face
-     00004352  _main                              cpct_keyboard
-     00004370  drawTilemap4x8_ag_32x16            cpct_keyboard
-     00004409  setDrawTileMap4x8_ag_32x16         cpct_keyboard
-     00004435  getScreenPtr_32x16                 cpct_keyboard
-     00004443  drawSprite_32x16                   cpct_keyboard
-     00004469  drawSolidBox_32x16                 cpct_keyboard
-     0000449A  entities                           entity_manager
-     00004526  entity_manager_init                entity_manager
-     00004559  entity_manager_create_entity       entity_manager
-     000045B5  entity_manager_destroy_entity      entity_manager
-     00004626  entity_manager_forall              entity_manager
-     0000464C  render_system_init                 cpct_keyboard
-     00004696  render_system_update               cpct_keyboard
-     0000469D  cpct_setPalette_asm                cpct_video
-     000046B0  cpct_setPALColour_asm              cpct_video
-     000046BA  cpct_setVideoMode_asm              cpct_video
-     000046C7  _cpct_disableFirmware              cpct_firmware
-     000046C7  _cpct_removeInterruptHandler       cpct_firmware
-     000046C7  cpct_disableFirmware_asm           cpct_firmware
-     000046C7  cpct_removeInterruptHandler_asm    cpct_firmware
-     000046D7  _cpct_mode_rom_status              cpct_firmware
+     00004000  _tile_tilemap_00                   tilemap
+     00004020  _tile_tilemap_01                   tilemap
+     00004040  _tile_tilemap_02                   tilemap
+     00004060  _tile_tilemap_03                   tilemap
+     00004080  _tile_tilemap_04                   tilemap
+     000040A0  _tile_tilemap_05                   tilemap
+     000040C0  _tile_tilemap_06                   tilemap
+     000040E0  _tile_tilemap_07                   tilemap
+     00004100  _tile_tilemap_08                   tilemap
+     00004120  _tile_tilemap_09                   tilemap
+     00004140  _tile_tilemap_10                   tilemap
+     00004160  _tile_tilemap_11                   tilemap
+     00004180  _spr_tileset                       pingu
+     00004188  _spr_pingu_0                       pingu
+     00004248  _spr_pingu_1                       pingu
+     00004308  _spr_pingu_2                       pingu
+     000043C8  _spr_pingu_3                       pingu
+     00004488  _pre_palette                       face
+     00004498  _pre_tileset                       face
+     0000449A  _pre_face                          face
+     000044BA  _tilemap_00                        
+     000046D2  _main                              cpct_keyboard
+     000046FB  drawTilemap4x8_ag_32x16            cpct_keyboard
+     00004794  setDrawTileMap4x8_ag_32x16         cpct_keyboard
+     000047C0  getScreenPtr_32x16                 cpct_keyboard
+     000047CE  drawSprite_32x16                   cpct_keyboard
+     000047F4  drawSolidBox_32x16                 cpct_keyboard
+     00004825  entities                           entity_manager
+     000048B1  entity_manager_init                entity_manager
+     000048E4  entity_manager_create_entity       entity_manager
+     00004940  entity_manager_destroy_entity      entity_manager
+     000049B1  entity_manager_forall              entity_manager
+     000049CE  physics_system_init                entity_manager
+     000049EF  physics_system_update              entity_manager
+     000049FF  render_system_init                 cpct_keyboard
+     00004A60  render_system_draw_tilemap         cpct_keyboard
+     00004A76  render_system_update               cpct_keyboard
+     00004A80  cpct_setPalette_asm                cpct_video
+     00004A93  cpct_setPALColour_asm              cpct_video
+     00004A9D  cpct_setVideoMode_asm              cpct_video
+     00004AAA  _cpct_waitVSYNC                    cpct_video
+     00004AAA  cpct_waitVSYNC_asm                 cpct_video
+     00004AB2  _cpct_disableFirmware              cpct_firmware
+     00004AB2  _cpct_removeInterruptHandler       cpct_firmware
+     00004AB2  cpct_disableFirmware_asm           cpct_firmware
+     00004AB2  cpct_removeInterruptHandler_asm    cpct_firmware
+     00004AC2  _cpct_mode_rom_status              cpct_firmware
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 
 Files Linked                              [ module(s) ]
 
+obj/tilemap.rel                           [ tilemap ]
 obj/pingu.rel                             [ pingu ]
 obj/face.rel                              [ face ]
+obj/test_00.h.rel                         [  ]
+obj/test_00.rel                           [  ]
 obj/main.rel                              [ cpct_keyboard ]
 obj/cpct/cpct32x16.h.rel                  [ cpct32x16 ]
 obj/cpct/cpct32x16.rel                    [ cpct_keyboard ]
@@ -79,6 +100,8 @@ obj/man/entity.h.rel                      [ entity_manager ]
 obj/man/entity.rel                        [ entity_manager ]
 obj/man/game.h.rel                        [  ]
 obj/man/game.rel                          [  ]
+obj/sys/physics.h.rel                     [ physics_system ]
+obj/sys/physics.rel                       [ entity_manager ]
 obj/sys/render.h.rel                      [ render_system ]
 obj/sys/render.rel                        [ cpct_keyboard ]
 
@@ -91,6 +114,8 @@ Libraries Linked                          [ object file ]
                                           [ cpct_setPALColour_asmbindings.re ]
 /home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
                                           [ cpct_setVideoMode_asmbindings.re ]
+/home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_waitVSYNC.rel ]
 /home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
                                           [ cpct_removeInterruptHandler.rel ]
 /home/manu/Dev/cpctelera/cpctelera/cpctelera.lib

@@ -28,7 +28,7 @@ ent_dx    = 4  ;; 1 bytes
 ent_dy    = 5  ;; 1 bytes
 ent_tex   = 6  ;; 2 bytes
 ent_oldP0 = 8  ;; 2 bytes
-ent_oldp1 = 10 ;; 2 bytes
+ent_oldP1 = 10 ;; 2 bytes
 ;; private DATA (:()
 ent_next  = 12 ;; 2 bytes
 ;;===============================

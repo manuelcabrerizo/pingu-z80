@@ -5050,7 +5050,7 @@ Hexadecimal [16-Bits]
                      0005    28 ent_dy    = 5  ;; 1 bytes
                      0006    29 ent_tex   = 6  ;; 2 bytes
                      0008    30 ent_oldP0 = 8  ;; 2 bytes
-                     000A    31 ent_oldp1 = 10 ;; 2 bytes
+                     000A    31 ent_oldP1 = 10 ;; 2 bytes
                              32 ;; private DATA (:()
                      000C    33 ent_next  = 12 ;; 2 bytes
                              34 ;;===============================
@@ -5068,71 +5068,100 @@ Hexadecimal [16-Bits]
                               6 .globl cpct_setPalette_asm
                               7 .globl _pre_palette
                               8 
-                              9 ; D = Registro
-                             10 ; E = Valor
-   4643                      11 set_crtc:
-   4643 01 00 BC      [10]   12    ld bc, #0xBC00
-   4646 ED 51         [12]   13    out (c), d
-   4648 04            [ 4]   14    inc b
-   4649 ED 59         [12]   15    out (c), e
-   464B C9            [10]   16    ret
-                             17 
-                             18 
-   464C                      19 render_system_init::
-                             20     ;; Setup the display 
-   464C 11 20 01      [10]   21     ld de, #0x0120
-   464F CD 43 46      [17]   22     call set_crtc
-                             23 
-   4652 11 2A 02      [10]   24     ld de, #0x022A
-   4655 CD 43 46      [17]   25     call set_crtc
+                              9 .globl _tile_tilemap_00
+                             10 .globl _tilemap_00
+                             11 
+                             12 ; D = Registro
+                             13 ; E = Valor
+   49F6                      14 set_crtc:
+   49F6 01 00 BC      [10]   15    ld bc, #0xBC00
+   49F9 ED 51         [12]   16    out (c), d
+   49FB 04            [ 4]   17    inc b
+   49FC ED 59         [12]   18    out (c), e
+   49FE C9            [10]   19    ret
+                             20 
+                             21 
+   49FF                      22 render_system_init::
+                             23     ;; Setup the display 
+   49FF 11 20 01      [10]   24     ld de, #0x0120
+   4A02 CD F6 49      [17]   25     call set_crtc
                              26 
-   4658 11 10 06      [10]   27     ld de, #0x0610
-   465B CD 43 46      [17]   28     call set_crtc
+   4A05 11 2A 02      [10]   27     ld de, #0x022A
+   4A08 CD F6 49      [17]   28     call set_crtc
                              29 
-   465E 11 1A 07      [10]   30     ld de, #0x071A
-   4661 CD 43 46      [17]   31     call set_crtc
+   4A0B 11 10 06      [10]   30     ld de, #0x0610
+   4A0E CD F6 49      [17]   31     call set_crtc
                              32 
-   0021                      33     cpctm_setBorder_asm HW_WHITE
+   4A11 11 1A 07      [10]   33     ld de, #0x071A
+   4A14 CD F6 49      [17]   34     call set_crtc
+                             35 
+   0021                      36     cpctm_setBorder_asm HW_WHITE
                               1    .radix h
    0021                       2    cpctm_setBorder_raw_asm \HW_WHITE ;; [28] Macro that does the job, but requires a number value to be passed
                               1    .globl cpct_setPALColour_asm
-   4664 21 10 00      [10]    2    ld   hl, #0x010         ;; [3]  H=Hardware value of desired colour, L=Border INK (16)
-   4667 CD B0 46      [17]    3    call cpct_setPALColour_asm  ;; [25] Set Palette colour of the border
+   4A17 21 10 00      [10]    2    ld   hl, #0x010         ;; [3]  H=Hardware value of desired colour, L=Border INK (16)
+   4A1A CD 93 4A      [17]    3    call cpct_setPALColour_asm  ;; [25] Set Palette colour of the border
                               3    .radix d
-   466A 0E 00         [ 7]   34     ld c, #0
-   466C CD BA 46      [17]   35     call cpct_setVideoMode_asm
-                             36 
-   466F 21 08 43      [10]   37     ld hl, #_pre_palette
-   4672 11 10 00      [10]   38     ld de, #16
-   4675 CD 9D 46      [17]   39     call cpct_setPalette_asm
-   4678 C9            [10]   40     ret
-                             41 
-                             42 
-                             43 
-   4679                      44 render_system_render_one_entity:
-                             45     ;; Calculate a video-memory location for printing a string
-   4679 11 00 C0      [10]   46     ld   de, #CPCT_VMEM_START_ASM ;; DE = Pointer to start of the screen
-   467C DD 46 01      [19]   47     ld    b, ent_y(ix)            ;; B = y coordinate (24 = 0x18)
-   467F DD 4E 00      [19]   48     ld    c, ent_x(ix)            ;; C = x coordinate (16 = 0x10)
-   4682 CD 35 44      [17]   49     call getScreenPtr_32x16       ;; Calculate video memory location and return it in HL
-                             50 
-   4685 EB            [ 4]   51     ex de, hl
-                             52 
+   4A1D 0E 00         [ 7]   37     ld c, #0
+   4A1F CD 9D 4A      [17]   38     call cpct_setVideoMode_asm
+                             39 
+   4A22 21 88 44      [10]   40     ld hl, #_pre_palette
+   4A25 11 10 00      [10]   41     ld de, #16
+   4A28 CD 80 4A      [17]   42     call cpct_setPalette_asm
+   4A2B C9            [10]   43     ret
+                             44 
+                             45 
+                             46 
+   4A2C                      47 render_system_render_one_entity:
+                             48 
+                             49     ;; remove the entity oldP
+   4A2C 3E 00         [ 7]   50     ld a, #0
+   4A2E DD 5E 08      [19]   51     ld e, ent_oldP0(ix)
+   4A31 DD 56 0A      [19]   52     ld d, ent_oldP1(ix)
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 98.
 Hexadecimal [16-Bits]
 
 
 
-   4686 DD 6E 06      [19]   53     ld l,  ent_tex(ix)
-   4689 DD 66 07      [19]   54     ld h, ent_tex+1(ix)
-   468C DD 46 03      [19]   55     ld b, ent_h(ix)
-   468F DD 4E 02      [19]   56     ld c, ent_w(ix)
-   4692 CD 43 44      [17]   57     call drawSprite_32x16
-                             58 
-   4695 C9            [10]   59     ret
-                             60 
-   4696                      61 render_system_update::
-                             62     ;;ld bc, #( CMP_FLAGS... )
-   4696 21 79 46      [10]   63     ld hl, #render_system_render_one_entity
-   4699 CD 26 46      [17]   64     call entity_manager_forall
-   469C C9            [10]   65     ret
+   4A34 DD 46 03      [19]   53     ld b, ent_h(ix)
+   4A37 DD 4E 02      [19]   54     ld c, ent_w(ix)
+   4A3A CD F4 47      [17]   55     call drawSolidBox_32x16
+                             56 
+                             57     ;; Calculate a video-memory location for printing a string
+   4A3D 11 00 C0      [10]   58     ld   de, #CPCT_VMEM_START_ASM ;; DE = Pointer to start of the screen
+   4A40 DD 46 01      [19]   59     ld    b, ent_y(ix)            ;; B = y coordinate (24 = 0x18)
+   4A43 DD 4E 00      [19]   60     ld    c, ent_x(ix)            ;; C = x coordinate (16 = 0x10)
+   4A46 CD C0 47      [17]   61     call getScreenPtr_32x16       ;; Calculate video memory location and return it in HL
+                             62 
+   4A49 DD 75 08      [19]   63     ld ent_oldP0(ix), l
+   4A4C DD 74 0A      [19]   64     ld ent_oldP1(ix), h
+                             65 
+   4A4F EB            [ 4]   66     ex de, hl
+                             67 
+   4A50 DD 6E 06      [19]   68     ld l,  ent_tex(ix)
+   4A53 DD 66 07      [19]   69     ld h, ent_tex+1(ix)
+   4A56 DD 46 03      [19]   70     ld b, ent_h(ix)
+   4A59 DD 4E 02      [19]   71     ld c, ent_w(ix)
+   4A5C CD CE 47      [17]   72     call drawSprite_32x16
+                             73 
+   4A5F C9            [10]   74     ret
+                             75 
+   4A60                      76 render_system_draw_tilemap::
+   4A60 01 10 10      [10]   77     ld bc, #0x1010
+   4A63 11 20 00      [10]   78     ld de, #32
+   4A66 21 00 40      [10]   79     ld hl, #_tile_tilemap_00
+   4A69 CD 94 47      [17]   80     call setDrawTileMap4x8_ag_32x16
+                             81     
+   4A6C 21 00 C0      [10]   82     ld hl, #0xC000
+   4A6F 11 BA 44      [10]   83     ld de, #_tilemap_00
+   4A72 CD FB 46      [17]   84     call drawTilemap4x8_ag_32x16
+                             85     
+   4A75 C9            [10]   86     ret
+                             87 
+   4A76                      88 render_system_update::
+   4A76 CD 60 4A      [17]   89     call render_system_draw_tilemap
+                             90 
+                             91     ;;ld bc, #( CMP_FLAGS... )
+   4A79 21 2C 4A      [10]   92     ld hl, #render_system_render_one_entity
+   4A7C CD B1 49      [17]   93     call entity_manager_forall
+   4A7F C9            [10]   94     ret

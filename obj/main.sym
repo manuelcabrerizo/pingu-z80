@@ -56,21 +56,22 @@ Symbol Table
     PAL_INKR=  0040     |     PAL_PENR=  0000     |     PPI_PORT=  00F5 
   0 _main      0018 GR  |     _pre_fac   **** GX  |     _spr_pin   **** GX
     cpct_dis   **** GX  |     cpct_pag=  0000     |     cpct_pag=  0010 
-    cpct_pag=  0020     |     cpct_pag=  0030     |     drawSoli   **** GX
-    drawSpri   **** GX  |     drawTile   **** GX  |     ent_data=  000C 
+    cpct_pag=  0020     |     cpct_pag=  0030     |     cpct_wai   **** GX
+    drawSoli   **** GX  |     drawSpri   **** GX  |     drawTile   **** GX
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]
 
 Symbol Table
 
-    ent_dx  =  0004     |     ent_dy  =  0005     |     ent_h   =  0003 
-    ent_next=  000C     |     ent_oldP=  0008     |     ent_oldp=  000A 
-    ent_size=  000E     |     ent_tex =  0006     |     ent_w   =  0002 
-    ent_x   =  0000     |     ent_y   =  0001     |     entity_m   **** GX
+    ent_data=  000C     |     ent_dx  =  0004     |     ent_dy  =  0005 
+    ent_h   =  0003     |     ent_next=  000C     |     ent_oldP=  0008 
+    ent_oldP=  000A     |     ent_size=  000E     |     ent_tex =  0006 
+    ent_w   =  0002     |     ent_x   =  0000     |     ent_y   =  0001 
     entity_m   **** GX  |     entity_m   **** GX  |     entity_m   **** GX
-    entity_m=  000A     |     firmware=  0038     |   0 game_loo   0031 R
-    getScree   **** GX  |     opc_DI  =  00F3     |     opc_EI  =  00FB 
-    opc_JR  =  0018     |     opc_LD_D=  0016     |     render_s   **** GX
+    entity_m   **** GX  |     entity_m=  000A     |     firmware=  0038 
+  0 game_loo   0034 R   |     getScree   **** GX  |     opc_DI  =  00F3 
+    opc_EI  =  00FB     |     opc_JR  =  0018     |     opc_LD_D=  0016 
+    physics_   **** GX  |     physics_   **** GX  |     render_s   **** GX
     render_s   **** GX  |     setDrawT   **** GX  |   0 test_fac   0000 R
   0 test_pin   000C R
 
@@ -79,6 +80,6 @@ Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE      size   36   flags    0
+   0 _CODE      size   41   flags    0
    1 _DATA      size    0   flags    0
 

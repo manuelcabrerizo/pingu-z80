@@ -2,16 +2,18 @@
 .include "cpct/cpct32x16.h.s"
 .include "man/entity.h.s"
 .include "sys/render.h.s"
+.include "sys/physics.h.s"
 
 .area _DATA 
 .area _CODE
 
 .globl cpct_disableFirmware_asm
+.globl cpct_waitVSYNC_asm
 .globl _pre_face
 .globl _spr_pingu_0
 
-test_face:  DefineEntity 16,  5, 4,  8, 0, 0, _pre_face
-test_pingu: DefineEntity 0, 16, 8, 24, 0, 0, _spr_pingu_0
+test_face:  DefineEntity 16, 5, 4,  8, 0, 0, _pre_face
+test_pingu: DefineEntity 0,  5, 8, 24, 0, 0, _spr_pingu_0
 
 ;;
 ;; MAIN function. This is the entry point of the application.
@@ -24,6 +26,7 @@ _main::
    ;; initialize subsystems
    call entity_manager_init
    call render_system_init
+   call physics_system_init
    
    call entity_manager_create_entity
    ld hl, #test_face
@@ -34,7 +37,11 @@ _main::
    ldir
 
 game_loop:
+   call physics_system_update
+
+   halt
+   halt
+   call cpct_waitVSYNC_asm
 
    call render_system_update
-
    jr game_loop

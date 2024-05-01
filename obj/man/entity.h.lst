@@ -33,7 +33,7 @@ Hexadecimal [16-Bits]
                      0005    28 ent_dy    = 5  ;; 1 bytes
                      0006    29 ent_tex   = 6  ;; 2 bytes
                      0008    30 ent_oldP0 = 8  ;; 2 bytes
-                     000A    31 ent_oldp1 = 10 ;; 2 bytes
+                     000A    31 ent_oldP1 = 10 ;; 2 bytes
                              32 ;; private DATA (:()
                      000C    33 ent_next  = 12 ;; 2 bytes
                              34 ;;===============================

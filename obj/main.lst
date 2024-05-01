@@ -5050,7 +5050,7 @@ Hexadecimal [16-Bits]
                      0005    28 ent_dy    = 5  ;; 1 bytes
                      0006    29 ent_tex   = 6  ;; 2 bytes
                      0008    30 ent_oldP0 = 8  ;; 2 bytes
-                     000A    31 ent_oldp1 = 10 ;; 2 bytes
+                     000A    31 ent_oldP1 = 10 ;; 2 bytes
                              32 ;; private DATA (:()
                      000C    33 ent_next  = 12 ;; 2 bytes
                              34 ;;===============================
@@ -5073,15 +5073,26 @@ Hexadecimal [16-Bits]
 
 
 
-                              5 
-                              6 .area _DATA 
-                              7 .area _CODE
-                              8 
-                              9 .globl cpct_disableFirmware_asm
-                             10 .globl _pre_face
-                             11 .globl _spr_pingu_0
-                             12 
-   0000                      13 test_face:  DefineEntity 16,  5, 4,  8, 0, 0, _pre_face
+                              5 .include "sys/physics.h.s"
+                              1 .module physics_system
+                              2 
+                              3 .globl physics_system_init
+                              4 .globl physics_system_update
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 99.
+Hexadecimal [16-Bits]
+
+
+
+                              6 
+                              7 .area _DATA 
+                              8 .area _CODE
+                              9 
+                             10 .globl cpct_disableFirmware_asm
+                             11 .globl cpct_waitVSYNC_asm
+                             12 .globl _pre_face
+                             13 .globl _spr_pingu_0
+                             14 
+   0000                      15 test_face:  DefineEntity 16, 5, 4,  8, 0, 0, _pre_face
                               1 ;; public data
    0000 10                    2     .db 16
    0001 05                    3     .db 5
@@ -5092,10 +5103,10 @@ Hexadecimal [16-Bits]
    0006 00 00                 8     .dw _pre_face
    0008 00 C0                 9     .dw #0xC000
    000A 00 C0                10     .dw #0xC000
-   000C                      14 test_pingu: DefineEntity 0, 16, 8, 24, 0, 0, _spr_pingu_0
+   000C                      16 test_pingu: DefineEntity 0,  5, 8, 24, 0, 0, _spr_pingu_0
                               1 ;; public data
    000C 00                    2     .db 0
-   000D 10                    3     .db 16
+   000D 05                    3     .db 5
    000E 08                    4     .db 8
    000F 18                    5     .db 24
    0010 00                    6     .db 0
@@ -5103,34 +5114,39 @@ Hexadecimal [16-Bits]
    0012 00 00                 8     .dw _spr_pingu_0
    0014 00 C0                 9     .dw #0xC000
    0016 00 C0                10     .dw #0xC000
-                             15 
-                             16 ;;
-                             17 ;; MAIN function. This is the entry point of the application.
-                             18 ;;    _main:: global symbol is required for correctly compiling and linking
-                             19 ;;
-   0018                      20 _main::
-                             21    ;; Disable firmware to prevent it from interfering with string drawing
-   0018 CD 00 00      [17]   22    call cpct_disableFirmware_asm
-                             23 
-                             24    ;; initialize subsystems
-   001B CD 00 00      [17]   25    call entity_manager_init
-   001E CD 00 00      [17]   26    call render_system_init
-                             27    
-   0021 CD 00 00      [17]   28    call entity_manager_create_entity
-   0024 21 00 00      [10]   29    ld hl, #test_face
-   0027 ED B0         [21]   30    ldir
-                             31 
-   0029 CD 00 00      [17]   32    call entity_manager_create_entity
-   002C 21 0C 00      [10]   33    ld hl, #test_pingu
-   002F ED B0         [21]   34    ldir
-                             35 
-   0031                      36 game_loop:
-                             37 
-   0031 CD 00 00      [17]   38    call render_system_update
-                             39 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 99.
+                             17 
+                             18 ;;
+                             19 ;; MAIN function. This is the entry point of the application.
+                             20 ;;    _main:: global symbol is required for correctly compiling and linking
+                             21 ;;
+   0018                      22 _main::
+                             23    ;; Disable firmware to prevent it from interfering with string drawing
+   0018 CD 00 00      [17]   24    call cpct_disableFirmware_asm
+                             25 
+                             26    ;; initialize subsystems
+   001B CD 00 00      [17]   27    call entity_manager_init
+   001E CD 00 00      [17]   28    call render_system_init
+   0021 CD 00 00      [17]   29    call physics_system_init
+                             30    
+   0024 CD 00 00      [17]   31    call entity_manager_create_entity
+   0027 21 00 00      [10]   32    ld hl, #test_face
+   002A ED B0         [21]   33    ldir
+                             34 
+   002C CD 00 00      [17]   35    call entity_manager_create_entity
+   002F 21 0C 00      [10]   36    ld hl, #test_pingu
+   0032 ED B0         [21]   37    ldir
+                             38 
+   0034                      39 game_loop:
+   0034 CD 00 00      [17]   40    call physics_system_update
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 100.
 Hexadecimal [16-Bits]
 
 
 
-   0034 18 FB         [12]   40    jr game_loop
+                             41 
+   0037 76            [ 4]   42    halt
+   0038 76            [ 4]   43    halt
+   0039 CD 00 00      [17]   44    call cpct_waitVSYNC_asm
+                             45 
+   003C CD 00 00      [17]   46    call render_system_update
+   003F 18 F3         [12]   47    jr game_loop

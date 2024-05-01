@@ -46,8 +46,8 @@
 ##
 
 ## Example firmware palette definition as variable in cpct_img2tileset format
-
-PALETTE={0 1 3 4 7 9 10 12 13 16 19 20 21 24 25 26}
+#PALETTE={0 1 3 4 7 9 10 12 13 16 19 20 21 24 25 26}
+PALETTE={0 1 2 9 10 11 12 14 15 18 19 20 21 22 23 26}
 
 ## AUTOMATED IMAGE CONVERSION EXAMPLE (Uncomment EVAL line to use)
 ##
@@ -60,7 +60,7 @@ PALETTE={0 1 3 4 7 9 10 12 13 16 19 20 21 24 25 26}
 
 $(eval $(call IMG2SPRITES,img/face.png,0,pre,8,8,$(PALETTE),tileset,src/,hwpalette))
 $(eval $(call IMG2SPRITES,img/pingu.png,0,spr,16,24,$(PALETTE),tileset,src/,))
-
+$(eval $(call IMG2SPRITES,img/tilemap.png,0,tile,8,8,$(PALETTE),zgtiles,src/,))
 
 
 ############################################################################
