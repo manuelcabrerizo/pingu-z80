@@ -1,0 +1,10 @@
+XL2
+H 1 areas 6 global symbols
+M cpct32x16
+S drawSprite_32x16 Ref0000
+S .__.ABS. Def0000
+S drawTilemap4x8_ag_32x16 Ref0000
+S setDrawTileMap4x8_ag_32x16 Ref0000
+S drawSolidBox_32x16 Ref0000
+S getScreenPtr_32x16 Ref0000
+A _CODE size 0 flags 0 addr 0

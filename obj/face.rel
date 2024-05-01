@@ -1,0 +1,35 @@
+XL2
+H 9 areas 4 global symbols
+M face
+O -mz80
+S .__.ABS. Def0000
+A _CODE size 32 flags 0 addr 0
+S _pre_face Def0012
+S _pre_palette Def0000
+S _pre_tileset Def0010
+A _DATA size 0 flags 0 addr 0
+A _INITIALIZED size 0 flags 0 addr 0
+A _DABS size 0 flags 8 addr 0
+A _HOME size 0 flags 0 addr 0
+A _GSINIT size 0 flags 0 addr 0
+A _GSFINAL size 0 flags 0 addr 0
+A _INITIALIZER size 0 flags 0 addr 0
+A _CABS size 0 flags 8 addr 0
+T 00 00
+R 00 00 00 00
+T 00 00 54 44 5C 58 45 56 46 5E 40 47 42 53 5A 4A
+R 00 00 00 00
+T 0E 00 43 4B
+R 00 00 00 00
+T 10 00
+R 00 00 00 00
+T 10 00 12 00
+R 00 00 00 00 00 02 00 00
+T 12 00
+R 00 00 00 00
+T 12 00 00 F3 F3 00 51 F3 F3 A2 F7 FB FF F3 F7 51
+R 00 00 00 00
+T 20 00 AA F3 F3 F3 F3 F3 F3 A2 00 F3 51 F3 F3 A2
+R 00 00 00 00
+T 2E 00 00 F3 F3 00
+R 00 00 00 00

@@ -1,0 +1,110 @@
+ASxxxx Linker V03.00 + NoICE + sdld,  page 1.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+.  .ABS.                            00000000    00000000 =           0. bytes (ABS,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00000000  .__.ABS.                           cpct_firmware
+     00000000  l__CABS                         
+     00000000  l__DABS                         
+     00000000  l__GSFINAL                      
+     00000000  l__GSINIT                       
+     00000000  l__HOME                         
+     00000000  l__INITIALIZED                  
+     00000000  l__INITIALIZER                  
+     00000000  s__CABS                         
+     00000000  s__DABS                         
+     0000001A  l__DATA                         
+     0000072E  l__CODE                         
+     00004000  s__CODE                         
+     0000472E  s__DATA                         
+     00004748  s__GSFINAL                      
+     00004748  s__GSINIT                       
+     00004748  s__HOME                         
+     00004748  s__INITIALIZED                  
+     00004748  s__INITIALIZER                  
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    0000072E =        1838. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00004000  _spr_tileset                       pingu
+     00004008  _spr_pingu_0                       pingu
+     000040C8  _spr_pingu_1                       pingu
+     00004188  _spr_pingu_2                       pingu
+     00004248  _spr_pingu_3                       pingu
+     00004308  _pre_palette                       face
+     00004318  _pre_tileset                       face
+     0000431A  _pre_face                          face
+     00004382  set_crtc                           cpct_keyboard
+     0000438B  _main                              cpct_keyboard
+     0000443D  drawTilemap4x8_ag_32x16            cpct_keyboard
+     000044D6  setDrawTileMap4x8_ag_32x16         cpct_keyboard
+     00004502  getScreenPtr_32x16                 cpct_keyboard
+     00004510  drawSprite_32x16                   cpct_keyboard
+     00004536  drawSolidBox_32x16                 cpct_keyboard
+     00004567  entities                           entity_manager
+     000045F3  entity_manager_init                entity_manager
+     00004626  entity_manager_create_entity       entity_manager
+     00004682  entity_manager_destroy_entity      entity_manager
+     000046F3  cpct_setPalette_asm                cpct_video
+     00004706  cpct_setPALColour_asm              cpct_video
+     00004710  cpct_setVideoMode_asm              cpct_video
+     0000471D  _cpct_disableFirmware              cpct_firmware
+     0000471D  _cpct_removeInterruptHandler       cpct_firmware
+     0000471D  cpct_disableFirmware_asm           cpct_firmware
+     0000471D  cpct_removeInterruptHandler_asm    cpct_firmware
+     0000472D  _cpct_mode_rom_status              cpct_firmware
+ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_DATA                               0000472E    0000001A =          26. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+
+Files Linked                              [ module(s) ]
+
+obj/pingu.rel                             [ pingu ]
+obj/face.rel                              [ face ]
+obj/main.rel                              [ cpct_keyboard ]
+obj/cpct/cpct32x16.h.rel                  [ cpct32x16 ]
+obj/cpct/cpct32x16.rel                    [ cpct_keyboard ]
+obj/man/entity.h.rel                      [  ]
+obj/man/entity.rel                        [ entity_manager ]
+obj/man/game.h.rel                        [  ]
+obj/man/game.rel                          [  ]
+
+
+Libraries Linked                          [ object file ]
+
+/home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setPalette_asmbindings.rel ]
+/home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setPALColour_asmbindings.re ]
+/home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_setVideoMode_asmbindings.re ]
+/home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_removeInterruptHandler.rel ]
+/home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpc_mode_rom_status.rel ]
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
+
+User Base Address Definitions
+
+_CODE = 0x4000
+_DATA = 0x0000
+
+
