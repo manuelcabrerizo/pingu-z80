@@ -1,7 +1,9 @@
 XL2
-H 1 areas 4 global symbols
+H 1 areas 5 global symbols
+M entity_manager
 S .__.ABS. Def0000
 S entity_manager_create_entity Ref0000
 S entity_manager_init Ref0000
+S entity_manager_forall Ref0000
 S entity_manager_destroy_entity Ref0000
 A _CODE size 0 flags 0 addr 0

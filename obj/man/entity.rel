@@ -1,11 +1,12 @@
 XL2
-H 1 areas 5 global symbols
+H 1 areas 6 global symbols
 M entity_manager
 S .__.ABS. Def0000
-A _CODE size 191 flags 0 addr 0
+A _CODE size 1AE flags 0 addr 0
 S entities Def0005
 S entity_manager_create_entity Def00C4
 S entity_manager_init Def0091
+S entity_manager_forall Def0191
 S entity_manager_destroy_entity Def0120
 T 00 00
 R 00 00 00 00
@@ -89,3 +90,15 @@ T 7C 01 2A 01 00 DD 22 01 00 DD 75 0C DD 74 0D 3A
 R 00 00 00 00 00 03 00 00 00 07 00 00
 T 8A 01 00 00 3D 32 00 00 C9
 R 00 00 00 00 00 02 00 00 00 06 00 00
+T 91 01
+R 00 00 00 00
+T 91 01 22 9D 01 DD 2A 03 00 3A 00 00
+R 00 00 00 00 00 03 00 00 00 07 00 00 00 0A 00 00
+T 9B 01
+R 00 00 00 00
+T 9B 01 F5 CD 00 00 F1
+R 00 00 00 00
+T A0 01
+R 00 00 00 00
+T A0 01 DD 5E 0C DD 56 0D DD 6B DD 62 3D 20 EE C9
+R 00 00 00 00

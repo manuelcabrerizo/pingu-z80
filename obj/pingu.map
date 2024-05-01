@@ -10,6 +10,7 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000000  .__.ABS.                           cpct_firmware
      00000000  l__CABS                         
      00000000  l__DABS                         
+     00000000  l__DATA                         
      00000000  l__GSFINAL                      
      00000000  l__GSINIT                       
      00000000  l__HOME                         
@@ -17,22 +18,21 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000000  l__INITIALIZER                  
      00000000  s__CABS                         
      00000000  s__DABS                         
-     0000001A  l__DATA                         
-     0000072E  l__CODE                         
+     000006D8  l__CODE                         
      00004000  s__CODE                         
-     0000472E  s__DATA                         
-     00004748  s__GSFINAL                      
-     00004748  s__GSINIT                       
-     00004748  s__HOME                         
-     00004748  s__INITIALIZED                  
-     00004748  s__INITIALIZER                  
+     000046D8  s__DATA                         
+     000046D8  s__GSFINAL                      
+     000046D8  s__GSINIT                       
+     000046D8  s__HOME                         
+     000046D8  s__INITIALIZED                  
+     000046D8  s__INITIALIZER                  
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00004000    0000072E =        1838. bytes (REL,CON)
+_CODE                               00004000    000006D8 =        1752. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -44,35 +44,29 @@ _CODE                               00004000    0000072E =        1838. bytes (R
      00004308  _pre_palette                       face
      00004318  _pre_tileset                       face
      0000431A  _pre_face                          face
-     00004382  set_crtc                           cpct_keyboard
-     0000438B  _main                              cpct_keyboard
-     0000443D  drawTilemap4x8_ag_32x16            cpct_keyboard
-     000044D6  setDrawTileMap4x8_ag_32x16         cpct_keyboard
-     00004502  getScreenPtr_32x16                 cpct_keyboard
-     00004510  drawSprite_32x16                   cpct_keyboard
-     00004536  drawSolidBox_32x16                 cpct_keyboard
-     00004567  entities                           entity_manager
-     000045F3  entity_manager_init                entity_manager
-     00004626  entity_manager_create_entity       entity_manager
-     00004682  entity_manager_destroy_entity      entity_manager
-     000046F3  cpct_setPalette_asm                cpct_video
-     00004706  cpct_setPALColour_asm              cpct_video
-     00004710  cpct_setVideoMode_asm              cpct_video
-     0000471D  _cpct_disableFirmware              cpct_firmware
-     0000471D  _cpct_removeInterruptHandler       cpct_firmware
-     0000471D  cpct_disableFirmware_asm           cpct_firmware
-     0000471D  cpct_removeInterruptHandler_asm    cpct_firmware
-     0000472D  _cpct_mode_rom_status              cpct_firmware
+     00004352  _main                              cpct_keyboard
+     00004370  drawTilemap4x8_ag_32x16            cpct_keyboard
+     00004409  setDrawTileMap4x8_ag_32x16         cpct_keyboard
+     00004435  getScreenPtr_32x16                 cpct_keyboard
+     00004443  drawSprite_32x16                   cpct_keyboard
+     00004469  drawSolidBox_32x16                 cpct_keyboard
+     0000449A  entities                           entity_manager
+     00004526  entity_manager_init                entity_manager
+     00004559  entity_manager_create_entity       entity_manager
+     000045B5  entity_manager_destroy_entity      entity_manager
+     00004626  entity_manager_forall              entity_manager
+     0000464C  render_system_init                 cpct_keyboard
+     00004696  render_system_update               cpct_keyboard
+     0000469D  cpct_setPalette_asm                cpct_video
+     000046B0  cpct_setPALColour_asm              cpct_video
+     000046BA  cpct_setVideoMode_asm              cpct_video
+     000046C7  _cpct_disableFirmware              cpct_firmware
+     000046C7  _cpct_removeInterruptHandler       cpct_firmware
+     000046C7  cpct_disableFirmware_asm           cpct_firmware
+     000046C7  cpct_removeInterruptHandler_asm    cpct_firmware
+     000046D7  _cpct_mode_rom_status              cpct_firmware
+
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
-Hexadecimal  [32-Bits]
-
-Area                                    Addr        Size        Decimal Bytes (Attributes)
---------------------------------        ----        ----        ------- ----- ------------
-_DATA                               0000472E    0000001A =          26. bytes (REL,CON)
-
-      Value  Global                              Global Defined In Module
-      -----  --------------------------------   ------------------------
-ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 
 Files Linked                              [ module(s) ]
 
@@ -81,10 +75,12 @@ obj/face.rel                              [ face ]
 obj/main.rel                              [ cpct_keyboard ]
 obj/cpct/cpct32x16.h.rel                  [ cpct32x16 ]
 obj/cpct/cpct32x16.rel                    [ cpct_keyboard ]
-obj/man/entity.h.rel                      [  ]
+obj/man/entity.h.rel                      [ entity_manager ]
 obj/man/entity.rel                        [ entity_manager ]
 obj/man/game.h.rel                        [  ]
 obj/man/game.rel                          [  ]
+obj/sys/render.h.rel                      [ render_system ]
+obj/sys/render.rel                        [ cpct_keyboard ]
 
 
 Libraries Linked                          [ object file ]
@@ -100,7 +96,7 @@ Libraries Linked                          [ object file ]
 /home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
                                           [ cpc_mode_rom_status.rel ]
 
-ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 
 User Base Address Definitions
 

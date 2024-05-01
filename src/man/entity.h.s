@@ -1,7 +1,9 @@
+.module entity_manager
 
 .globl entity_manager_init
 .globl entity_manager_create_entity
 .globl entity_manager_destroy_entity
+.globl entity_manager_forall
 
 .macro DefineEntity _x, _y, _w, _h, _dx, _dy, _tex
 ;; public data

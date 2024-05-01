@@ -16,5 +16,7 @@ obj/man/entity.h.rel
 obj/man/entity.rel
 obj/man/game.h.rel
 obj/man/game.rel
+obj/sys/render.h.rel
+obj/sys/render.rel
 
 -e

@@ -269,7 +269,7 @@ drawSprite_32x16::
    ld (spr_width), a
    neg
    ld (spr_width_neg), a   
-   ld__ixl_b ;; .db 0xDD 0x68
+   ld__iyl_b
 
 next_line:
    ;; copy sprite row
@@ -277,7 +277,7 @@ spr_width = . +1
    ld bc, #0   ;; 01 00 00
    ldir        ;; *DE = *HL; ++HL; ++DE; --BC
    
-   dec__ixl
+   dec__iyl
    ret z
    
    ;; jump to next row
@@ -314,7 +314,7 @@ drawSolidBox_32x16::
     ld (sb_spr_width), a
     neg
     ld (sb_spr_width_neg), a   
-    ld__ixl_b ;; .db 0xDD 0x68
+    ld__iyl_b ;; .db 0xDD 0x68
 
 sb_next_line:
     ;; copy sprite row
@@ -330,7 +330,7 @@ sb_spr_color = . +1
     dec a
     jr nz, sb_loop
    
-    dec__ixl
+    dec__iyl
     ret z
    
     ;; jump to next row

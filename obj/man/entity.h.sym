@@ -9,7 +9,7 @@ Symbol Table
     ent_oldP=  0008     |     ent_oldp=  000A     |     ent_size=  000E 
     ent_tex =  0006     |     ent_w   =  0002     |     ent_x   =  0000 
     ent_y   =  0001     |     entity_m   **** GX  |     entity_m   **** GX
-    entity_m   **** GX  |     entity_m=  000A 
+    entity_m   **** GX  |     entity_m   **** GX  |     entity_m=  000A 
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]

@@ -5392,8 +5392,8 @@ Hexadecimal [16-Bits]
    00D4 32 DF 00      [13]  269    ld (spr_width), a
    00D7 ED 44         [ 8]  270    neg
    00D9 32 E8 00      [13]  271    ld (spr_width_neg), a   
-   00DC                     272    ld__ixl_b ;; .db 0xDD 0x68
-   00DC DD 68                 1    .dw #0x68DD  ;; Opcode for ld ixl, b
+   00DC                     272    ld__iyl_b
+   00DC FD 68                 1    .dw #0x68FD  ;; Opcode for ld iyl, b
                             273 
    00DE                     274 next_line:
                             275    ;; copy sprite row
@@ -5401,8 +5401,8 @@ Hexadecimal [16-Bits]
    00DE 01 00 00      [10]  277    ld bc, #0   ;; 01 00 00
    00E1 ED B0         [21]  278    ldir        ;; *DE = *HL; ++HL; ++DE; --BC
                             279    
-   00E3                     280    dec__ixl
-   00E3 DD 2D                 1    .dw #0x2DDD  ;; Opcode for dec ixl
+   00E3                     280    dec__iyl
+   00E3 FD 2D                 1    .dw #0x2DFD  ;; Opcode for dec iyl
    00E5 C8            [11]  281    ret z
                             282    
                             283    ;; jump to next row
@@ -5444,8 +5444,8 @@ Hexadecimal [16-Bits]
    00FD 32 09 01      [13]  314     ld (sb_spr_width), a
    0100 ED 44         [ 8]  315     neg
    0102 32 14 01      [13]  316     ld (sb_spr_width_neg), a   
-   0105                     317     ld__ixl_b ;; .db 0xDD 0x68
-   0105 DD 68                 1    .dw #0x68DD  ;; Opcode for ld ixl, b
+   0105                     317     ld__iyl_b ;; .db 0xDD 0x68
+   0105 FD 68                 1    .dw #0x68FD  ;; Opcode for ld iyl, b
                             318 
    0107                     319 sb_next_line:
                             320     ;; copy sprite row
@@ -5461,8 +5461,8 @@ Hexadecimal [16-Bits]
    010D 3D            [ 4]  330     dec a
    010E 20 FA         [12]  331     jr nz, sb_loop
                             332    
-   0110                     333     dec__ixl
-   0110 DD 2D                 1    .dw #0x2DDD  ;; Opcode for dec ixl
+   0110                     333     dec__iyl
+   0110 FD 2D                 1    .dw #0x2DFD  ;; Opcode for dec iyl
    0112 C8            [11]  334     ret z
                             335    
                             336     ;; jump to next row

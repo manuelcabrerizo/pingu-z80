@@ -3,56 +3,51 @@ Hexadecimal [16-Bits]
 
 
 
+                              1 .include "man/entity.h.s"
                               1 .module entity_manager
                               2 
+                              3 .globl entity_manager_init
+                              4 .globl entity_manager_create_entity
+                              5 .globl entity_manager_destroy_entity
+                              6 .globl entity_manager_forall
+                              7 
+                              8 .macro DefineEntity _x, _y, _w, _h, _dx, _dy, _tex
+                              9 ;; public data
+                             10     .db _x
+                             11     .db _y
+                             12     .db _w
+                             13     .db _h
+                             14     .db _dx
+                             15     .db _dy
+                             16     .dw _tex
+                             17     .dw #0xC000
+                             18     .dw #0xC000
+                             19 .endm
+                             20 
+                             21 ;;===============================
+                             22 ;; public DATA (:))
+                     0000    23 ent_x     = 0  ;; 1 bytes
+                     0001    24 ent_y     = 1  ;; 1 bytes
+                     0002    25 ent_w     = 2  ;; 1 bytes
+                     0003    26 ent_h     = 3  ;; 1 bytes
+                     0004    27 ent_dx    = 4  ;; 1 bytes
+                     0005    28 ent_dy    = 5  ;; 1 bytes
+                     0006    29 ent_tex   = 6  ;; 2 bytes
+                     0008    30 ent_oldP0 = 8  ;; 2 bytes
+                     000A    31 ent_oldp1 = 10 ;; 2 bytes
+                             32 ;; private DATA (:()
+                     000C    33 ent_next  = 12 ;; 2 bytes
+                             34 ;;===============================
+                             35 
+                     000E    36 ent_size = 14
+                     000A    37 entity_manager_max_entities = 10
+                     000C    38 ent_data_size = 12
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]
 
 
 
-                              3 .include "man/entity.h.s"
-                              1 
-                              2 .globl entity_manager_init
-                              3 .globl entity_manager_create_entity
-                              4 .globl entity_manager_destroy_entity
-                              5 
-                              6 .macro DefineEntity _x, _y, _w, _h, _dx, _dy, _tex
-                              7 ;; public data
-                              8     .db _x
-                              9     .db _y
-                             10     .db _w
-                             11     .db _h
-                             12     .db _dx
-                             13     .db _dy
-                             14     .dw _tex
-                             15     .dw #0xC000
-                             16     .dw #0xC000
-                             17 .endm
-                             18 
-                             19 ;;===============================
-                             20 ;; public DATA (:))
-                     0000    21 ent_x     = 0  ;; 1 bytes
-                     0001    22 ent_y     = 1  ;; 1 bytes
-                     0002    23 ent_w     = 2  ;; 1 bytes
-                     0003    24 ent_h     = 3  ;; 1 bytes
-                     0004    25 ent_dx    = 4  ;; 1 bytes
-                     0005    26 ent_dy    = 5  ;; 1 bytes
-                     0006    27 ent_tex   = 6  ;; 2 bytes
-                     0008    28 ent_oldP0 = 8  ;; 2 bytes
-                     000A    29 ent_oldp1 = 10 ;; 2 bytes
-                             30 ;; private DATA (:()
-                     000C    31 ent_next  = 12 ;; 2 bytes
-                             32 ;;===============================
-                             33 
-                     000E    34 ent_size = 14
-                     000A    35 entity_manager_max_entities = 10
-                     000C    36 ent_data_size = 12
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
-Hexadecimal [16-Bits]
-
-
-
-                              4 .include "cpctelera.h.s"
+                              2 .include "cpctelera.h.s"
                               1 ;;-----------------------------LICENSE NOTICE------------------------------------
                               2 ;;  This file is part of CPCtelera: An Amstrad CPC Game Engine
                               3 ;;  Copyright (C) 2017 ronaldo / Fremos / Cheesetea / ByteRealms (@FranGallegoBR)
@@ -72,7 +67,7 @@ Hexadecimal [16-Bits]
                              17 ;;-------------------------------------------------------------------------------
                              18 
                              19 ;; All CPCtelera include files
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 4.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
 Hexadecimal [16-Bits]
 
 
@@ -96,7 +91,7 @@ Hexadecimal [16-Bits]
                              16 ;;  along with this program.  If not, see <http://www.gnu.org/licenses/>.
                              17 ;;-------------------------------------------------------------------------------
                              18 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 5.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 4.
 Hexadecimal [16-Bits]
 
 
@@ -156,7 +151,7 @@ Hexadecimal [16-Bits]
                              52 ;;    5 bytes
                              53 ;;
                              54 ;; Time Measures:
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 6.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 5.
 Hexadecimal [16-Bits]
 
 
@@ -216,7 +211,7 @@ Hexadecimal [16-Bits]
                             107 ;; ------------------------------------
                             108 ;; (end code)
                             109 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 7.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 6.
 Hexadecimal [16-Bits]
 
 
@@ -276,7 +271,7 @@ Hexadecimal [16-Bits]
                             162 ;;
                             163 ;; Parameters:
                             164 ;;    None
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 8.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 7.
 Hexadecimal [16-Bits]
 
 
@@ -336,7 +331,7 @@ Hexadecimal [16-Bits]
                             217 ;; Return Value:
                             218 ;;    RH:RL - Holds the result of RH:RL - A
                             219 ;;
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 9.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 8.
 Hexadecimal [16-Bits]
 
 
@@ -396,7 +391,7 @@ Hexadecimal [16-Bits]
                             272 ;; It uses only DE and A to perform the operation.
                             273 ;;
                             274 ;; Modified Registers: 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 10.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 9.
 Hexadecimal [16-Bits]
 
 
@@ -456,7 +451,7 @@ Hexadecimal [16-Bits]
                             327 .endm
                             328 
                             329 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 11.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 10.
 Hexadecimal [16-Bits]
 
 
@@ -496,7 +491,7 @@ Hexadecimal [16-Bits]
                             362 .macro sub_bc_a
                             363    sub_REGPAIR_a  b, c
                             364 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 12.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 11.
 Hexadecimal [16-Bits]
 
 
@@ -542,7 +537,7 @@ Hexadecimal [16-Bits]
                              38 ;; Constant: opc_DI
                              39 ;;    Opcode for "DI" instruction. 
                      00F3    40 opc_DI = 0xF3
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 13.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 12.
 Hexadecimal [16-Bits]
 
 
@@ -602,7 +597,7 @@ Hexadecimal [16-Bits]
                              52 ;;    3. Combines both reorders into final result using a *SelectionMask*. Each 
                              53 ;; 0 bit from the selection mask means "select bit from A2", whereas each 1 bit
                              54 ;; means "select bit from TReg2".
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 14.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 13.
 Hexadecimal [16-Bits]
 
 
@@ -662,7 +657,7 @@ Hexadecimal [16-Bits]
                             107    xor TReg          ;; [1]   A2 = [xxxxxxxx] final value: bits of A reversed and selected using *SelectionMask*
                             108 .endm
                             109 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 15.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 14.
 Hexadecimal [16-Bits]
 
 
@@ -722,7 +717,7 @@ Hexadecimal [16-Bits]
                             162 ;;
                             163 ;; Parameters:
                             164 ;;    TReg - An 8-bits register that will be used for intermediate calculations.
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 16.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 15.
 Hexadecimal [16-Bits]
 
 
@@ -782,7 +777,7 @@ Hexadecimal [16-Bits]
                             217 ;; This register may be one of these: B, C, D, E, H, L
                             218 ;; 
                             219 ;; Input Registers: 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 17.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 16.
 Hexadecimal [16-Bits]
 
 
@@ -831,7 +826,7 @@ Hexadecimal [16-Bits]
                             261    xor TReg        ;; [1] |   A2 = [03254761]
                             262    rrca            ;; [1] Rotate right to get pixels reversed A = [10325476]
                             263 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 18.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 17.
 Hexadecimal [16-Bits]
 
 
@@ -891,7 +886,7 @@ Hexadecimal [16-Bits]
                              52 .macro sll__c
                              53    .db #0xCB, #0x31  ;; Opcode for sll c
                              54 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 19.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 18.
 Hexadecimal [16-Bits]
 
 
@@ -951,7 +946,7 @@ Hexadecimal [16-Bits]
                             107 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,
                             108 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,
                             109 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 20.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 19.
 Hexadecimal [16-Bits]
 
 
@@ -1011,7 +1006,7 @@ Hexadecimal [16-Bits]
                             162 ;;    Opcode for "LD ixl, IXH" instruction
                             163 ;; 
                             164 .mdelete  ld__ixl_ixh
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 21.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 20.
 Hexadecimal [16-Bits]
 
 
@@ -1071,7 +1066,7 @@ Hexadecimal [16-Bits]
                             217 ;; Macro: sub__ixl
                             218 ;;    Opcode for "SUB ixl" instruction
                             219 ;; 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 22.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 21.
 Hexadecimal [16-Bits]
 
 
@@ -1131,7 +1126,7 @@ Hexadecimal [16-Bits]
                             272 
                             273 ;; Macro: dec__ixl
                             274 ;;    Opcode for "DEC ixl" instruction
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 23.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 22.
 Hexadecimal [16-Bits]
 
 
@@ -1191,7 +1186,7 @@ Hexadecimal [16-Bits]
                             327 .macro ld__ixh_c
                             328    .dw #0x61DD  ;; Opcode for ld ixh, c
                             329 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 24.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 23.
 Hexadecimal [16-Bits]
 
 
@@ -1251,7 +1246,7 @@ Hexadecimal [16-Bits]
                             382 .mdelete ld__d_ixh
                             383 .macro ld__d_ixh
                             384    .dw #0x54DD  ;; Opcode for ld d, ixh
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 25.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 24.
 Hexadecimal [16-Bits]
 
 
@@ -1311,7 +1306,7 @@ Hexadecimal [16-Bits]
                             437 ;; 
                             438 .mdelete or__ixh
                             439 .macro or__ixh
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 26.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 25.
 Hexadecimal [16-Bits]
 
 
@@ -1371,7 +1366,7 @@ Hexadecimal [16-Bits]
                             492 ;; Macro: ld__iyl_a
                             493 ;;    Opcode for "LD iyl, a" instruction
                             494 ;; 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 27.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 26.
 Hexadecimal [16-Bits]
 
 
@@ -1431,7 +1426,7 @@ Hexadecimal [16-Bits]
                             547 
                             548 ;; Macro: ld__b_iyl
                             549 ;;    Opcode for "LD B, iyl" instruction
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 28.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 27.
 Hexadecimal [16-Bits]
 
 
@@ -1491,7 +1486,7 @@ Hexadecimal [16-Bits]
                             602 .endm
                             603 
                             604 ;; Macro: sbc__iyl
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 29.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 28.
 Hexadecimal [16-Bits]
 
 
@@ -1551,7 +1546,7 @@ Hexadecimal [16-Bits]
                             657    .dw #0x2CFD  ;; Opcode for inc iyl
                             658 .endm
                             659 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 30.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 29.
 Hexadecimal [16-Bits]
 
 
@@ -1611,7 +1606,7 @@ Hexadecimal [16-Bits]
                             712 .mdelete ld__iyh_e
                             713 .macro ld__iyh_e
                             714    .dw #0x63FD  ;; Opcode for ld iyh, e
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 31.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 30.
 Hexadecimal [16-Bits]
 
 
@@ -1671,7 +1666,7 @@ Hexadecimal [16-Bits]
                             767 ;; 
                             768 .mdelete add__iyh
                             769 .macro add__iyh
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 32.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 31.
 Hexadecimal [16-Bits]
 
 
@@ -1731,7 +1726,7 @@ Hexadecimal [16-Bits]
                             822 ;;    Opcode for "CP iyh" instruction
                             823 ;; 
                             824 .mdelete cp__iyh
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 33.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 32.
 Hexadecimal [16-Bits]
 
 
@@ -1755,7 +1750,7 @@ Hexadecimal [16-Bits]
                             841 .macro inc__iyh
                             842    .dw #0x24FD  ;; Opcode for inc iyh
                             843 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 34.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 33.
 Hexadecimal [16-Bits]
 
 
@@ -1786,7 +1781,7 @@ Hexadecimal [16-Bits]
                              23 ;; For instance, macros to copy HL to DE or IX to DE, that require 2 or more 
                              24 ;; instructions but are commonly used.
                              25 ;;
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 35.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 34.
 Hexadecimal [16-Bits]
 
 
@@ -1846,7 +1841,7 @@ Hexadecimal [16-Bits]
                              52 .macro sll__c
                              53    .db #0xCB, #0x31  ;; Opcode for sll c
                              54 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 36.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 35.
 Hexadecimal [16-Bits]
 
 
@@ -1906,7 +1901,7 @@ Hexadecimal [16-Bits]
                             107 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,
                             108 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;,
                             109 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 37.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 36.
 Hexadecimal [16-Bits]
 
 
@@ -1966,7 +1961,7 @@ Hexadecimal [16-Bits]
                             162 ;;    Opcode for "LD ixl, IXH" instruction
                             163 ;; 
                             164 .mdelete  ld__ixl_ixh
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 38.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 37.
 Hexadecimal [16-Bits]
 
 
@@ -2026,7 +2021,7 @@ Hexadecimal [16-Bits]
                             217 ;; Macro: sub__ixl
                             218 ;;    Opcode for "SUB ixl" instruction
                             219 ;; 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 39.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 38.
 Hexadecimal [16-Bits]
 
 
@@ -2086,7 +2081,7 @@ Hexadecimal [16-Bits]
                             272 
                             273 ;; Macro: dec__ixl
                             274 ;;    Opcode for "DEC ixl" instruction
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 40.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 39.
 Hexadecimal [16-Bits]
 
 
@@ -2146,7 +2141,7 @@ Hexadecimal [16-Bits]
                             327 .macro ld__ixh_c
                             328    .dw #0x61DD  ;; Opcode for ld ixh, c
                             329 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 41.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 40.
 Hexadecimal [16-Bits]
 
 
@@ -2206,7 +2201,7 @@ Hexadecimal [16-Bits]
                             382 .mdelete ld__d_ixh
                             383 .macro ld__d_ixh
                             384    .dw #0x54DD  ;; Opcode for ld d, ixh
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 42.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 41.
 Hexadecimal [16-Bits]
 
 
@@ -2266,7 +2261,7 @@ Hexadecimal [16-Bits]
                             437 ;; 
                             438 .mdelete or__ixh
                             439 .macro or__ixh
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 43.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 42.
 Hexadecimal [16-Bits]
 
 
@@ -2326,7 +2321,7 @@ Hexadecimal [16-Bits]
                             492 ;; Macro: ld__iyl_a
                             493 ;;    Opcode for "LD iyl, a" instruction
                             494 ;; 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 44.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 43.
 Hexadecimal [16-Bits]
 
 
@@ -2386,7 +2381,7 @@ Hexadecimal [16-Bits]
                             547 
                             548 ;; Macro: ld__b_iyl
                             549 ;;    Opcode for "LD B, iyl" instruction
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 45.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 44.
 Hexadecimal [16-Bits]
 
 
@@ -2446,7 +2441,7 @@ Hexadecimal [16-Bits]
                             602 .endm
                             603 
                             604 ;; Macro: sbc__iyl
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 46.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 45.
 Hexadecimal [16-Bits]
 
 
@@ -2506,7 +2501,7 @@ Hexadecimal [16-Bits]
                             657    .dw #0x2CFD  ;; Opcode for inc iyl
                             658 .endm
                             659 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 47.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 46.
 Hexadecimal [16-Bits]
 
 
@@ -2566,7 +2561,7 @@ Hexadecimal [16-Bits]
                             712 .mdelete ld__iyh_e
                             713 .macro ld__iyh_e
                             714    .dw #0x63FD  ;; Opcode for ld iyh, e
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 48.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 47.
 Hexadecimal [16-Bits]
 
 
@@ -2626,7 +2621,7 @@ Hexadecimal [16-Bits]
                             767 ;; 
                             768 .mdelete add__iyh
                             769 .macro add__iyh
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 49.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 48.
 Hexadecimal [16-Bits]
 
 
@@ -2686,7 +2681,7 @@ Hexadecimal [16-Bits]
                             822 ;;    Opcode for "CP iyh" instruction
                             823 ;; 
                             824 .mdelete cp__iyh
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 50.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 49.
 Hexadecimal [16-Bits]
 
 
@@ -2710,7 +2705,7 @@ Hexadecimal [16-Bits]
                             841 .macro inc__iyh
                             842    .dw #0x24FD  ;; Opcode for inc iyh
                             843 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 51.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 50.
 Hexadecimal [16-Bits]
 
 
@@ -2770,7 +2765,7 @@ Hexadecimal [16-Bits]
                              79 ;; COST: 6 us (24 CPU Cycles)
                              80 ;; 
                              81 .macro ld__hl_ix
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 52.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 51.
 Hexadecimal [16-Bits]
 
 
@@ -2830,7 +2825,7 @@ Hexadecimal [16-Bits]
                             134 .macro ld__de_iy
                             135    ;; LD DE, IY
                             136    ;;------------
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 53.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 52.
 Hexadecimal [16-Bits]
 
 
@@ -2890,7 +2885,7 @@ Hexadecimal [16-Bits]
                             189    ld__iyh_b
                             190    ;;------------
                             191 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 54.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 53.
 Hexadecimal [16-Bits]
 
 
@@ -2950,7 +2945,7 @@ Hexadecimal [16-Bits]
                             244    ;; EX DE, IX
                             245    ;;------------
                             246    ld a, e
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 55.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 54.
 Hexadecimal [16-Bits]
 
 
@@ -3010,7 +3005,7 @@ Hexadecimal [16-Bits]
                             299    ld__e_iyl
                             300    ld__iyl_a
                             301    ld a, d
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 56.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 55.
 Hexadecimal [16-Bits]
 
 
@@ -3054,7 +3049,7 @@ Hexadecimal [16-Bits]
                             338    pop   iy
                             339    ;;------------
                             340 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 57.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 56.
 Hexadecimal [16-Bits]
 
 
@@ -3114,7 +3109,7 @@ Hexadecimal [16-Bits]
                              52 ;; (start code)
                              53 ;;  Case     | microSecs(us) | CPU Cycles
                              54 ;; ------------------------------------
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 58.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 57.
 Hexadecimal [16-Bits]
 
 
@@ -3174,7 +3169,7 @@ Hexadecimal [16-Bits]
                             107 ;; Details:
                             108 ;;    This macro converts the list of 16-bit registers given as parameters into a list
                             109 ;; of 'pop' operations to pop all of them from the stack. The registers are poped
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 59.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 58.
 Hexadecimal [16-Bits]
 
 
@@ -3234,7 +3229,7 @@ Hexadecimal [16-Bits]
                             162    .mexit
                             163    .endif
                             164 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 60.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 59.
 Hexadecimal [16-Bits]
 
 
@@ -3294,7 +3289,7 @@ Hexadecimal [16-Bits]
                              52 ;;    AF, TR1, TR2
                              53 ;;
                              54 ;; Required memory:
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 61.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 60.
 Hexadecimal [16-Bits]
 
 
@@ -3324,7 +3319,7 @@ Hexadecimal [16-Bits]
                              77     ld   a, (TR1'TR2)      ;; [2] A = Value stored at given index from the LUT 
                              78 .endm
                              79 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 62.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 61.
 Hexadecimal [16-Bits]
 
 
@@ -3384,7 +3379,7 @@ Hexadecimal [16-Bits]
                              78 
                              79 ;;
                              80 ;; macro: cpctm_WINAPE_BRK
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 63.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 62.
 Hexadecimal [16-Bits]
 
 
@@ -3397,7 +3392,7 @@ Hexadecimal [16-Bits]
                              86 .macro cpctm_WINAPE_BRK
                              87    .db 0xED, 0xFF    ;; WinAPE Breakpoint Instruction
                              88 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 64.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 63.
 Hexadecimal [16-Bits]
 
 
@@ -3457,7 +3452,7 @@ Hexadecimal [16-Bits]
                              52 ;;   0x4001 | Key_F2          ||  0x0205 | Key_7         ||  0x1008 |  Key_Tab
                              53 ;;   0x8001 | Key_F0          ||  0x0405 | Key_U         ||  0x2008 |  Key_A
                              54 ;;   0x0102 | Key_Clr         ||  0x0805 | Key_Y         ||  0x4008 |  Key_CapsLock
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 65.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 64.
 Hexadecimal [16-Bits]
 
 
@@ -3517,7 +3512,7 @@ Hexadecimal [16-Bits]
                      0803   107 Key_P            = #0x0803
                      1003   108 Key_SemiColon    = #0x1003
                      2003   109 Key_Colon        = #0x2003
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 66.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 65.
 Hexadecimal [16-Bits]
 
 
@@ -3577,7 +3572,7 @@ Hexadecimal [16-Bits]
                      4008   162 Key_CapsLock     = #0x4008
                      8008   163 Key_Z            = #0x8008
                             164 ;; Matrix Line 0x09
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 67.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 66.
 Hexadecimal [16-Bits]
 
 
@@ -3590,7 +3585,7 @@ Hexadecimal [16-Bits]
                      2009   170 Joy0_Fire2       = #0x2009
                      4009   171 Joy0_Fire3       = #0x4009
                      8009   172 Key_Del          = #0x8009
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 68.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 67.
 Hexadecimal [16-Bits]
 
 
@@ -3617,7 +3612,7 @@ Hexadecimal [16-Bits]
                              19 ;;
                              20 ;; Includes
                              21 ;;
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 69.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 68.
 Hexadecimal [16-Bits]
 
 
@@ -3677,7 +3672,7 @@ Hexadecimal [16-Bits]
                      0030    52 cpct_pageC0_asm = 0x30
                      0020    53 cpct_page80_asm = 0x20
                      0010    54 cpct_page40_asm = 0x10
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 70.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 69.
 Hexadecimal [16-Bits]
 
 
@@ -3737,7 +3732,7 @@ Hexadecimal [16-Bits]
                             107 ;; Parameters:
                             108 ;;    (__) REG16 - 16-bits register where the resulting value will be loaded
                             109 ;;    (2B) VMEM  - Start of video memory buffer where (*X*, *Y*) coordinates will be calculated
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 71.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 70.
 Hexadecimal [16-Bits]
 
 
@@ -3797,7 +3792,7 @@ Hexadecimal [16-Bits]
                             162 ;; Macro: cpctm_screenPtrSym_asm
                             163 ;;
                             164 ;;    Macro that calculates the video memory location (byte pointer) of a 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 72.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 71.
 Hexadecimal [16-Bits]
 
 
@@ -3857,7 +3852,7 @@ Hexadecimal [16-Bits]
                             217 ;;    All constant values - Use this macro <cpctm_screenPtrSym_asm> or <cpctm_screenPtr_asm> 
                             218 ;;    Any variable value  - Use the function <cpct_getScreenPtr>
                             219 ;;
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 73.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 72.
 Hexadecimal [16-Bits]
 
 
@@ -3917,7 +3912,7 @@ Hexadecimal [16-Bits]
                             272    ld    bc, #0xBD'HEXVAL  ;; [3] B=0xBD CRTC Set Register, C=Value to be set
                             273    out  (c), c             ;; [4] Set the value
                             274 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 74.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 73.
 Hexadecimal [16-Bits]
 
 
@@ -3977,7 +3972,7 @@ Hexadecimal [16-Bits]
                             327    ld   hl, #0x'HWC'10         ;; [3]  H=Hardware value of desired colour, L=Border INK (16)
                             328    call cpct_setPALColour_asm  ;; [25] Set Palette colour of the border
                             329 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 75.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 74.
 Hexadecimal [16-Bits]
 
 
@@ -4028,7 +4023,7 @@ Hexadecimal [16-Bits]
                             373    ld   (hl), #COL      ;; [3] First Byte = given Colour
                             374    ldir                 ;; [98297] Perform the copy
                             375 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 76.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 75.
 Hexadecimal [16-Bits]
 
 
@@ -4088,7 +4083,7 @@ Hexadecimal [16-Bits]
                              52 ;;   | FW_BRIGHT_WHITE   | 26 |                   |    |
                              53 ;;   [=================================================]
                              54 ;; (end code)
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 77.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 76.
 Hexadecimal [16-Bits]
 
 
@@ -4148,7 +4143,7 @@ Hexadecimal [16-Bits]
                             107 ;;   [=====================================================]
                             108 ;; (end code)
                             109 ;;
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 78.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 77.
 Hexadecimal [16-Bits]
 
 
@@ -4180,7 +4175,7 @@ Hexadecimal [16-Bits]
                      000A   134 HW_BRIGHT_YELLOW  = 0x0A
                      0003   135 HW_PASTEL_YELLOW  = 0x03
                      000B   136 HW_BRIGHT_WHITE   = 0x0B
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 79.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 78.
 Hexadecimal [16-Bits]
 
 
@@ -4196,7 +4191,7 @@ Hexadecimal [16-Bits]
                      00F5    32 PPI_PORT_B     = 0xF5    ;; Port B of the PPI, used to read Vsync/Jumpers/PrinterBusy/CasIn/Exp information
                      00BC    33 CRTC_SELECTREG = 0xBC    ;; CRTC Port and command "Select Register"
                      00BD    34 CRTC_SETVAL    = 0xBD    ;; CRTC Port and command "Set Value"
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 80.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 79.
 Hexadecimal [16-Bits]
 
 
@@ -4227,7 +4222,7 @@ Hexadecimal [16-Bits]
                              23 ;;### in assembler code
                              24 ;;#####################################################################
                              25 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 81.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 80.
 Hexadecimal [16-Bits]
 
 
@@ -4287,7 +4282,7 @@ Hexadecimal [16-Bits]
                              52 ;;
                              53 ;; Returns:
                              54 ;; (start code)
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 82.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 81.
 Hexadecimal [16-Bits]
 
 
@@ -4315,7 +4310,7 @@ Hexadecimal [16-Bits]
                              75 .macro cpctm_ld_spbloff REG, W, H
                              76    ld    REG, #W * (H-1)
                              77 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 83.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 82.
 Hexadecimal [16-Bits]
 
 
@@ -4375,7 +4370,7 @@ Hexadecimal [16-Bits]
                              52 ;;    ;// Simple function that changes the Skin Colour 
                              53 ;;    ;// of a given Alien Sprite into Cyan (Alien Skin is yellow normally)  
                              54 ;;    ;// HL = Pointer to Alien Sprite
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 84.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 83.
 Hexadecimal [16-Bits]
 
 
@@ -4435,7 +4430,7 @@ Hexadecimal [16-Bits]
                             107 ;;
                             108 ;;    For more details on this operations, consult <cpct_pens2pixelPatternPairM0> help.
                             109 ;;
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 85.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 84.
 Hexadecimal [16-Bits]
 
 
@@ -4495,7 +4490,7 @@ Hexadecimal [16-Bits]
                             162 ;; precalculated byte in your final binary (if you use it with constant values).
                             163 ;;
                             164 ;;    For more details on this operations, consult <cpct_pen2pixelPatternM1> help.
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 86.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 85.
 Hexadecimal [16-Bits]
 
 
@@ -4555,7 +4550,7 @@ Hexadecimal [16-Bits]
                             217 ;; Use <cpct_pen2pixelPatternM1> function for variables instead.
                             218 ;;
                             219 ;; Details:
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 87.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 86.
 Hexadecimal [16-Bits]
 
 
@@ -4595,7 +4590,7 @@ Hexadecimal [16-Bits]
                             252    CPCTM_PEN2PIXELPATTERN_M1_ASM _Sym'__l, _NewPen
                             253    _Sym = (_Sym'__h << 8) | _Sym'__l
                             254 .endm  
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 88.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 87.
 Hexadecimal [16-Bits]
 
 
@@ -4626,7 +4621,7 @@ Hexadecimal [16-Bits]
                              23 ;#####################################################################
                              24 ;
                              25 .module cpct_firmware
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 89.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 88.
 Hexadecimal [16-Bits]
 
 
@@ -4686,7 +4681,7 @@ Hexadecimal [16-Bits]
                              52 ;; this macro, user is responsible for choosing which registers are saved. Be
                              53 ;; aware that in most cases all standard registers (AF BC DE HL IX IY) should be
                              54 ;; preserved.
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 90.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 89.
 Hexadecimal [16-Bits]
 
 
@@ -4746,7 +4741,7 @@ Hexadecimal [16-Bits]
                             107 ;; (end code)
                             108 ;; * Saving no registers
                             109 ;;
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 91.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 90.
 Hexadecimal [16-Bits]
 
 
@@ -4802,7 +4797,7 @@ Hexadecimal [16-Bits]
                             158 ;; (end code)
                             159 ;;
                             160 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 92.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 91.
 Hexadecimal [16-Bits]
 
 
@@ -4862,7 +4857,7 @@ Hexadecimal [16-Bits]
                              52 .endm
                              53 
                              54 .mdelete cpct_checkReg_hl
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 93.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 92.
 Hexadecimal [16-Bits]
 
 
@@ -4922,7 +4917,7 @@ Hexadecimal [16-Bits]
                             107 
                             108 .mdelete cpct_saveReg_iy
                             109 .macro cpct_saveReg_iy
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 94.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 93.
 Hexadecimal [16-Bits]
 
 
@@ -4982,7 +4977,7 @@ Hexadecimal [16-Bits]
                             162   cpct_checkReg_'R1
                             163   cpct_checkReg_'R2
                             164   cpct_checkReg_'R3
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 95.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 94.
 Hexadecimal [16-Bits]
 
 
@@ -5028,7 +5023,7 @@ Hexadecimal [16-Bits]
                             203   ei         ;; [1] Reenable interrupts
                             204   reti       ;; [4] Return to main program
                             205 .endm
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 96.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 95.
 Hexadecimal [16-Bits]
 
 
@@ -5049,275 +5044,321 @@ Hexadecimal [16-Bits]
                              40 ;;
                      0038    41 .equ firmware_RST_jp, 0x38  ;; Memory address were a jump (jp) to the firmware code is stored.
                      007F    42 .equ GA_port_byte,    0x7F  ;; 8-bit Port of the Gate Array
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 96.
+Hexadecimal [16-Bits]
+
+
+
+                              3 
+                              4 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              5 ;; TODO: check that the last element in the link list
+                              6 ;; has always the next pointer pointing to NULL (0x0000)
+                              7 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+                              8 
+                              9 ;;=====================================================
+                             10 ;; Private entity manager DATA
+                             11 ;;=====================================================
+   4495                      12 entity_count:
+   4495 00                   13     .db #0
+                             14 
+   4496                      15 first_free:
+   4496 00 00                16     .dw #0000
+                             17 
+   4498                      18 first_entity:
+   4498 00 00                19     .dw #0000
+                             20 
+   449A                      21 entities::
+   449A                      22     .ds #entity_manager_max_entities * ent_size
+                             23 ;;=====================================================
+                             24 
+                             25 ;;==========================================
+                             26 ;; initialize the entity manager
+                             27 ;; PARAMETERS:
+                             28 ;;     none
+                             29 ;; RETURN VALUE:
+                             30 ;;     none
+                             31 ;; MODIFY REGISTERS:
+                             32 ;;     A, HL, IX, IY, BC
+                             33 ;;==========================================
+   4526                      34 entity_manager_init::
+                             35     ;; init first_entity pointer
+   4526 21 9A 44      [10]   36     ld hl, #entities
+   4529 22 96 44      [16]   37     ld (first_free), hl
+                             38 
+                             39     ;; init create entity function
+   452C 21 5C 45      [10]   40     ld hl, #entity_manager_add_first_entity
+   452F 22 5A 45      [16]   41     ld (ent_man_create_addrs), hl 
+                             42 
+                             43     ;; init entity_count
+   4532 3E 00         [ 7]   44     ld a, #0
+   4534 32 95 44      [13]   45     ld (entity_count), a
+                             46     
+                             47     ;; init free list
+   4537 3E 09         [ 7]   48     ld a, #entity_manager_max_entities - 1
+                             49 
+   4539 DD 21 9A 44   [14]   50     ld ix, #entities
+   453D FD 21 A8 44   [14]   51     ld iy, #entities + ent_size
+                             52     
+   4541                      53     ent_man_init_loop:
+                             54 
+   4541 FD 22 46 45   [20]   55         ld (next_entity_addrs), iy
+                             56 
+                     00B1    57     next_entity_addrs = . + 1
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 97.
 Hexadecimal [16-Bits]
 
 
 
-                              5 
-                              6 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                              7 ;; TODO: check that the last element in the link list
-                              8 ;; has always the next pointer pointing to NULL (0x0000)
-                              9 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-                             10 
-                             11 ;;=====================================================
-                             12 ;; Private entity manager DATA
-                             13 ;;=====================================================
-   4562                      14 entity_count:
-   4562 00                   15     .db #0
-                             16 
-   4563                      17 first_free:
-   4563 00 00                18     .dw #0000
-                             19 
-   4565                      20 first_entity:
-   4565 00 00                21     .dw #0000
-                             22 
-   4567                      23 entities::
-   4567                      24     .ds #entity_manager_max_entities * ent_size
-                             25 ;;=====================================================
-                             26 
-                             27 ;;==========================================
-                             28 ;; initialize the entity manager
-                             29 ;; PARAMETERS:
-                             30 ;;     none
-                             31 ;; RETURN VALUE:
-                             32 ;;     none
-                             33 ;; MODIFY REGISTERS:
-                             34 ;;     A, HL, IX, IY, BC
-                             35 ;;==========================================
-   45F3                      36 entity_manager_init::
-                             37     ;; init first_entity pointer
-   45F3 21 67 45      [10]   38     ld hl, #entities
-   45F6 22 63 45      [16]   39     ld (first_free), hl
-                             40 
-                             41     ;; init create entity function
-   45F9 21 29 46      [10]   42     ld hl, #entity_manager_add_first_entity
-   45FC 22 27 46      [16]   43     ld (ent_man_create_addrs), hl 
-                             44 
-                             45     ;; init entity_count
-   45FF 3E 00         [ 7]   46     ld a, #0
-   4601 32 62 45      [13]   47     ld (entity_count), a
-                             48     
-                             49     ;; init free list
-   4604 3E 09         [ 7]   50     ld a, #entity_manager_max_entities - 1
-                             51 
-   4606 DD 21 67 45   [14]   52     ld ix, #entities
-   460A FD 21 75 45   [14]   53     ld iy, #entities + ent_size
-                             54     
-   460E                      55     ent_man_init_loop:
-                             56 
-   460E FD 22 13 46   [20]   57         ld (next_entity_addrs), iy
-                             58 
-                     00B1    59     next_entity_addrs = . + 1
+   4545 21 00 00      [10]   58         ld hl, #0000
+   4548 DD 75 0C      [19]   59         ld   ent_next(ix), l
+   454B DD 74 0D      [19]   60         ld ent_next+1(ix), h
+                             61 
+                             62         ;; next entity
+   454E 01 0E 00      [10]   63         ld bc, #ent_size
+   4551 DD 09         [15]   64         add ix, bc
+   4553 FD 09         [15]   65         add iy, bc
+                             66 
+   4555 3D            [ 4]   67         dec a
+   4556 20 E9         [12]   68         jr nz, ent_man_init_loop
+   4558 C9            [10]   69     ret
+                             70 ;;==========================================
+                             71 
+                             72 
+                             73 ;;==========================================
+                             74 ;; add a new entity to the manager and
+                             75 ;; return it in DE and its size in BC
+                             76 ;; PARAMETERS:
+                             77 ;;     none
+                             78 ;; RETURN VALUE:
+                             79 ;;     DE, BC
+                             80 ;; MODIFY REGISTERS:
+                             81 ;;     A, IX, HL
+                             82 ;;==========================================
+   4559                      83 entity_manager_create_entity::
+                     00C5    84 ent_man_create_addrs = . + 1
+   4559 C3 5C 45      [10]   85     jp entity_manager_add_first_entity
+                             86 
+   455C                      87 entity_manager_add_first_entity:
+                             88     ;; initialize the first_entity pointer
+   455C 21 9A 44      [10]   89     ld hl, #entities
+   455F 22 98 44      [16]   90     ld (first_entity), hl
+                             91     ;; grab a new entity from the free list
+                             92     ;; update the free list
+   4562 DD 2A 96 44   [20]   93     ld ix, (first_free)
+   4566 DD 6E 0C      [19]   94     ld l,   ent_next(ix)
+   4569 DD 66 0D      [19]   95     ld h, ent_next+1(ix)
+   456C 22 96 44      [16]   96     ld (first_free), hl
+   456F DD 36 0C 00   [19]   97     ld   ent_next(ix), #0
+   4573 DD 36 0D 00   [19]   98     ld ent_next+1(ix), #0
+                             99     ;; increment the number of entities in
+                            100     ;; the manager
+   4577 3A 95 44      [13]  101     ld a, (entity_count)
+   457A 3C            [ 4]  102     inc a
+   457B 32 95 44      [13]  103     ld (entity_count), a
+                            104 
+                            105     ;; change the addres of
+                            106     ;; jp entity_manager_add_first_entity
+                            107     ;; to point to jp entity_manager_add_entity
+   457E 21 8C 45      [10]  108     ld hl, #entity_manager_add_entity
+   4581 22 5A 45      [16]  109     ld (ent_man_create_addrs), hl 
+                            110     
+   00EF                     111     ld__e_ixl
+   4584 DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 98.
 Hexadecimal [16-Bits]
 
 
 
-   4612 21 00 00      [10]   60         ld hl, #0000
-   4615 DD 75 0C      [19]   61         ld   ent_next(ix), l
-   4618 DD 74 0D      [19]   62         ld ent_next+1(ix), h
-                             63 
-                             64         ;; next entity
-   461B 01 0E 00      [10]   65         ld bc, #ent_size
-   461E DD 09         [15]   66         add ix, bc
-   4620 FD 09         [15]   67         add iy, bc
-                             68 
-   4622 3D            [ 4]   69         dec a
-   4623 20 E9         [12]   70         jr nz, ent_man_init_loop
-   4625 C9            [10]   71     ret
-                             72 ;;==========================================
-                             73 
-                             74 
-                             75 ;;==========================================
-                             76 ;; add a new entity to the manager and
-                             77 ;; return it in DE and its size in BC
-                             78 ;; PARAMETERS:
-                             79 ;;     none
-                             80 ;; RETURN VALUE:
-                             81 ;;     DE, BC
-                             82 ;; MODIFY REGISTERS:
-                             83 ;;     A, IX, HL
-                             84 ;;==========================================
-   4626                      85 entity_manager_create_entity::
-                     00C5    86 ent_man_create_addrs = . + 1
-   4626 C3 29 46      [10]   87     jp entity_manager_add_first_entity
-                             88 
-   4629                      89 entity_manager_add_first_entity:
-                             90     ;; initialize the first_entity pointer
-   4629 21 67 45      [10]   91     ld hl, #entities
-   462C 22 65 45      [16]   92     ld (first_entity), hl
-                             93     ;; grab a new entity from the free list
-                             94     ;; update the free list
-   462F DD 2A 63 45   [20]   95     ld ix, (first_free)
-   4633 DD 6E 0C      [19]   96     ld l,   ent_next(ix)
-   4636 DD 66 0D      [19]   97     ld h, ent_next+1(ix)
-   4639 22 63 45      [16]   98     ld (first_free), hl
-   463C DD 36 0C 00   [19]   99     ld   ent_next(ix), #0
-   4640 DD 36 0D 00   [19]  100     ld ent_next+1(ix), #0
-                            101     ;; increment the number of entities in
-                            102     ;; the manager
-   4644 3A 62 45      [13]  103     ld a, (entity_count)
-   4647 3C            [ 4]  104     inc a
-   4648 32 62 45      [13]  105     ld (entity_count), a
-                            106 
-                            107     ;; change the addres of
-                            108     ;; jp entity_manager_add_first_entity
-                            109     ;; to point to jp entity_manager_add_entity
-   464B 21 59 46      [10]  110     ld hl, #entity_manager_add_entity
-   464E 22 27 46      [16]  111     ld (ent_man_create_addrs), hl 
-                            112     
-   00EF                     113     ld__e_ixl
-   4651 DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
+   00F1                     112     ld__d_ixh
+   4586 DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
+   4588 01 0C 00      [10]  113     ld bc, #ent_data_size
+                            114 
+   458B C9            [10]  115     ret
+                            116 
+   458C                     117 entity_manager_add_entity:
+                            118     ;; grab a new entity from the free list
+                            119     ;; update the free list
+   458C DD 2A 96 44   [20]  120     ld ix, (first_free)
+   4590 DD 6E 0C      [19]  121     ld l,   ent_next(ix)
+   4593 DD 66 0D      [19]  122     ld h, ent_next+1(ix)
+   4596 22 96 44      [16]  123     ld (first_free), hl
+                            124 
+   4599 2A 98 44      [16]  125     ld hl, (first_entity)
+   459C DD 75 0C      [19]  126     ld   ent_next(ix), l
+   459F DD 74 0D      [19]  127     ld ent_next+1(ix), h
+                            128 
+                            129     ;; update the first entity pointer
+                            130     ;; to point to this entity
+   45A2 DD 22 98 44   [20]  131     ld (first_entity), ix
+                            132 
+                            133     ;; increment the number of entities in
+                            134     ;; the manager
+   45A6 3A 95 44      [13]  135     ld a, (entity_count)
+   45A9 3C            [ 4]  136     inc a
+   45AA 32 95 44      [13]  137     ld (entity_count), a
+                            138 
+   0118                     139     ld__e_ixl
+   45AD DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
+   011A                     140     ld__d_ixh
+   45AF DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
+   45B1 01 0C 00      [10]  141     ld bc, #ent_data_size
+                            142 
+   45B4 C9            [10]  143     ret
+                            144 ;;==========================================
+                            145 
+                            146 
+                            147 ;;==========================================
+                            148 ;; destroy a entity pass in ix
+                            149 ;; PARAMETERS:
+                            150 ;;     IX = entity to delete
+                            151 ;; RETURN VALUE:
+                            152 ;;     none
+                            153 ;; MODIFY REGISTERS:
+                            154 ;;     none
+                            155 ;;==========================================
+   45B5                     156 entity_manager_destroy_entity::
+                            157     ;; if first
+   0120                     158     ld__e_ixl
+   45B5 DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
+   0122                     159     ld__d_ixh
+   45B7 DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
+   45B9 2A 98 44      [16]  160     ld hl, (first_entity)
+   45BC 7C            [ 4]  161     ld a, h
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 99.
 Hexadecimal [16-Bits]
 
 
 
-   00F1                     114     ld__d_ixh
-   4653 DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
-   4655 01 0C 00      [10]  115     ld bc, #ent_data_size
-                            116 
-   4658 C9            [10]  117     ret
-                            118 
-   4659                     119 entity_manager_add_entity:
-                            120     ;; grab a new entity from the free list
-                            121     ;; update the free list
-   4659 DD 2A 63 45   [20]  122     ld ix, (first_free)
-   465D DD 6E 0C      [19]  123     ld l,   ent_next(ix)
-   4660 DD 66 0D      [19]  124     ld h, ent_next+1(ix)
-   4663 22 63 45      [16]  125     ld (first_free), hl
-                            126 
-   4666 2A 65 45      [16]  127     ld hl, (first_entity)
-   4669 DD 75 0C      [19]  128     ld   ent_next(ix), l
-   466C DD 74 0D      [19]  129     ld ent_next+1(ix), h
-                            130 
-                            131     ;; update the first entity pointer
-                            132     ;; to point to this entity
-   466F DD 22 65 45   [20]  133     ld (first_entity), ix
-                            134 
-                            135     ;; increment the number of entities in
-                            136     ;; the manager
-   4673 3A 62 45      [13]  137     ld a, (entity_count)
-   4676 3C            [ 4]  138     inc a
-   4677 32 62 45      [13]  139     ld (entity_count), a
-                            140 
-   0118                     141     ld__e_ixl
-   467A DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
-   011A                     142     ld__d_ixh
-   467C DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
-   467E 01 0C 00      [10]  143     ld bc, #ent_data_size
-                            144 
-   4681 C9            [10]  145     ret
-                            146 ;;==========================================
-                            147 
-                            148 
-                            149 ;;==========================================
-                            150 ;; destroy a entity pass in ix
-                            151 ;; PARAMETERS:
-                            152 ;;     IX = entity to delete
-                            153 ;; RETURN VALUE:
-                            154 ;;     none
-                            155 ;; MODIFY REGISTERS:
-                            156 ;;     none
-                            157 ;;==========================================
-   4682                     158 entity_manager_destroy_entity::
-                            159     ;; if first
-   0120                     160     ld__e_ixl
-   4682 DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
-   0122                     161     ld__d_ixh
-   4684 DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
-   4686 2A 65 45      [16]  162     ld hl, (first_entity)
-   4689 7C            [ 4]  163     ld a, h
+   45BD AA            [ 4]  162     xor d
+   45BE 57            [ 4]  163     ld d, a
+   45BF 7D            [ 4]  164     ld a, l
+   45C0 AB            [ 4]  165     xor e
+   45C1 B2            [ 4]  166     or d
+   45C2 20 0D         [12]  167     jr nz, entity_is_not_first
+                            168     ;;=======================================
+                            169     ;; the entity was the first in the list
+                            170     ;;=======================================
+                            171     ;; set the first_entity to point to the next
+   45C4 DD 6E 0C      [19]  172     ld l,   ent_next(ix)
+   45C7 DD 66 0D      [19]  173     ld h, ent_next+1(ix)
+   45CA 22 98 44      [16]  174     ld (first_entity), hl
+   45CD CD 11 46      [17]  175     call add_entity_to_free_list
+   45D0 C9            [10]  176     ret
+   45D1                     177     entity_is_not_first:
+                            178     ;;==========================================
+                            179     ;; the entity was NOT the first in the list
+                            180     ;;==========================================
+                            181     ;; search for the prev
+   45D1 3A 95 44      [13]  182     ld a, (entity_count)
+   45D4 3D            [ 4]  183     dec a
+   45D5 32 09 46      [13]  184     ld (loop_counter_adds), a
+                            185     
+   45D8 FD 2A 98 44   [20]  186     ld iy, (first_entity)
+   45DC                     187     prev_ent_loop:
+                            188         ;; set the entity to delete in de
+   0147                     189         ld__e_ixl
+   45DC DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
+   0149                     190         ld__d_ixh
+   45DE DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
+                            191         ;; set the next in bc
+   45E0 FD 4E 0C      [19]  192         ld c,   ent_next(iy)
+   45E3 FD 46 0D      [19]  193         ld b, ent_next+1(iy)
+                            194         ;; compare the next entity to this entity
+   45E6 7A            [ 4]  195         ld a, d
+   45E7 A8            [ 4]  196         xor b
+   45E8 47            [ 4]  197         ld b, a
+   45E9 7B            [ 4]  198         ld a, e
+   45EA A9            [ 4]  199         xor c
+   45EB B0            [ 4]  200         or b
+   45EC 20 10         [12]  201         jr nz, next_entity_to_search
+                            202         ;; prev finded
+                            203         ;; the prev entity have to point to the next
+                            204         ;; of the deleted entity
+   45EE DD 6E 0C      [19]  205         ld l,   ent_next(ix)
+   45F1 DD 66 0D      [19]  206         ld h, ent_next+1(ix)
+   45F4 FD 75 0C      [19]  207         ld   ent_next(iy), l
+   45F7 FD 74 0D      [19]  208         ld ent_next+1(iy), h
+                            209 
+   45FA CD 11 46      [17]  210         call add_entity_to_free_list
+                            211 
+   45FD C9            [10]  212         ret
+   45FE                     213     next_entity_to_search:
+                            214         ;; move iy to the next entity in the list
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 100.
 Hexadecimal [16-Bits]
 
 
 
-   468A AA            [ 4]  164     xor d
-   468B 57            [ 4]  165     ld d, a
-   468C 7D            [ 4]  166     ld a, l
-   468D AB            [ 4]  167     xor e
-   468E B2            [ 4]  168     or d
-   468F 20 0D         [12]  169     jr nz, entity_is_not_first
-                            170     ;;=======================================
-                            171     ;; the entity was the first in the list
-                            172     ;;=======================================
-                            173     ;; set the first_entity to point to the next
-   4691 DD 6E 0C      [19]  174     ld l,   ent_next(ix)
-   4694 DD 66 0D      [19]  175     ld h, ent_next+1(ix)
-   4697 22 65 45      [16]  176     ld (first_entity), hl
-   469A CD DE 46      [17]  177     call add_entity_to_free_list
-   469D C9            [10]  178     ret
-   469E                     179     entity_is_not_first:
-                            180     ;;==========================================
-                            181     ;; the entity was NOT the first in the list
-                            182     ;;==========================================
-                            183     ;; search for the prev
-   469E 3A 62 45      [13]  184     ld a, (entity_count)
-   46A1 3D            [ 4]  185     dec a
-   46A2 32 D6 46      [13]  186     ld (loop_counter_adds), a
-                            187     
-   46A5 FD 2A 65 45   [20]  188     ld iy, (first_entity)
-   46A9                     189     prev_ent_loop:
-                            190         ;; set the entity to delete in de
-   0147                     191         ld__e_ixl
-   46A9 DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
-   0149                     192         ld__d_ixh
-   46AB DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
-                            193         ;; set the next in bc
-   46AD FD 4E 0C      [19]  194         ld c,   ent_next(iy)
-   46B0 FD 46 0D      [19]  195         ld b, ent_next+1(iy)
-                            196         ;; compare the next entity to this entity
-   46B3 7A            [ 4]  197         ld a, d
-   46B4 A8            [ 4]  198         xor b
-   46B5 47            [ 4]  199         ld b, a
-   46B6 7B            [ 4]  200         ld a, e
-   46B7 A9            [ 4]  201         xor c
-   46B8 B0            [ 4]  202         or b
-   46B9 20 10         [12]  203         jr nz, next_entity_to_search
-                            204         ;; prev finded
-                            205         ;; the prev entity have to point to the next
-                            206         ;; of the deleted entity
-   46BB DD 6E 0C      [19]  207         ld l,   ent_next(ix)
-   46BE DD 66 0D      [19]  208         ld h, ent_next+1(ix)
-   46C1 FD 75 0C      [19]  209         ld   ent_next(iy), l
-   46C4 FD 74 0D      [19]  210         ld ent_next+1(iy), h
-                            211 
-   46C7 CD DE 46      [17]  212         call add_entity_to_free_list
-                            213 
-   46CA C9            [10]  214         ret
-   46CB                     215     next_entity_to_search:
-                            216         ;; move iy to the next entity in the list
+   45FE FD 5E 0C      [19]  215         ld e,   ent_next(iy)
+   4601 FD 56 0D      [19]  216         ld d, ent_next+1(iy)
+   016F                     217         ld__iyl_e
+   4604 FD 6B                 1    .dw #0x6BFD  ;; Opcode for ld iyl, e
+   0171                     218         ld__iyh_d
+   4606 FD 62                 1    .dw #0x62FD  ;; Opcode for ld iyh, d
+                            219         ;; try to use the null ptr for this jump
+                     0174   220         loop_counter_adds = . + 1
+   4608 3E 00         [ 7]  221         ld a, #0
+   460A 3D            [ 4]  222         dec a
+   460B 32 09 46      [13]  223         ld (loop_counter_adds), a
+   460E C2 DC 45      [10]  224         jp nz, prev_ent_loop
+                            225 ;;==========================================
+                            226 
+   4611                     227 add_entity_to_free_list:
+                            228     ;; store this entity as the first_free
+   4611 2A 96 44      [16]  229     ld hl, (first_free)
+   4614 DD 22 96 44   [20]  230     ld (first_free), ix
+                            231     ;; store in the next ptr of this ent the last first free
+   4618 DD 75 0C      [19]  232     ld   ent_next(ix), l
+   461B DD 74 0D      [19]  233     ld ent_next+1(ix), h
+                            234     ;; decrement the number of entities in
+                            235     ;; the manager
+   461E 3A 95 44      [13]  236     ld a, (entity_count)
+   4621 3D            [ 4]  237     dec a
+   4622 32 95 44      [13]  238     ld (entity_count), a
+   4625 C9            [10]  239     ret
+                            240 
+                            241 
+                            242 
+                            243 ;;==========================================
+                            244 ;; call the function that is store in hl
+                            245 ;; foreach entity
+                            246 ;; PARAMETERS:
+                            247 ;;     HL,
+                            248 ;;     TODO: pass the component mask 
+                            249 ;;           to filter entities out
+                            250 ;; RETURN VALUE:
+                            251 ;;     none
+                            252 ;; MODIFY REGISTERS:
+                            253 ;;     HL, DE, IX, A
+                            254 ;;==========================================
+   4626                     255 entity_manager_forall::
+                            256     ;; Initialize the callback
+   4626 22 32 46      [16]  257     ld (forall_function_ptr), hl
+                            258     ;; load to ix the first entity
+   4629 DD 2A 98 44   [20]  259     ld ix, (first_entity)
+                            260 
+   462D 3A 95 44      [13]  261     ld a, (entity_count)
+   4630                     262 forall_entity_loop:
+   4630 F5            [11]  263     push af
+                     019D   264 forall_function_ptr = . + 1
+   4631 CD 00 00      [17]  265     call #0000
+   4634 F1            [10]  266     pop af
+                            267 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 101.
 Hexadecimal [16-Bits]
 
 
 
-   46CB FD 5E 0C      [19]  217         ld e,   ent_next(iy)
-   46CE FD 56 0D      [19]  218         ld d, ent_next+1(iy)
-   016F                     219         ld__iyl_e
-   46D1 FD 6B                 1    .dw #0x6BFD  ;; Opcode for ld iyl, e
-   0171                     220         ld__iyh_d
-   46D3 FD 62                 1    .dw #0x62FD  ;; Opcode for ld iyh, d
-                            221         ;; try to use the null ptr for this jump
-                     0174   222         loop_counter_adds = . + 1
-   46D5 3E 00         [ 7]  223         ld a, #0
-   46D7 3D            [ 4]  224         dec a
-   46D8 32 D6 46      [13]  225         ld (loop_counter_adds), a
-   46DB C2 A9 46      [10]  226         jp nz, prev_ent_loop
-                            227 ;;==========================================
-                            228 
-   46DE                     229 add_entity_to_free_list:
-                            230     ;; store this entity as the first_free
-   46DE 2A 63 45      [16]  231     ld hl, (first_free)
-   46E1 DD 22 63 45   [20]  232     ld (first_free), ix
-                            233     ;; store in the next ptr of this ent the last first free
-   46E5 DD 75 0C      [19]  234     ld   ent_next(ix), l
-   46E8 DD 74 0D      [19]  235     ld ent_next+1(ix), h
-                            236     ;; decrement the number of entities in
-                            237     ;; the manager
-   46EB 3A 62 45      [13]  238     ld a, (entity_count)
-   46EE 3D            [ 4]  239     dec a
-   46EF 32 62 45      [13]  240     ld (entity_count), a
-   46F2 C9            [10]  241     ret
+                            268 
+   4635                     269 forall_next_entity:
+   4635 DD 5E 0C      [19]  270     ld e,   ent_next(ix)
+   4638 DD 56 0D      [19]  271     ld d, ent_next+1(ix)
+   01A6                     272     ld__ixl_e
+   463B DD 6B                 1    .dw #0x6BDD  ;; Opcode for ld ixl, e
+   01A8                     273     ld__ixh_d
+   463D DD 62                 1    .dw #0x62DD  ;; Opcode for ld ixh, d
+                            274 
+   463F 3D            [ 4]  275     dec a
+   4640 20 EE         [12]  276     jr nz, forall_entity_loop
+   4642 C9            [10]  277     ret
+                            278 ;;==========================================
