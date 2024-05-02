@@ -11,73 +11,96 @@ Hexadecimal [16-Bits]
                               5 .globl entity_manager_destroy_entity
                               6 .globl entity_manager_forall
                               7 
-                              8 .macro DefineEntity _x, _y, _w, _h, _dx, _dy, _tex
+                              8 .macro DefineEntity _type, _x, _y, _w, _h, _dx, _dy, _tex
                               9 ;; public data
-                             10     .db _x
-                             11     .db _y
-                             12     .db _w
-                             13     .db _h
-                             14     .db _dx
-                             15     .db _dy
-                             16     .dw _tex
-                             17     .dw #0xC000
-                             18     .dw #0xC000
-                             19 .endm
-                             20 
-                             21 ;;===============================
-                             22 ;; public DATA (:))
-                     0000    23 ent_x     = 0  ;; 1 bytes
-                     0001    24 ent_y     = 1  ;; 1 bytes
-                     0002    25 ent_w     = 2  ;; 1 bytes
-                     0003    26 ent_h     = 3  ;; 1 bytes
-                     0004    27 ent_dx    = 4  ;; 1 bytes
-                     0005    28 ent_dy    = 5  ;; 1 bytes
-                     0006    29 ent_tex   = 6  ;; 2 bytes
-                     0008    30 ent_oldP0 = 8  ;; 2 bytes
-                     000A    31 ent_oldP1 = 10 ;; 2 bytes
-                             32 ;; private DATA (:()
-                     000C    33 ent_next  = 12 ;; 2 bytes
-                             34 ;;===============================
-                             35 
-                     000E    36 ent_size = 14
-                     000A    37 entity_manager_max_entities = 10
-                     000C    38 ent_data_size = 12
+                             10     .db _type
+                             11     .db _x
+                             12     .db _y
+                             13     .db _w
+                             14     .db _h
+                             15     .db _dx
+                             16     .db _dy
+                             17     .dw _tex
+                             18 .endm
+                             19 
+                             20 ;;===============================
+                             21 ;; public DATA (:))
+                     0000    22 ent_type  = 0  ;; 1 bytes
+                     0001    23 ent_x     = 1  ;; 1 bytes
+                     0002    24 ent_y     = 2  ;; 1 bytes
+                     0003    25 ent_w     = 3  ;; 1 bytes
+                     0004    26 ent_h     = 4  ;; 1 bytes
+                     0005    27 ent_dx    = 5  ;; 1 bytes
+                     0006    28 ent_dy    = 6  ;; 1 bytes
+                     0007    29 ent_tex   = 7  ;; 2 bytes
+                             30 ;; private DATA (:()
+                     0009    31 ent_next  = 9  ;; 2 bytes
+                             32 ;;===============================
+                             33 
+                     000B    34 ent_size = 11
+                     000A    35 entity_manager_max_entities = 10
+                     0009    36 ent_data_size = 9
+                             37 
+                             38 
+                             39 ;;===================================
+                             40 ;; Entity Bitfield
+                             41 ;;===================================
+                     0007    42 ent_type_alive_bit     = 7
+                     0006    43 ent_type_physics_bit   = 6
+                     0005    44 ent_type_render_bit    = 5
+                     0004    45 ent_type_input_bit     = 4
+                     0003    46 ent_type_collision_bit = 3
+                             47 
+                     0000    48 ent_mask_invalid   = 0x00
+                     0080    49 ent_mask_alive     = (1 << ent_type_alive_bit)
+                     0040    50 ent_mask_physics   = (1 << ent_type_physics_bit)
+                     0020    51 ent_mask_render    = (1 << ent_type_render_bit)
+                     0010    52 ent_mask_input     = (1 << ent_type_input_bit)
+                     0008    53 ent_mask_collision = (1 << ent_type_collision_bit)
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]
 
 
 
                               2 
-   49CE                       3 physics_system_init::
-   49CE C9            [10]    4     ret
+   4A23                       3 physics_system_init::
+   4A23 C9            [10]    4     ret
                               5 
                               6 
-   49CF                       7 physics_system_update_one_entity:
-                              8 
-   49CF DD 34 05      [23]    9     inc ent_dy(ix)
+   4A24                       7 physics_system_update_one_entity:
+                              8     
+                              9 
                              10     
-   49D2 DD 7E 01      [19]   11     ld a, ent_y(ix)
-   49D5 DD 86 05      [19]   12     add  ent_dy(ix)
-   49D8 DD 77 01      [19]   13     ld ent_y(ix), a
-                             14     
-                             15     ;; check collision with the floor
-                             16     ;; if e_y < 128-h ret
-   49DB 4F            [ 4]   17     ld c, a
-   49DC 3E 80         [ 7]   18     ld a, #128
-   49DE DD 96 03      [19]   19     sub ent_h(ix)
-   49E1 47            [ 4]   20     ld b, a
-   49E2 3E 00         [ 7]   21     ld a, #256
-   49E4 90            [ 4]   22     sub b
-   49E5 81            [ 4]   23     add c
-   49E6 D0            [11]   24     ret nc
-                             25     ;; if e_y > 128-h
-   49E7 DD 36 05 F2   [19]   26     ld ent_dy(ix), #-14
-   49EB DD 70 01      [19]   27     ld ent_y(ix), b
-                             28 
-   49EE C9            [10]   29     ret
-                             30 
-   49EF                      31 physics_system_update::
-                             32     ;;ld bc, #( CMP_FLAGS... )
-   49EF 21 CF 49      [10]   33     ld hl, #physics_system_update_one_entity
-   49F2 CD B1 49      [17]   34     call entity_manager_forall
-   49F5 C9            [10]   35     ret
+                             11     ;; update the x position
+   4A24 DD 7E 01      [19]   12     ld a, ent_x(ix)
+   4A27 DD 86 05      [19]   13     add  ent_dx(ix)
+   4A2A DD 77 01      [19]   14     ld ent_x(ix), a
+                             15     ;; update the y position
+   4A2D DD 7E 02      [19]   16     ld a, ent_y(ix)
+   4A30 DD 86 06      [19]   17     add  ent_dy(ix)
+   4A33 DD 77 02      [19]   18     ld ent_y(ix), a
+                             19 
+                             20     ;; Apply gravity
+   4A36 DD 34 06      [23]   21     inc ent_dy(ix)
+                             22     
+                             23     ;; check collision with the floor
+                             24     ;; if e_y < 128-h ret
+   4A39 4F            [ 4]   25     ld c, a
+   4A3A 3E 80         [ 7]   26     ld a, #128
+   4A3C DD 96 04      [19]   27     sub ent_h(ix)
+   4A3F 47            [ 4]   28     ld b, a
+   4A40 3E 00         [ 7]   29     ld a, #256
+   4A42 90            [ 4]   30     sub b
+   4A43 81            [ 4]   31     add c
+   4A44 D0            [11]   32     ret nc
+                             33     ;; if e_y > 128-h\
+   4A45 DD 36 06 00   [19]   34     ld ent_dy(ix), #0
+   4A49 DD 70 02      [19]   35     ld ent_y(ix), b
+                             36 
+   4A4C C9            [10]   37     ret
+                             38 
+   4A4D                      39 physics_system_update::
+   4A4D 3E C0         [ 7]   40     ld a, #(ent_mask_alive|ent_mask_physics)
+   4A4F 21 24 4A      [10]   41     ld hl, #physics_system_update_one_entity
+   4A52 CD 94 49      [17]   42     call entity_manager_forall
+   4A55 C9            [10]   43     ret

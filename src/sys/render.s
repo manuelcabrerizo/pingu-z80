@@ -46,22 +46,11 @@ render_system_init::
 
 render_system_render_one_entity:
 
-    ;; remove the entity oldP
-    ld a, #0
-    ld e, ent_oldP0(ix)
-    ld d, ent_oldP1(ix)
-    ld b, ent_h(ix)
-    ld c, ent_w(ix)
-    call drawSolidBox_32x16
-
-    ;; Calculate a video-memory location for printing a string
-    ld   de, #CPCT_VMEM_START_ASM ;; DE = Pointer to start of the screen
+back_buffer_0 = . + 2
+    ld   de, #0xC400 ;; DE = Pointer to start of the screen
     ld    b, ent_y(ix)            ;; B = y coordinate (24 = 0x18)
     ld    c, ent_x(ix)            ;; C = x coordinate (16 = 0x10)
     call getScreenPtr_32x16       ;; Calculate video memory location and return it in HL
-
-    ld ent_oldP0(ix), l
-    ld ent_oldP1(ix), h
 
     ex de, hl
 
@@ -78,17 +67,47 @@ render_system_draw_tilemap::
     ld de, #32
     ld hl, #_tile_tilemap_00
     call setDrawTileMap4x8_ag_32x16
-    
-    ld hl, #0xC000
-    ld de, #_tilemap_00
+back_buffer_1 = . + 2   
+    ld hl, #0xC400
+    ld de, #_tilemap_00; + 16
     call drawTilemap4x8_ag_32x16
-    
+    ret
+
+change_screen:
+change_screen_fptr = . + 1
+    jp change_screen_to_C400
+
+change_screen_to_C400:
+    ld de, #0x0C32
+    call set_crtc
+    ld a, #0xC0
+    ld (back_buffer_0), a
+    ld (back_buffer_1), a
+
+    ld hl, #change_screen_to_C000
+    ld (change_screen_fptr), hl
+
+    ret
+
+change_screen_to_C000:
+    ld de, #0x0C30
+    call set_crtc
+    ld a, #0xC4
+    ld (back_buffer_0), a
+    ld (back_buffer_1), a
+
+    ld hl, #change_screen_to_C400
+    ld (change_screen_fptr), hl
+
     ret
 
 render_system_update::
     call render_system_draw_tilemap
 
-    ;;ld bc, #( CMP_FLAGS... )
+    ld a, #(ent_mask_alive|ent_mask_render)
     ld hl, #render_system_render_one_entity
     call entity_manager_forall
+
+    call change_screen
+
     ret

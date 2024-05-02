@@ -5027,37 +5027,52 @@ Hexadecimal [16-Bits]
                               5 .globl entity_manager_destroy_entity
                               6 .globl entity_manager_forall
                               7 
-                              8 .macro DefineEntity _x, _y, _w, _h, _dx, _dy, _tex
+                              8 .macro DefineEntity _type, _x, _y, _w, _h, _dx, _dy, _tex
                               9 ;; public data
-                             10     .db _x
-                             11     .db _y
-                             12     .db _w
-                             13     .db _h
-                             14     .db _dx
-                             15     .db _dy
-                             16     .dw _tex
-                             17     .dw #0xC000
-                             18     .dw #0xC000
-                             19 .endm
-                             20 
-                             21 ;;===============================
-                             22 ;; public DATA (:))
-                     0000    23 ent_x     = 0  ;; 1 bytes
-                     0001    24 ent_y     = 1  ;; 1 bytes
-                     0002    25 ent_w     = 2  ;; 1 bytes
-                     0003    26 ent_h     = 3  ;; 1 bytes
-                     0004    27 ent_dx    = 4  ;; 1 bytes
-                     0005    28 ent_dy    = 5  ;; 1 bytes
-                     0006    29 ent_tex   = 6  ;; 2 bytes
-                     0008    30 ent_oldP0 = 8  ;; 2 bytes
-                     000A    31 ent_oldP1 = 10 ;; 2 bytes
-                             32 ;; private DATA (:()
-                     000C    33 ent_next  = 12 ;; 2 bytes
-                             34 ;;===============================
-                             35 
-                     000E    36 ent_size = 14
-                     000A    37 entity_manager_max_entities = 10
-                     000C    38 ent_data_size = 12
+                             10     .db _type
+                             11     .db _x
+                             12     .db _y
+                             13     .db _w
+                             14     .db _h
+                             15     .db _dx
+                             16     .db _dy
+                             17     .dw _tex
+                             18 .endm
+                             19 
+                             20 ;;===============================
+                             21 ;; public DATA (:))
+                     0000    22 ent_type  = 0  ;; 1 bytes
+                     0001    23 ent_x     = 1  ;; 1 bytes
+                     0002    24 ent_y     = 2  ;; 1 bytes
+                     0003    25 ent_w     = 3  ;; 1 bytes
+                     0004    26 ent_h     = 4  ;; 1 bytes
+                     0005    27 ent_dx    = 5  ;; 1 bytes
+                     0006    28 ent_dy    = 6  ;; 1 bytes
+                     0007    29 ent_tex   = 7  ;; 2 bytes
+                             30 ;; private DATA (:()
+                     0009    31 ent_next  = 9  ;; 2 bytes
+                             32 ;;===============================
+                             33 
+                     000B    34 ent_size = 11
+                     000A    35 entity_manager_max_entities = 10
+                     0009    36 ent_data_size = 9
+                             37 
+                             38 
+                             39 ;;===================================
+                             40 ;; Entity Bitfield
+                             41 ;;===================================
+                     0007    42 ent_type_alive_bit     = 7
+                     0006    43 ent_type_physics_bit   = 6
+                     0005    44 ent_type_render_bit    = 5
+                     0004    45 ent_type_input_bit     = 4
+                     0003    46 ent_type_collision_bit = 3
+                             47 
+                     0000    48 ent_mask_invalid   = 0x00
+                     0080    49 ent_mask_alive     = (1 << ent_type_alive_bit)
+                     0040    50 ent_mask_physics   = (1 << ent_type_physics_bit)
+                     0020    51 ent_mask_render    = (1 << ent_type_render_bit)
+                     0010    52 ent_mask_input     = (1 << ent_type_input_bit)
+                     0008    53 ent_mask_collision = (1 << ent_type_collision_bit)
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 97.
 Hexadecimal [16-Bits]
 
@@ -5073,95 +5088,119 @@ Hexadecimal [16-Bits]
                              11 
                              12 ; D = Registro
                              13 ; E = Valor
-   49F6                      14 set_crtc:
-   49F6 01 00 BC      [10]   15    ld bc, #0xBC00
-   49F9 ED 51         [12]   16    out (c), d
-   49FB 04            [ 4]   17    inc b
-   49FC ED 59         [12]   18    out (c), e
-   49FE C9            [10]   19    ret
+   4A56                      14 set_crtc:
+   4A56 01 00 BC      [10]   15    ld bc, #0xBC00
+   4A59 ED 51         [12]   16    out (c), d
+   4A5B 04            [ 4]   17    inc b
+   4A5C ED 59         [12]   18    out (c), e
+   4A5E C9            [10]   19    ret
                              20 
                              21 
-   49FF                      22 render_system_init::
+   4A5F                      22 render_system_init::
                              23     ;; Setup the display 
-   49FF 11 20 01      [10]   24     ld de, #0x0120
-   4A02 CD F6 49      [17]   25     call set_crtc
+   4A5F 11 20 01      [10]   24     ld de, #0x0120
+   4A62 CD 56 4A      [17]   25     call set_crtc
                              26 
-   4A05 11 2A 02      [10]   27     ld de, #0x022A
-   4A08 CD F6 49      [17]   28     call set_crtc
+   4A65 11 2A 02      [10]   27     ld de, #0x022A
+   4A68 CD 56 4A      [17]   28     call set_crtc
                              29 
-   4A0B 11 10 06      [10]   30     ld de, #0x0610
-   4A0E CD F6 49      [17]   31     call set_crtc
+   4A6B 11 10 06      [10]   30     ld de, #0x0610
+   4A6E CD 56 4A      [17]   31     call set_crtc
                              32 
-   4A11 11 1A 07      [10]   33     ld de, #0x071A
-   4A14 CD F6 49      [17]   34     call set_crtc
+   4A71 11 1A 07      [10]   33     ld de, #0x071A
+   4A74 CD 56 4A      [17]   34     call set_crtc
                              35 
    0021                      36     cpctm_setBorder_asm HW_WHITE
                               1    .radix h
    0021                       2    cpctm_setBorder_raw_asm \HW_WHITE ;; [28] Macro that does the job, but requires a number value to be passed
                               1    .globl cpct_setPALColour_asm
-   4A17 21 10 00      [10]    2    ld   hl, #0x010         ;; [3]  H=Hardware value of desired colour, L=Border INK (16)
-   4A1A CD 93 4A      [17]    3    call cpct_setPALColour_asm  ;; [25] Set Palette colour of the border
+   4A77 21 10 00      [10]    2    ld   hl, #0x010         ;; [3]  H=Hardware value of desired colour, L=Border INK (16)
+   4A7A CD 1A 4B      [17]    3    call cpct_setPALColour_asm  ;; [25] Set Palette colour of the border
                               3    .radix d
-   4A1D 0E 00         [ 7]   37     ld c, #0
-   4A1F CD 9D 4A      [17]   38     call cpct_setVideoMode_asm
+   4A7D 0E 00         [ 7]   37     ld c, #0
+   4A7F CD 2E 4B      [17]   38     call cpct_setVideoMode_asm
                              39 
-   4A22 21 88 44      [10]   40     ld hl, #_pre_palette
-   4A25 11 10 00      [10]   41     ld de, #16
-   4A28 CD 80 4A      [17]   42     call cpct_setPalette_asm
-   4A2B C9            [10]   43     ret
+   4A82 21 88 44      [10]   40     ld hl, #_pre_palette
+   4A85 11 10 00      [10]   41     ld de, #16
+   4A88 CD FB 4A      [17]   42     call cpct_setPalette_asm
+   4A8B C9            [10]   43     ret
                              44 
                              45 
                              46 
-   4A2C                      47 render_system_render_one_entity:
+   4A8C                      47 render_system_render_one_entity:
                              48 
-                             49     ;; remove the entity oldP
-   4A2C 3E 00         [ 7]   50     ld a, #0
-   4A2E DD 5E 08      [19]   51     ld e, ent_oldP0(ix)
-   4A31 DD 56 0A      [19]   52     ld d, ent_oldP1(ix)
+                     0038    49 back_buffer_0 = . + 2
+   4A8C 11 00 C4      [10]   50     ld   de, #0xC400 ;; DE = Pointer to start of the screen
+   4A8F DD 46 02      [19]   51     ld    b, ent_y(ix)            ;; B = y coordinate (24 = 0x18)
+   4A92 DD 4E 01      [19]   52     ld    c, ent_x(ix)            ;; C = x coordinate (16 = 0x10)
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 98.
 Hexadecimal [16-Bits]
 
 
 
-   4A34 DD 46 03      [19]   53     ld b, ent_h(ix)
-   4A37 DD 4E 02      [19]   54     ld c, ent_w(ix)
-   4A3A CD F4 47      [17]   55     call drawSolidBox_32x16
+   4A95 CD C1 47      [17]   53     call getScreenPtr_32x16       ;; Calculate video memory location and return it in HL
+                             54 
+   4A98 EB            [ 4]   55     ex de, hl
                              56 
-                             57     ;; Calculate a video-memory location for printing a string
-   4A3D 11 00 C0      [10]   58     ld   de, #CPCT_VMEM_START_ASM ;; DE = Pointer to start of the screen
-   4A40 DD 46 01      [19]   59     ld    b, ent_y(ix)            ;; B = y coordinate (24 = 0x18)
-   4A43 DD 4E 00      [19]   60     ld    c, ent_x(ix)            ;; C = x coordinate (16 = 0x10)
-   4A46 CD C0 47      [17]   61     call getScreenPtr_32x16       ;; Calculate video memory location and return it in HL
+   4A99 DD 6E 07      [19]   57     ld l,  ent_tex(ix)
+   4A9C DD 66 08      [19]   58     ld h, ent_tex+1(ix)
+   4A9F DD 46 04      [19]   59     ld b, ent_h(ix)
+   4AA2 DD 4E 03      [19]   60     ld c, ent_w(ix)
+   4AA5 CD CF 47      [17]   61     call drawSprite_32x16
                              62 
-   4A49 DD 75 08      [19]   63     ld ent_oldP0(ix), l
-   4A4C DD 74 0A      [19]   64     ld ent_oldP1(ix), h
-                             65 
-   4A4F EB            [ 4]   66     ex de, hl
-                             67 
-   4A50 DD 6E 06      [19]   68     ld l,  ent_tex(ix)
-   4A53 DD 66 07      [19]   69     ld h, ent_tex+1(ix)
-   4A56 DD 46 03      [19]   70     ld b, ent_h(ix)
-   4A59 DD 4E 02      [19]   71     ld c, ent_w(ix)
-   4A5C CD CE 47      [17]   72     call drawSprite_32x16
-                             73 
-   4A5F C9            [10]   74     ret
+   4AA8 C9            [10]   63     ret
+                             64 
+   4AA9                      65 render_system_draw_tilemap::
+   4AA9 01 10 10      [10]   66     ld bc, #0x1010
+   4AAC 11 20 00      [10]   67     ld de, #32
+   4AAF 21 00 40      [10]   68     ld hl, #_tile_tilemap_00
+   4AB2 CD 95 47      [17]   69     call setDrawTileMap4x8_ag_32x16
+                     0061    70 back_buffer_1 = . + 2   
+   4AB5 21 00 C4      [10]   71     ld hl, #0xC400
+   4AB8 11 BA 44      [10]   72     ld de, #_tilemap_00; + 16
+   4ABB CD FC 46      [17]   73     call drawTilemap4x8_ag_32x16
+   4ABE C9            [10]   74     ret
                              75 
-   4A60                      76 render_system_draw_tilemap::
-   4A60 01 10 10      [10]   77     ld bc, #0x1010
-   4A63 11 20 00      [10]   78     ld de, #32
-   4A66 21 00 40      [10]   79     ld hl, #_tile_tilemap_00
-   4A69 CD 94 47      [17]   80     call setDrawTileMap4x8_ag_32x16
-                             81     
-   4A6C 21 00 C0      [10]   82     ld hl, #0xC000
-   4A6F 11 BA 44      [10]   83     ld de, #_tilemap_00
-   4A72 CD FB 46      [17]   84     call drawTilemap4x8_ag_32x16
-                             85     
-   4A75 C9            [10]   86     ret
-                             87 
-   4A76                      88 render_system_update::
-   4A76 CD 60 4A      [17]   89     call render_system_draw_tilemap
-                             90 
-                             91     ;;ld bc, #( CMP_FLAGS... )
-   4A79 21 2C 4A      [10]   92     ld hl, #render_system_render_one_entity
-   4A7C CD B1 49      [17]   93     call entity_manager_forall
-   4A7F C9            [10]   94     ret
+   4ABF                      76 change_screen:
+                     006A    77 change_screen_fptr = . + 1
+   4ABF C3 C2 4A      [10]   78     jp change_screen_to_C400
+                             79 
+   4AC2                      80 change_screen_to_C400:
+   4AC2 11 32 0C      [10]   81     ld de, #0x0C32
+   4AC5 CD 56 4A      [17]   82     call set_crtc
+   4AC8 3E C0         [ 7]   83     ld a, #0xC0
+   4ACA 32 8E 4A      [13]   84     ld (back_buffer_0), a
+   4ACD 32 B7 4A      [13]   85     ld (back_buffer_1), a
+                             86 
+   4AD0 21 D7 4A      [10]   87     ld hl, #change_screen_to_C000
+   4AD3 22 C0 4A      [16]   88     ld (change_screen_fptr), hl
+                             89 
+   4AD6 C9            [10]   90     ret
+                             91 
+   4AD7                      92 change_screen_to_C000:
+   4AD7 11 30 0C      [10]   93     ld de, #0x0C30
+   4ADA CD 56 4A      [17]   94     call set_crtc
+   4ADD 3E C4         [ 7]   95     ld a, #0xC4
+   4ADF 32 8E 4A      [13]   96     ld (back_buffer_0), a
+   4AE2 32 B7 4A      [13]   97     ld (back_buffer_1), a
+                             98 
+   4AE5 21 C2 4A      [10]   99     ld hl, #change_screen_to_C400
+   4AE8 22 C0 4A      [16]  100     ld (change_screen_fptr), hl
+                            101 
+   4AEB C9            [10]  102     ret
+                            103 
+   4AEC                     104 render_system_update::
+   4AEC CD A9 4A      [17]  105     call render_system_draw_tilemap
+                            106 
+   4AEF 3E A0         [ 7]  107     ld a, #(ent_mask_alive|ent_mask_render)
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 99.
+Hexadecimal [16-Bits]
+
+
+
+   4AF1 21 8C 4A      [10]  108     ld hl, #render_system_render_one_entity
+   4AF4 CD 94 49      [17]  109     call entity_manager_forall
+                            110 
+   4AF7 CD BF 4A      [17]  111     call change_screen
+                            112 
+   4AFA C9            [10]  113     ret

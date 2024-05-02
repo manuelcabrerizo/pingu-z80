@@ -11,37 +11,52 @@ Hexadecimal [16-Bits]
                               5 .globl entity_manager_destroy_entity
                               6 .globl entity_manager_forall
                               7 
-                              8 .macro DefineEntity _x, _y, _w, _h, _dx, _dy, _tex
+                              8 .macro DefineEntity _type, _x, _y, _w, _h, _dx, _dy, _tex
                               9 ;; public data
-                             10     .db _x
-                             11     .db _y
-                             12     .db _w
-                             13     .db _h
-                             14     .db _dx
-                             15     .db _dy
-                             16     .dw _tex
-                             17     .dw #0xC000
-                             18     .dw #0xC000
-                             19 .endm
-                             20 
-                             21 ;;===============================
-                             22 ;; public DATA (:))
-                     0000    23 ent_x     = 0  ;; 1 bytes
-                     0001    24 ent_y     = 1  ;; 1 bytes
-                     0002    25 ent_w     = 2  ;; 1 bytes
-                     0003    26 ent_h     = 3  ;; 1 bytes
-                     0004    27 ent_dx    = 4  ;; 1 bytes
-                     0005    28 ent_dy    = 5  ;; 1 bytes
-                     0006    29 ent_tex   = 6  ;; 2 bytes
-                     0008    30 ent_oldP0 = 8  ;; 2 bytes
-                     000A    31 ent_oldP1 = 10 ;; 2 bytes
-                             32 ;; private DATA (:()
-                     000C    33 ent_next  = 12 ;; 2 bytes
-                             34 ;;===============================
-                             35 
-                     000E    36 ent_size = 14
-                     000A    37 entity_manager_max_entities = 10
-                     000C    38 ent_data_size = 12
+                             10     .db _type
+                             11     .db _x
+                             12     .db _y
+                             13     .db _w
+                             14     .db _h
+                             15     .db _dx
+                             16     .db _dy
+                             17     .dw _tex
+                             18 .endm
+                             19 
+                             20 ;;===============================
+                             21 ;; public DATA (:))
+                     0000    22 ent_type  = 0  ;; 1 bytes
+                     0001    23 ent_x     = 1  ;; 1 bytes
+                     0002    24 ent_y     = 2  ;; 1 bytes
+                     0003    25 ent_w     = 3  ;; 1 bytes
+                     0004    26 ent_h     = 4  ;; 1 bytes
+                     0005    27 ent_dx    = 5  ;; 1 bytes
+                     0006    28 ent_dy    = 6  ;; 1 bytes
+                     0007    29 ent_tex   = 7  ;; 2 bytes
+                             30 ;; private DATA (:()
+                     0009    31 ent_next  = 9  ;; 2 bytes
+                             32 ;;===============================
+                             33 
+                     000B    34 ent_size = 11
+                     000A    35 entity_manager_max_entities = 10
+                     0009    36 ent_data_size = 9
+                             37 
+                             38 
+                             39 ;;===================================
+                             40 ;; Entity Bitfield
+                             41 ;;===================================
+                     0007    42 ent_type_alive_bit     = 7
+                     0006    43 ent_type_physics_bit   = 6
+                     0005    44 ent_type_render_bit    = 5
+                     0004    45 ent_type_input_bit     = 4
+                     0003    46 ent_type_collision_bit = 3
+                             47 
+                     0000    48 ent_mask_invalid   = 0x00
+                     0080    49 ent_mask_alive     = (1 << ent_type_alive_bit)
+                     0040    50 ent_mask_physics   = (1 << ent_type_physics_bit)
+                     0020    51 ent_mask_render    = (1 << ent_type_render_bit)
+                     0010    52 ent_mask_input     = (1 << ent_type_input_bit)
+                     0008    53 ent_mask_collision = (1 << ent_type_collision_bit)
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]
 
@@ -5058,17 +5073,17 @@ Hexadecimal [16-Bits]
                               9 ;;=====================================================
                              10 ;; Private entity manager DATA
                              11 ;;=====================================================
-   4820                      12 entity_count:
-   4820 00                   13     .db #0
+   4821                      12 entity_count:
+   4821 00                   13     .db #0
                              14 
-   4821                      15 first_free:
-   4821 00 00                16     .dw #0000
+   4822                      15 first_free:
+   4822 00 00                16     .dw #0000
                              17 
-   4823                      18 first_entity:
-   4823 00 00                19     .dw #0000
+   4824                      18 first_entity:
+   4824 00 00                19     .dw #0000
                              20 
-   4825                      21 entities::
-   4825                      22     .ds #entity_manager_max_entities * ent_size
+   4826                      21 entities::
+   4826                      22     .ds #entity_manager_max_entities * ent_size
                              23 ;;=====================================================
                              24 
                              25 ;;==========================================
@@ -5080,47 +5095,47 @@ Hexadecimal [16-Bits]
                              31 ;; MODIFY REGISTERS:
                              32 ;;     A, HL, IX, IY, BC
                              33 ;;==========================================
-   48B1                      34 entity_manager_init::
+   4894                      34 entity_manager_init::
                              35     ;; init first_entity pointer
-   48B1 21 25 48      [10]   36     ld hl, #entities
-   48B4 22 21 48      [16]   37     ld (first_free), hl
+   4894 21 26 48      [10]   36     ld hl, #entities
+   4897 22 22 48      [16]   37     ld (first_free), hl
                              38 
                              39     ;; init create entity function
-   48B7 21 E7 48      [10]   40     ld hl, #entity_manager_add_first_entity
-   48BA 22 E5 48      [16]   41     ld (ent_man_create_addrs), hl 
+   489A 21 CA 48      [10]   40     ld hl, #entity_manager_add_first_entity
+   489D 22 C8 48      [16]   41     ld (ent_man_create_addrs), hl 
                              42 
                              43     ;; init entity_count
-   48BD 3E 00         [ 7]   44     ld a, #0
-   48BF 32 20 48      [13]   45     ld (entity_count), a
+   48A0 3E 00         [ 7]   44     ld a, #0
+   48A2 32 21 48      [13]   45     ld (entity_count), a
                              46     
                              47     ;; init free list
-   48C2 3E 09         [ 7]   48     ld a, #entity_manager_max_entities - 1
+   48A5 3E 09         [ 7]   48     ld a, #entity_manager_max_entities - 1
                              49 
-   48C4 DD 21 25 48   [14]   50     ld ix, #entities
-   48C8 FD 21 33 48   [14]   51     ld iy, #entities + ent_size
+   48A7 DD 21 26 48   [14]   50     ld ix, #entities
+   48AB FD 21 31 48   [14]   51     ld iy, #entities + ent_size
                              52     
-   48CC                      53     ent_man_init_loop:
+   48AF                      53     ent_man_init_loop:
                              54 
-   48CC FD 22 D1 48   [20]   55         ld (next_entity_addrs), iy
+   48AF FD 22 B4 48   [20]   55         ld (next_entity_addrs), iy
                              56 
-                     00B1    57     next_entity_addrs = . + 1
+                     0093    57     next_entity_addrs = . + 1
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 97.
 Hexadecimal [16-Bits]
 
 
 
-   48D0 21 00 00      [10]   58         ld hl, #0000
-   48D3 DD 75 0C      [19]   59         ld   ent_next(ix), l
-   48D6 DD 74 0D      [19]   60         ld ent_next+1(ix), h
+   48B3 21 00 00      [10]   58         ld hl, #0000
+   48B6 DD 75 09      [19]   59         ld   ent_next(ix), l
+   48B9 DD 74 0A      [19]   60         ld ent_next+1(ix), h
                              61 
                              62         ;; next entity
-   48D9 01 0E 00      [10]   63         ld bc, #ent_size
-   48DC DD 09         [15]   64         add ix, bc
-   48DE FD 09         [15]   65         add iy, bc
+   48BC 01 0B 00      [10]   63         ld bc, #ent_size
+   48BF DD 09         [15]   64         add ix, bc
+   48C1 FD 09         [15]   65         add iy, bc
                              66 
-   48E0 3D            [ 4]   67         dec a
-   48E1 20 E9         [12]   68         jr nz, ent_man_init_loop
-   48E3 C9            [10]   69     ret
+   48C3 3D            [ 4]   67         dec a
+   48C4 20 E9         [12]   68         jr nz, ent_man_init_loop
+   48C6 C9            [10]   69     ret
                              70 ;;==========================================
                              71 
                              72 
@@ -5134,76 +5149,76 @@ Hexadecimal [16-Bits]
                              80 ;; MODIFY REGISTERS:
                              81 ;;     A, IX, HL
                              82 ;;==========================================
-   48E4                      83 entity_manager_create_entity::
-                     00C5    84 ent_man_create_addrs = . + 1
-   48E4 C3 E7 48      [10]   85     jp entity_manager_add_first_entity
+   48C7                      83 entity_manager_create_entity::
+                     00A7    84 ent_man_create_addrs = . + 1
+   48C7 C3 CA 48      [10]   85     jp entity_manager_add_first_entity
                              86 
-   48E7                      87 entity_manager_add_first_entity:
+   48CA                      87 entity_manager_add_first_entity:
                              88     ;; initialize the first_entity pointer
-   48E7 21 25 48      [10]   89     ld hl, #entities
-   48EA 22 23 48      [16]   90     ld (first_entity), hl
+   48CA 21 26 48      [10]   89     ld hl, #entities
+   48CD 22 24 48      [16]   90     ld (first_entity), hl
                              91     ;; grab a new entity from the free list
                              92     ;; update the free list
-   48ED DD 2A 21 48   [20]   93     ld ix, (first_free)
-   48F1 DD 6E 0C      [19]   94     ld l,   ent_next(ix)
-   48F4 DD 66 0D      [19]   95     ld h, ent_next+1(ix)
-   48F7 22 21 48      [16]   96     ld (first_free), hl
-   48FA DD 36 0C 00   [19]   97     ld   ent_next(ix), #0
-   48FE DD 36 0D 00   [19]   98     ld ent_next+1(ix), #0
+   48D0 DD 2A 22 48   [20]   93     ld ix, (first_free)
+   48D4 DD 6E 09      [19]   94     ld l,   ent_next(ix)
+   48D7 DD 66 0A      [19]   95     ld h, ent_next+1(ix)
+   48DA 22 22 48      [16]   96     ld (first_free), hl
+   48DD DD 36 09 00   [19]   97     ld   ent_next(ix), #0
+   48E1 DD 36 0A 00   [19]   98     ld ent_next+1(ix), #0
                              99     ;; increment the number of entities in
                             100     ;; the manager
-   4902 3A 20 48      [13]  101     ld a, (entity_count)
-   4905 3C            [ 4]  102     inc a
-   4906 32 20 48      [13]  103     ld (entity_count), a
+   48E5 3A 21 48      [13]  101     ld a, (entity_count)
+   48E8 3C            [ 4]  102     inc a
+   48E9 32 21 48      [13]  103     ld (entity_count), a
                             104 
                             105     ;; change the addres of
                             106     ;; jp entity_manager_add_first_entity
                             107     ;; to point to jp entity_manager_add_entity
-   4909 21 17 49      [10]  108     ld hl, #entity_manager_add_entity
-   490C 22 E5 48      [16]  109     ld (ent_man_create_addrs), hl 
+   48EC 21 FA 48      [10]  108     ld hl, #entity_manager_add_entity
+   48EF 22 C8 48      [16]  109     ld (ent_man_create_addrs), hl 
                             110     
-   00EF                     111     ld__e_ixl
-   490F DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
+   00D1                     111     ld__e_ixl
+   48F2 DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 98.
 Hexadecimal [16-Bits]
 
 
 
-   00F1                     112     ld__d_ixh
-   4911 DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
-   4913 01 0C 00      [10]  113     ld bc, #ent_data_size
+   00D3                     112     ld__d_ixh
+   48F4 DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
+   48F6 01 09 00      [10]  113     ld bc, #ent_data_size
                             114 
-   4916 C9            [10]  115     ret
+   48F9 C9            [10]  115     ret
                             116 
-   4917                     117 entity_manager_add_entity:
+   48FA                     117 entity_manager_add_entity:
                             118     ;; grab a new entity from the free list
                             119     ;; update the free list
-   4917 DD 2A 21 48   [20]  120     ld ix, (first_free)
-   491B DD 6E 0C      [19]  121     ld l,   ent_next(ix)
-   491E DD 66 0D      [19]  122     ld h, ent_next+1(ix)
-   4921 22 21 48      [16]  123     ld (first_free), hl
+   48FA DD 2A 22 48   [20]  120     ld ix, (first_free)
+   48FE DD 6E 09      [19]  121     ld l,   ent_next(ix)
+   4901 DD 66 0A      [19]  122     ld h, ent_next+1(ix)
+   4904 22 22 48      [16]  123     ld (first_free), hl
                             124 
-   4924 2A 23 48      [16]  125     ld hl, (first_entity)
-   4927 DD 75 0C      [19]  126     ld   ent_next(ix), l
-   492A DD 74 0D      [19]  127     ld ent_next+1(ix), h
+   4907 2A 24 48      [16]  125     ld hl, (first_entity)
+   490A DD 75 09      [19]  126     ld   ent_next(ix), l
+   490D DD 74 0A      [19]  127     ld ent_next+1(ix), h
                             128 
                             129     ;; update the first entity pointer
                             130     ;; to point to this entity
-   492D DD 22 23 48   [20]  131     ld (first_entity), ix
+   4910 DD 22 24 48   [20]  131     ld (first_entity), ix
                             132 
                             133     ;; increment the number of entities in
                             134     ;; the manager
-   4931 3A 20 48      [13]  135     ld a, (entity_count)
-   4934 3C            [ 4]  136     inc a
-   4935 32 20 48      [13]  137     ld (entity_count), a
+   4914 3A 21 48      [13]  135     ld a, (entity_count)
+   4917 3C            [ 4]  136     inc a
+   4918 32 21 48      [13]  137     ld (entity_count), a
                             138 
-   0118                     139     ld__e_ixl
-   4938 DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
-   011A                     140     ld__d_ixh
-   493A DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
-   493C 01 0C 00      [10]  141     ld bc, #ent_data_size
+   00FA                     139     ld__e_ixl
+   491B DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
+   00FC                     140     ld__d_ixh
+   491D DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
+   491F 01 09 00      [10]  141     ld bc, #ent_data_size
                             142 
-   493F C9            [10]  143     ret
+   4922 C9            [10]  143     ret
                             144 ;;==========================================
                             145 
                             146 
@@ -5216,106 +5231,106 @@ Hexadecimal [16-Bits]
                             153 ;; MODIFY REGISTERS:
                             154 ;;     none
                             155 ;;==========================================
-   4940                     156 entity_manager_destroy_entity::
+   4923                     156 entity_manager_destroy_entity::
                             157     ;; if first
-   0120                     158     ld__e_ixl
-   4940 DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
-   0122                     159     ld__d_ixh
-   4942 DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
-   4944 2A 23 48      [16]  160     ld hl, (first_entity)
-   4947 7C            [ 4]  161     ld a, h
+   0102                     158     ld__e_ixl
+   4923 DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
+   0104                     159     ld__d_ixh
+   4925 DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
+   4927 2A 24 48      [16]  160     ld hl, (first_entity)
+   492A 7C            [ 4]  161     ld a, h
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 99.
 Hexadecimal [16-Bits]
 
 
 
-   4948 AA            [ 4]  162     xor d
-   4949 57            [ 4]  163     ld d, a
-   494A 7D            [ 4]  164     ld a, l
-   494B AB            [ 4]  165     xor e
-   494C B2            [ 4]  166     or d
-   494D 20 0D         [12]  167     jr nz, entity_is_not_first
+   492B AA            [ 4]  162     xor d
+   492C 57            [ 4]  163     ld d, a
+   492D 7D            [ 4]  164     ld a, l
+   492E AB            [ 4]  165     xor e
+   492F B2            [ 4]  166     or d
+   4930 20 0D         [12]  167     jr nz, entity_is_not_first
                             168     ;;=======================================
                             169     ;; the entity was the first in the list
                             170     ;;=======================================
                             171     ;; set the first_entity to point to the next
-   494F DD 6E 0C      [19]  172     ld l,   ent_next(ix)
-   4952 DD 66 0D      [19]  173     ld h, ent_next+1(ix)
-   4955 22 23 48      [16]  174     ld (first_entity), hl
-   4958 CD 9C 49      [17]  175     call add_entity_to_free_list
-   495B C9            [10]  176     ret
-   495C                     177     entity_is_not_first:
+   4932 DD 6E 09      [19]  172     ld l,   ent_next(ix)
+   4935 DD 66 0A      [19]  173     ld h, ent_next+1(ix)
+   4938 22 24 48      [16]  174     ld (first_entity), hl
+   493B CD 7F 49      [17]  175     call add_entity_to_free_list
+   493E C9            [10]  176     ret
+   493F                     177     entity_is_not_first:
                             178     ;;==========================================
                             179     ;; the entity was NOT the first in the list
                             180     ;;==========================================
                             181     ;; search for the prev
-   495C 3A 20 48      [13]  182     ld a, (entity_count)
-   495F 3D            [ 4]  183     dec a
-   4960 32 94 49      [13]  184     ld (loop_counter_adds), a
+   493F 3A 21 48      [13]  182     ld a, (entity_count)
+   4942 3D            [ 4]  183     dec a
+   4943 32 77 49      [13]  184     ld (loop_counter_adds), a
                             185     
-   4963 FD 2A 23 48   [20]  186     ld iy, (first_entity)
-   4967                     187     prev_ent_loop:
+   4946 FD 2A 24 48   [20]  186     ld iy, (first_entity)
+   494A                     187     prev_ent_loop:
                             188         ;; set the entity to delete in de
-   0147                     189         ld__e_ixl
-   4967 DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
-   0149                     190         ld__d_ixh
-   4969 DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
+   0129                     189         ld__e_ixl
+   494A DD 5D                 1    .dw #0x5DDD  ;; Opcode for ld e, ixl
+   012B                     190         ld__d_ixh
+   494C DD 54                 1    .dw #0x54DD  ;; Opcode for ld d, ixh
                             191         ;; set the next in bc
-   496B FD 4E 0C      [19]  192         ld c,   ent_next(iy)
-   496E FD 46 0D      [19]  193         ld b, ent_next+1(iy)
+   494E FD 4E 09      [19]  192         ld c,   ent_next(iy)
+   4951 FD 46 0A      [19]  193         ld b, ent_next+1(iy)
                             194         ;; compare the next entity to this entity
-   4971 7A            [ 4]  195         ld a, d
-   4972 A8            [ 4]  196         xor b
-   4973 47            [ 4]  197         ld b, a
-   4974 7B            [ 4]  198         ld a, e
-   4975 A9            [ 4]  199         xor c
-   4976 B0            [ 4]  200         or b
-   4977 20 10         [12]  201         jr nz, next_entity_to_search
+   4954 7A            [ 4]  195         ld a, d
+   4955 A8            [ 4]  196         xor b
+   4956 47            [ 4]  197         ld b, a
+   4957 7B            [ 4]  198         ld a, e
+   4958 A9            [ 4]  199         xor c
+   4959 B0            [ 4]  200         or b
+   495A 20 10         [12]  201         jr nz, next_entity_to_search
                             202         ;; prev finded
                             203         ;; the prev entity have to point to the next
                             204         ;; of the deleted entity
-   4979 DD 6E 0C      [19]  205         ld l,   ent_next(ix)
-   497C DD 66 0D      [19]  206         ld h, ent_next+1(ix)
-   497F FD 75 0C      [19]  207         ld   ent_next(iy), l
-   4982 FD 74 0D      [19]  208         ld ent_next+1(iy), h
+   495C DD 6E 09      [19]  205         ld l,   ent_next(ix)
+   495F DD 66 0A      [19]  206         ld h, ent_next+1(ix)
+   4962 FD 75 09      [19]  207         ld   ent_next(iy), l
+   4965 FD 74 0A      [19]  208         ld ent_next+1(iy), h
                             209 
-   4985 CD 9C 49      [17]  210         call add_entity_to_free_list
+   4968 CD 7F 49      [17]  210         call add_entity_to_free_list
                             211 
-   4988 C9            [10]  212         ret
-   4989                     213     next_entity_to_search:
+   496B C9            [10]  212         ret
+   496C                     213     next_entity_to_search:
                             214         ;; move iy to the next entity in the list
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 100.
 Hexadecimal [16-Bits]
 
 
 
-   4989 FD 5E 0C      [19]  215         ld e,   ent_next(iy)
-   498C FD 56 0D      [19]  216         ld d, ent_next+1(iy)
-   016F                     217         ld__iyl_e
-   498F FD 6B                 1    .dw #0x6BFD  ;; Opcode for ld iyl, e
-   0171                     218         ld__iyh_d
-   4991 FD 62                 1    .dw #0x62FD  ;; Opcode for ld iyh, d
+   496C FD 5E 09      [19]  215         ld e,   ent_next(iy)
+   496F FD 56 0A      [19]  216         ld d, ent_next+1(iy)
+   0151                     217         ld__iyl_e
+   4972 FD 6B                 1    .dw #0x6BFD  ;; Opcode for ld iyl, e
+   0153                     218         ld__iyh_d
+   4974 FD 62                 1    .dw #0x62FD  ;; Opcode for ld iyh, d
                             219         ;; try to use the null ptr for this jump
-                     0174   220         loop_counter_adds = . + 1
-   4993 3E 00         [ 7]  221         ld a, #0
-   4995 3D            [ 4]  222         dec a
-   4996 32 94 49      [13]  223         ld (loop_counter_adds), a
-   4999 C2 67 49      [10]  224         jp nz, prev_ent_loop
+                     0156   220         loop_counter_adds = . + 1
+   4976 3E 00         [ 7]  221         ld a, #0
+   4978 3D            [ 4]  222         dec a
+   4979 32 77 49      [13]  223         ld (loop_counter_adds), a
+   497C C2 4A 49      [10]  224         jp nz, prev_ent_loop
                             225 ;;==========================================
                             226 
-   499C                     227 add_entity_to_free_list:
+   497F                     227 add_entity_to_free_list:
                             228     ;; store this entity as the first_free
-   499C 2A 21 48      [16]  229     ld hl, (first_free)
-   499F DD 22 21 48   [20]  230     ld (first_free), ix
+   497F 2A 22 48      [16]  229     ld hl, (first_free)
+   4982 DD 22 22 48   [20]  230     ld (first_free), ix
                             231     ;; store in the next ptr of this ent the last first free
-   49A3 DD 75 0C      [19]  232     ld   ent_next(ix), l
-   49A6 DD 74 0D      [19]  233     ld ent_next+1(ix), h
+   4986 DD 75 09      [19]  232     ld   ent_next(ix), l
+   4989 DD 74 0A      [19]  233     ld ent_next+1(ix), h
                             234     ;; decrement the number of entities in
                             235     ;; the manager
-   49A9 3A 20 48      [13]  236     ld a, (entity_count)
-   49AC 3D            [ 4]  237     dec a
-   49AD 32 20 48      [13]  238     ld (entity_count), a
-   49B0 C9            [10]  239     ret
+   498C 3A 21 48      [13]  236     ld a, (entity_count)
+   498F 3D            [ 4]  237     dec a
+   4990 32 21 48      [13]  238     ld (entity_count), a
+   4993 C9            [10]  239     ret
                             240 
                             241 
                             242 
@@ -5323,42 +5338,48 @@ Hexadecimal [16-Bits]
                             244 ;; call the function that is store in hl
                             245 ;; foreach entity
                             246 ;; PARAMETERS:
-                            247 ;;     HL,
-                            248 ;;     TODO: pass the component mask 
-                            249 ;;           to filter entities out
-                            250 ;; RETURN VALUE:
-                            251 ;;     none
-                            252 ;; MODIFY REGISTERS:
-                            253 ;;     HL, DE, IX, A
-                            254 ;;==========================================
-   49B1                     255 entity_manager_forall::
-                            256     ;; Initialize the callback
-   49B1 22 BD 49      [16]  257     ld (forall_function_ptr), hl
-                            258     ;; load to ix the first entity
-   49B4 DD 2A 23 48   [20]  259     ld ix, (first_entity)
-                            260 
-   49B8 3A 20 48      [13]  261     ld a, (entity_count)
-   49BB                     262 forall_entity_loop:
-   49BB F5            [11]  263     push af
-                     019D   264 forall_function_ptr = . + 1
-   49BC CD 00 00      [17]  265     call #0000
-   49BF F1            [10]  266     pop af
-                            267 
+                            247 ;;     HL, A
+                            248 ;; RETURN VALUE:
+                            249 ;;     none
+                            250 ;; MODIFY REGISTERS:
+                            251 ;;     HL, DE, IX, A
+                            252 ;;==========================================
+   4994                     253 entity_manager_forall::
+   4994 47            [ 4]  254     ld b, a ;; save the system mask to detemir what entity should be called
+                            255     ;; Initialize the callback
+   4995 22 A9 49      [16]  256     ld (forall_function_ptr), hl
+                            257     ;; load to ix the first entity
+   4998 DD 2A 24 48   [20]  258     ld ix, (first_entity)
+   499C 3A 21 48      [13]  259     ld a, (entity_count)
+   499F                     260 forall_entity_loop:
+   499F F5            [11]  261     push af
+                            262 
+                            263     ;; check is the system have to update this entity
+   49A0 DD 7E 00      [19]  264     ld a, ent_type(ix)
+   49A3 A0            [ 4]  265     and b
+   49A4 B8            [ 4]  266     cp b
+   49A5 20 05         [12]  267     jr nz, forall_next_entity ;; if no jump to next entity
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 101.
 Hexadecimal [16-Bits]
 
 
 
-                            268 
-   49C0                     269 forall_next_entity:
-   49C0 DD 5E 0C      [19]  270     ld e,   ent_next(ix)
-   49C3 DD 56 0D      [19]  271     ld d, ent_next+1(ix)
-   01A6                     272     ld__ixl_e
-   49C6 DD 6B                 1    .dw #0x6BDD  ;; Opcode for ld ixl, e
-   01A8                     273     ld__ixh_d
-   49C8 DD 62                 1    .dw #0x62DD  ;; Opcode for ld ixh, d
-                            274 
-   49CA 3D            [ 4]  275     dec a
-   49CB 20 EE         [12]  276     jr nz, forall_entity_loop
-   49CD C9            [10]  277     ret
-                            278 ;;==========================================
+                            268     
+   49A7 C5            [11]  269     push bc
+                     0188   270 forall_function_ptr = . + 1
+   49A8 CD 00 00      [17]  271     call #0000
+   49AB C1            [10]  272     pop bc
+                            273     
+   49AC                     274 forall_next_entity:
+   49AC F1            [10]  275     pop af
+   49AD DD 5E 09      [19]  276     ld e,   ent_next(ix)
+   49B0 DD 56 0A      [19]  277     ld d, ent_next+1(ix)
+   0192                     278     ld__ixl_e
+   49B3 DD 6B                 1    .dw #0x6BDD  ;; Opcode for ld ixl, e
+   0194                     279     ld__ixh_d
+   49B5 DD 62                 1    .dw #0x62DD  ;; Opcode for ld ixh, d
+                            280 
+   49B7 3D            [ 4]  281     dec a
+   49B8 20 E5         [12]  282     jr nz, forall_entity_loop
+   49BA C9            [10]  283     ret
+                            284 ;;==========================================

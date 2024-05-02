@@ -244,29 +244,35 @@ add_entity_to_free_list:
 ;; call the function that is store in hl
 ;; foreach entity
 ;; PARAMETERS:
-;;     HL,
-;;     TODO: pass the component mask 
-;;           to filter entities out
+;;     HL, A
 ;; RETURN VALUE:
 ;;     none
 ;; MODIFY REGISTERS:
 ;;     HL, DE, IX, A
 ;;==========================================
 entity_manager_forall::
+    ld b, a ;; save the system mask to detemir what entity should be called
     ;; Initialize the callback
     ld (forall_function_ptr), hl
     ;; load to ix the first entity
     ld ix, (first_entity)
-
     ld a, (entity_count)
 forall_entity_loop:
     push af
+
+    ;; check is the system have to update this entity
+    ld a, ent_type(ix)
+    and b
+    cp b
+    jr nz, forall_next_entity ;; if no jump to next entity
+    
+    push bc
 forall_function_ptr = . + 1
     call #0000
-    pop af
-
-
+    pop bc
+    
 forall_next_entity:
+    pop af
     ld e,   ent_next(ix)
     ld d, ent_next+1(ix)
     ld__ixl_e

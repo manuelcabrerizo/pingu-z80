@@ -5027,37 +5027,52 @@ Hexadecimal [16-Bits]
                               5 .globl entity_manager_destroy_entity
                               6 .globl entity_manager_forall
                               7 
-                              8 .macro DefineEntity _x, _y, _w, _h, _dx, _dy, _tex
+                              8 .macro DefineEntity _type, _x, _y, _w, _h, _dx, _dy, _tex
                               9 ;; public data
-                             10     .db _x
-                             11     .db _y
-                             12     .db _w
-                             13     .db _h
-                             14     .db _dx
-                             15     .db _dy
-                             16     .dw _tex
-                             17     .dw #0xC000
-                             18     .dw #0xC000
-                             19 .endm
-                             20 
-                             21 ;;===============================
-                             22 ;; public DATA (:))
-                     0000    23 ent_x     = 0  ;; 1 bytes
-                     0001    24 ent_y     = 1  ;; 1 bytes
-                     0002    25 ent_w     = 2  ;; 1 bytes
-                     0003    26 ent_h     = 3  ;; 1 bytes
-                     0004    27 ent_dx    = 4  ;; 1 bytes
-                     0005    28 ent_dy    = 5  ;; 1 bytes
-                     0006    29 ent_tex   = 6  ;; 2 bytes
-                     0008    30 ent_oldP0 = 8  ;; 2 bytes
-                     000A    31 ent_oldP1 = 10 ;; 2 bytes
-                             32 ;; private DATA (:()
-                     000C    33 ent_next  = 12 ;; 2 bytes
-                             34 ;;===============================
-                             35 
-                     000E    36 ent_size = 14
-                     000A    37 entity_manager_max_entities = 10
-                     000C    38 ent_data_size = 12
+                             10     .db _type
+                             11     .db _x
+                             12     .db _y
+                             13     .db _w
+                             14     .db _h
+                             15     .db _dx
+                             16     .db _dy
+                             17     .dw _tex
+                             18 .endm
+                             19 
+                             20 ;;===============================
+                             21 ;; public DATA (:))
+                     0000    22 ent_type  = 0  ;; 1 bytes
+                     0001    23 ent_x     = 1  ;; 1 bytes
+                     0002    24 ent_y     = 2  ;; 1 bytes
+                     0003    25 ent_w     = 3  ;; 1 bytes
+                     0004    26 ent_h     = 4  ;; 1 bytes
+                     0005    27 ent_dx    = 5  ;; 1 bytes
+                     0006    28 ent_dy    = 6  ;; 1 bytes
+                     0007    29 ent_tex   = 7  ;; 2 bytes
+                             30 ;; private DATA (:()
+                     0009    31 ent_next  = 9  ;; 2 bytes
+                             32 ;;===============================
+                             33 
+                     000B    34 ent_size = 11
+                     000A    35 entity_manager_max_entities = 10
+                     0009    36 ent_data_size = 9
+                             37 
+                             38 
+                             39 ;;===================================
+                             40 ;; Entity Bitfield
+                             41 ;;===================================
+                     0007    42 ent_type_alive_bit     = 7
+                     0006    43 ent_type_physics_bit   = 6
+                     0005    44 ent_type_render_bit    = 5
+                     0004    45 ent_type_input_bit     = 4
+                     0003    46 ent_type_collision_bit = 3
+                             47 
+                     0000    48 ent_mask_invalid   = 0x00
+                     0080    49 ent_mask_alive     = (1 << ent_type_alive_bit)
+                     0040    50 ent_mask_physics   = (1 << ent_type_physics_bit)
+                     0020    51 ent_mask_render    = (1 << ent_type_render_bit)
+                     0010    52 ent_mask_input     = (1 << ent_type_input_bit)
+                     0008    53 ent_mask_collision = (1 << ent_type_collision_bit)
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 97.
 Hexadecimal [16-Bits]
 
@@ -5083,70 +5098,90 @@ Hexadecimal [16-Bits]
 
 
 
-                              6 
-                              7 .area _DATA 
-                              8 .area _CODE
-                              9 
-                             10 .globl cpct_disableFirmware_asm
-                             11 .globl cpct_waitVSYNC_asm
-                             12 .globl _pre_face
-                             13 .globl _spr_pingu_0
-                             14 
-   0000                      15 test_face:  DefineEntity 16, 5, 4,  8, 0, 0, _pre_face
-                              1 ;; public data
-   46BA 10                    2     .db 16
-   46BB 05                    3     .db 5
-   46BC 04                    4     .db 4
-   46BD 08                    5     .db 8
-   46BE 00                    6     .db 0
-   46BF 00                    7     .db 0
-   46C0 9A 44                 8     .dw _pre_face
-   46C2 00 C0                 9     .dw #0xC000
-   46C4 00 C0                10     .dw #0xC000
-   000C                      16 test_pingu: DefineEntity 0,  5, 8, 24, 0, 0, _spr_pingu_0
-                              1 ;; public data
-   46C6 00                    2     .db 0
-   46C7 05                    3     .db 5
-   46C8 08                    4     .db 8
-   46C9 18                    5     .db 24
-   46CA 00                    6     .db 0
-   46CB 00                    7     .db 0
-   46CC 88 41                 8     .dw _spr_pingu_0
-   46CE 00 C0                 9     .dw #0xC000
-   46D0 00 C0                10     .dw #0xC000
-                             17 
-                             18 ;;
-                             19 ;; MAIN function. This is the entry point of the application.
-                             20 ;;    _main:: global symbol is required for correctly compiling and linking
-                             21 ;;
-   46D2                      22 _main::
-                             23    ;; Disable firmware to prevent it from interfering with string drawing
-   46D2 CD B2 4A      [17]   24    call cpct_disableFirmware_asm
-                             25 
-                             26    ;; initialize subsystems
-   46D5 CD B1 48      [17]   27    call entity_manager_init
-   46D8 CD FF 49      [17]   28    call render_system_init
-   46DB CD CE 49      [17]   29    call physics_system_init
-                             30    
-   46DE CD E4 48      [17]   31    call entity_manager_create_entity
-   46E1 21 BA 46      [10]   32    ld hl, #test_face
-   46E4 ED B0         [21]   33    ldir
-                             34 
-   46E6 CD E4 48      [17]   35    call entity_manager_create_entity
-   46E9 21 C6 46      [10]   36    ld hl, #test_pingu
-   46EC ED B0         [21]   37    ldir
-                             38 
-   46EE                      39 game_loop:
-   46EE CD EF 49      [17]   40    call physics_system_update
+                              6 .include "sys/input.h.s"
+                              1 .module input_system
+                              2 
+                              3 .globl input_system_init
+                              4 .globl input_system_update
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 100.
 Hexadecimal [16-Bits]
 
 
 
-                             41 
-   46F1 76            [ 4]   42    halt
-   46F2 76            [ 4]   43    halt
-   46F3 CD AA 4A      [17]   44    call cpct_waitVSYNC_asm
-                             45 
-   46F6 CD 76 4A      [17]   46    call render_system_update
-   46F9 18 F3         [12]   47    jr game_loop
+                              7 .include "sys/collision.h.s"
+                              1 .module collision_system
+                              2 
+                              3 .globl collision_system_init
+                              4 .globl collision_system_update
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 101.
+Hexadecimal [16-Bits]
+
+
+
+                              8 
+                              9 .area _DATA 
+                             10 .area _CODE
+                             11 
+                             12 .globl cpct_disableFirmware_asm
+                             13 .globl cpct_waitVSYNC_asm
+                             14 .globl _pre_face
+                             15 .globl _spr_pingu_0
+                             16 
+   0000                      17 test_face:  DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision), 16, 5, 4,  8, 0, 0, _pre_face
+                              1 ;; public data
+   46BA E8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision)
+   46BB 10                    3     .db 16
+   46BC 05                    4     .db 5
+   46BD 04                    5     .db 4
+   46BE 08                    6     .db 8
+   46BF 00                    7     .db 0
+   46C0 00                    8     .db 0
+   46C1 9A 44                 9     .dw _pre_face
+   0009                      18 test_pingu: DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_input|ent_mask_collision), 0,  5, 8, 24, 0, 0, _spr_pingu_0
+                              1 ;; public data
+   46C3 F8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_input|ent_mask_collision)
+   46C4 00                    3     .db 0
+   46C5 05                    4     .db 5
+   46C6 08                    5     .db 8
+   46C7 18                    6     .db 24
+   46C8 00                    7     .db 0
+   46C9 00                    8     .db 0
+   46CA 88 41                 9     .dw _spr_pingu_0
+                             19 
+                             20 ;;
+                             21 ;; MAIN function. This is the entry point of the application.
+                             22 ;;    _main:: global symbol is required for correctly compiling and linking
+                             23 ;;
+   46CC                      24 _main::
+                             25    ;; Disable firmware to prevent it from interfering with string drawing
+   46CC CD 43 4B      [17]   26    call cpct_disableFirmware_asm
+                             27 
+                             28    ;; initialize managers
+   46CF CD 94 48      [17]   29    call entity_manager_init
+                             30    ;; initialize subsystems
+   46D2 CD 5F 4A      [17]   31    call render_system_init
+   46D5 CD ED 49      [17]   32    call input_system_init
+   46D8 CD 23 4A      [17]   33    call physics_system_init
+   46DB CD BB 49      [17]   34    call collision_system_init
+                             35    
+                             36    
+   46DE CD C7 48      [17]   37    call entity_manager_create_entity
+   46E1 21 BA 46      [10]   38    ld hl, #test_face
+   46E4 ED B0         [21]   39    ldir
+                             40 
+   46E6 CD C7 48      [17]   41    call entity_manager_create_entity
+   46E9 21 C3 46      [10]   42    ld hl, #test_pingu
+   46EC ED B0         [21]   43    ldir
+                             44 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 102.
+Hexadecimal [16-Bits]
+
+
+
+   46EE                      45 game_loop:
+   46EE CD 1A 4A      [17]   46    call input_system_update
+   46F1 CD 4D 4A      [17]   47    call physics_system_update
+   46F4 CD E4 49      [17]   48    call collision_system_update
+                             49 
+   46F7 CD EC 4A      [17]   50    call render_system_update
+   46FA 18 F2         [12]   51    jr game_loop

@@ -7,7 +7,7 @@ Area                                    Addr        Size        Decimal Bytes (A
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00000000  .__.ABS.                           cpct_firmware
+     00000000  .__.ABS.                           cpct_keyboard
      00000000  l__CABS                         
      00000000  l__DABS                         
      00000000  l__DATA                         
@@ -18,21 +18,21 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000000  l__INITIALIZER                  
      00000000  s__CABS                         
      00000000  s__DABS                         
-     00000AC3  l__CODE                         
+     00000B85  l__CODE                         
      00004000  s__CODE                         
-     00004AC3  s__DATA                         
-     00004AC3  s__GSFINAL                      
-     00004AC3  s__GSINIT                       
-     00004AC3  s__HOME                         
-     00004AC3  s__INITIALIZED                  
-     00004AC3  s__INITIALIZER                  
+     00004B85  s__DATA                         
+     00004B85  s__GSFINAL                      
+     00004B85  s__GSINIT                       
+     00004B85  s__HOME                         
+     00004B85  s__INITIALIZED                  
+     00004B85  s__INITIALIZER                  
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00004000    00000AC3 =        2755. bytes (REL,CON)
+_CODE                               00004000    00000B85 =        2949. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -57,34 +57,52 @@ _CODE                               00004000    00000AC3 =        2755. bytes (R
      00004498  _pre_tileset                       face
      0000449A  _pre_face                          face
      000044BA  _tilemap_00                        
-     000046D2  _main                              cpct_keyboard
-     000046FB  drawTilemap4x8_ag_32x16            cpct_keyboard
-     00004794  setDrawTileMap4x8_ag_32x16         cpct_keyboard
-     000047C0  getScreenPtr_32x16                 cpct_keyboard
-     000047CE  drawSprite_32x16                   cpct_keyboard
-     000047F4  drawSolidBox_32x16                 cpct_keyboard
-     00004825  entities                           entity_manager
-     000048B1  entity_manager_init                entity_manager
-     000048E4  entity_manager_create_entity       entity_manager
-     00004940  entity_manager_destroy_entity      entity_manager
-     000049B1  entity_manager_forall              entity_manager
-     000049CE  physics_system_init                entity_manager
-     000049EF  physics_system_update              entity_manager
-     000049FF  render_system_init                 cpct_keyboard
-     00004A60  render_system_draw_tilemap         cpct_keyboard
-     00004A76  render_system_update               cpct_keyboard
-     00004A80  cpct_setPalette_asm                cpct_video
-     00004A93  cpct_setPALColour_asm              cpct_video
-     00004A9D  cpct_setVideoMode_asm              cpct_video
-     00004AAA  _cpct_waitVSYNC                    cpct_video
-     00004AAA  cpct_waitVSYNC_asm                 cpct_video
-     00004AB2  _cpct_disableFirmware              cpct_firmware
-     00004AB2  _cpct_removeInterruptHandler       cpct_firmware
-     00004AB2  cpct_disableFirmware_asm           cpct_firmware
-     00004AB2  cpct_removeInterruptHandler_asm    cpct_firmware
-     00004AC2  _cpct_mode_rom_status              cpct_firmware
-
+     000046CC  _main                              cpct_keyboard
+     000046FC  drawTilemap4x8_ag_32x16            cpct_keyboard
+     00004795  setDrawTileMap4x8_ag_32x16         cpct_keyboard
+     000047C1  getScreenPtr_32x16                 cpct_keyboard
+     000047CF  drawSprite_32x16                   cpct_keyboard
+     000047F5  drawSolidBox_32x16                 cpct_keyboard
+     00004826  entities                           entity_manager
+     00004894  entity_manager_init                entity_manager
+     000048C7  entity_manager_create_entity       entity_manager
+     00004923  entity_manager_destroy_entity      entity_manager
+     00004994  entity_manager_forall              entity_manager
+     000049BB  collision_system_init              cpct_keyboard
+     000049E4  collision_system_update            cpct_keyboard
+     000049ED  input_system_init                  cpct_keyboard
+     00004A1A  input_system_update                cpct_keyboard
+     00004A23  physics_system_init                entity_manager
+     00004A4D  physics_system_update              entity_manager
+     00004A5F  render_system_init                 cpct_keyboard
+     00004AA9  render_system_draw_tilemap         cpct_keyboard
+     00004AEC  render_system_update               cpct_keyboard
+     00004AFB  cpct_setPalette_asm                cpct_video
+     00004B0E  _cpct_isKeyPressed                 cpct_keyboard
+     00004B0E  cpct_isKeyPressed_asm              cpct_keyboard
+     00004B1A  cpct_setPALColour_asm              cpct_video
+     00004B24  _cpct_keyboardStatusBuffer         cpct_keyboard
+     00004B2E  cpct_setVideoMode_asm              cpct_video
+     00004B3B  _cpct_waitVSYNC                    cpct_video
+     00004B3B  cpct_waitVSYNC_asm                 cpct_video
+     00004B43  _cpct_disableFirmware              cpct_firmware
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
+Hexadecimal  [32-Bits]
+
+Area                                    Addr        Size        Decimal Bytes (Attributes)
+--------------------------------        ----        ----        ------- ----- ------------
+_CODE                               00004000    00000B85 =        2949. bytes (REL,CON)
+
+      Value  Global                              Global Defined In Module
+      -----  --------------------------------   ------------------------
+     00004B43  _cpct_removeInterruptHandler       cpct_firmware
+     00004B43  cpct_disableFirmware_asm           cpct_firmware
+     00004B43  cpct_removeInterruptHandler_asm    cpct_firmware
+     00004B53  _cpct_mode_rom_status              cpct_firmware
+     00004B54  _cpct_scanKeyboard                 cpct_keyboard
+     00004B54  cpct_scanKeyboard_asm              cpct_keyboard
+
+ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 
 Files Linked                              [ module(s) ]
 
@@ -100,6 +118,10 @@ obj/man/entity.h.rel                      [ entity_manager ]
 obj/man/entity.rel                        [ entity_manager ]
 obj/man/game.h.rel                        [  ]
 obj/man/game.rel                          [  ]
+obj/sys/collision.h.rel                   [ collision_system ]
+obj/sys/collision.rel                     [ cpct_keyboard ]
+obj/sys/input.h.rel                       [ input_system ]
+obj/sys/input.rel                         [ cpct_keyboard ]
 obj/sys/physics.h.rel                     [ physics_system ]
 obj/sys/physics.rel                       [ entity_manager ]
 obj/sys/render.h.rel                      [ render_system ]
@@ -111,7 +133,11 @@ Libraries Linked                          [ object file ]
 /home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
                                           [ cpct_setPalette_asmbindings.rel ]
 /home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_isKeyPressed.rel ]
+/home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
                                           [ cpct_setPALColour_asmbindings.re ]
+/home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
+                                          [ keyboard.rel ]
 /home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
                                           [ cpct_setVideoMode_asmbindings.re ]
 /home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
@@ -120,8 +146,10 @@ Libraries Linked                          [ object file ]
                                           [ cpct_removeInterruptHandler.rel ]
 /home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
                                           [ cpc_mode_rom_status.rel ]
+/home/manu/Dev/cpctelera/cpctelera/cpctelera.lib
+                                          [ cpct_scanKeyboard.rel ]
 
-ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
+ASxxxx Linker V03.00 + NoICE + sdld,  page 5.
 
 User Base Address Definitions
 

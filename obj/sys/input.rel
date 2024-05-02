@@ -1,0 +1,39 @@
+XL2
+H 1 areas 9 global symbols
+M cpct_keyboard
+S cpct_isKeyPressed_asm Ref0000
+S .__.ABS. Def0000
+S entity_manager_create_entity Ref0000
+S entity_manager_init Ref0000
+S entity_manager_forall Ref0000
+S entity_manager_destroy_entity Ref0000
+S cpct_scanKeyboard_asm Ref0000
+A _CODE size 36 flags 0 addr 0
+S input_system_init Def0000
+S input_system_update Def002D
+T 00 00
+R 00 00 00 00
+T 00 00 C9
+R 00 00 00 00
+T 01 00
+R 00 00 00 00
+T 01 00 CD 00 00 DD 36 05 00 21 03 08 CD 00 00 28
+R 00 00 00 00 02 03 06 00 02 0D 00 00
+T 0F 00 04 DD 36 05 01
+R 00 00 00 00
+T 14 00
+R 00 00 00 00
+T 14 00 21 04 04 CD 00 00 28 04 DD 36 05 FF
+R 00 00 00 00 02 06 00 00
+T 20 00
+R 00 00 00 00
+T 20 00 21 05 80 CD 00 00 28 04 DD 36 06 F8
+R 00 00 00 00 02 06 00 00
+T 2C 00
+R 00 00 00 00
+T 2C 00 C9
+R 00 00 00 00
+T 2D 00
+R 00 00 00 00
+T 2D 00 3E D0 21 01 00 CD 00 00 C9
+R 00 00 00 00 00 05 00 00 02 08 04 00

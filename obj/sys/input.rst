@@ -5005,21 +5005,7 @@ Hexadecimal [16-Bits]
 
 
 
-                              2 .include "cpct/cpct32x16.h.s"
-                              1 .module cpct32x16
-                              2 
-                              3 .globl getScreenPtr_32x16
-                              4 .globl drawSprite_32x16
-                              5 .globl drawSolidBox_32x16
-                              6 
-                              7 .globl setDrawTileMap4x8_ag_32x16
-                              8 .globl drawTilemap4x8_ag_32x16
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 96.
-Hexadecimal [16-Bits]
-
-
-
-                              3 .include "man/entity.h.s"
+                              2 .include "man/entity.h.s"
                               1 .module entity_manager
                               2 
                               3 .globl entity_manager_init
@@ -5073,134 +5059,50 @@ Hexadecimal [16-Bits]
                      0020    51 ent_mask_render    = (1 << ent_type_render_bit)
                      0010    52 ent_mask_input     = (1 << ent_type_input_bit)
                      0008    53 ent_mask_collision = (1 << ent_type_collision_bit)
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 97.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 96.
 Hexadecimal [16-Bits]
 
 
 
-                              4 
-                              5 .globl cpct_setVideoMode_asm
-                              6 .globl cpct_setPalette_asm
-                              7 .globl _pre_palette
-                              8 
-                              9 .globl _tile_tilemap_00
-                             10 .globl _tilemap_00
+                              3 
+                              4 .globl cpct_scanKeyboard_asm
+                              5 .globl cpct_isKeyPressed_asm
+                              6 
+   49ED                       7 input_system_init::
+   49ED C9            [10]    8     ret
+                              9 
+   49EE                      10 input_system_update_one_entity:
                              11 
-                             12 ; D = Registro
-                             13 ; E = Valor
-   0000                      14 set_crtc:
-   0000 01 00 BC      [10]   15    ld bc, #0xBC00
-   0003 ED 51         [12]   16    out (c), d
-   0005 04            [ 4]   17    inc b
-   0006 ED 59         [12]   18    out (c), e
-   0008 C9            [10]   19    ret
+   49EE CD 54 4B      [17]   12     call cpct_scanKeyboard_asm
+                             13 
+   49F1 DD 36 05 00   [19]   14     ld ent_dx(ix), #0
+                             15 
+   49F5 21 03 08      [10]   16     ld hl, #Key_P
+   49F8 CD 0E 4B      [17]   17     call cpct_isKeyPressed_asm
+   49FB 28 04         [12]   18     jr z, p_not_press
+   49FD DD 36 05 01   [19]   19     ld ent_dx(ix), #1
                              20 
-                             21 
-   0009                      22 render_system_init::
-                             23     ;; Setup the display 
-   0009 11 20 01      [10]   24     ld de, #0x0120
-   000C CD 00 00      [17]   25     call set_crtc
-                             26 
-   000F 11 2A 02      [10]   27     ld de, #0x022A
-   0012 CD 00 00      [17]   28     call set_crtc
+   4A01                      21 p_not_press:
+                             22 
+   4A01 21 04 04      [10]   23     ld hl, #Key_O
+   4A04 CD 0E 4B      [17]   24     call cpct_isKeyPressed_asm
+   4A07 28 04         [12]   25     jr z, o_not_press
+   4A09 DD 36 05 FF   [19]   26     ld ent_dx(ix), #-1
+                             27 
+   4A0D                      28 o_not_press:
                              29 
-   0015 11 10 06      [10]   30     ld de, #0x0610
-   0018 CD 00 00      [17]   31     call set_crtc
-                             32 
-   001B 11 1A 07      [10]   33     ld de, #0x071A
-   001E CD 00 00      [17]   34     call set_crtc
-                             35 
-   0021                      36     cpctm_setBorder_asm HW_WHITE
-                              1    .radix h
-   0021                       2    cpctm_setBorder_raw_asm \HW_WHITE ;; [28] Macro that does the job, but requires a number value to be passed
-                              1    .globl cpct_setPALColour_asm
-   0021 21 10 00      [10]    2    ld   hl, #0x010         ;; [3]  H=Hardware value of desired colour, L=Border INK (16)
-   0024 CD 00 00      [17]    3    call cpct_setPALColour_asm  ;; [25] Set Palette colour of the border
-                              3    .radix d
-   0027 0E 00         [ 7]   37     ld c, #0
-   0029 CD 00 00      [17]   38     call cpct_setVideoMode_asm
+   4A0D 21 05 80      [10]   30     ld hl, #Key_Space
+   4A10 CD 0E 4B      [17]   31     call cpct_isKeyPressed_asm
+   4A13 28 04         [12]   32     jr z, space_not_press
+   4A15 DD 36 06 F8   [19]   33     ld ent_dy(ix), #-8
+                             34 
+   4A19                      35 space_not_press:
+                             36 
+   4A19 C9            [10]   37     ret
+                             38     
                              39 
-   002C 21 00 00      [10]   40     ld hl, #_pre_palette
-   002F 11 10 00      [10]   41     ld de, #16
-   0032 CD 00 00      [17]   42     call cpct_setPalette_asm
-   0035 C9            [10]   43     ret
-                             44 
-                             45 
-                             46 
-   0036                      47 render_system_render_one_entity:
-                             48 
-                     0038    49 back_buffer_0 = . + 2
-   0036 11 00 C4      [10]   50     ld   de, #0xC400 ;; DE = Pointer to start of the screen
-   0039 DD 46 02      [19]   51     ld    b, ent_y(ix)            ;; B = y coordinate (24 = 0x18)
-   003C DD 4E 01      [19]   52     ld    c, ent_x(ix)            ;; C = x coordinate (16 = 0x10)
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 98.
-Hexadecimal [16-Bits]
-
-
-
-   003F CD 00 00      [17]   53     call getScreenPtr_32x16       ;; Calculate video memory location and return it in HL
-                             54 
-   0042 EB            [ 4]   55     ex de, hl
-                             56 
-   0043 DD 6E 07      [19]   57     ld l,  ent_tex(ix)
-   0046 DD 66 08      [19]   58     ld h, ent_tex+1(ix)
-   0049 DD 46 04      [19]   59     ld b, ent_h(ix)
-   004C DD 4E 03      [19]   60     ld c, ent_w(ix)
-   004F CD 00 00      [17]   61     call drawSprite_32x16
-                             62 
-   0052 C9            [10]   63     ret
-                             64 
-   0053                      65 render_system_draw_tilemap::
-   0053 01 10 10      [10]   66     ld bc, #0x1010
-   0056 11 20 00      [10]   67     ld de, #32
-   0059 21 00 00      [10]   68     ld hl, #_tile_tilemap_00
-   005C CD 00 00      [17]   69     call setDrawTileMap4x8_ag_32x16
-                     0061    70 back_buffer_1 = . + 2   
-   005F 21 00 C4      [10]   71     ld hl, #0xC400
-   0062 11 00 00      [10]   72     ld de, #_tilemap_00; + 16
-   0065 CD 00 00      [17]   73     call drawTilemap4x8_ag_32x16
-   0068 C9            [10]   74     ret
-                             75 
-   0069                      76 change_screen:
-                     006A    77 change_screen_fptr = . + 1
-   0069 C3 6C 00      [10]   78     jp change_screen_to_C400
-                             79 
-   006C                      80 change_screen_to_C400:
-   006C 11 32 0C      [10]   81     ld de, #0x0C32
-   006F CD 00 00      [17]   82     call set_crtc
-   0072 3E C0         [ 7]   83     ld a, #0xC0
-   0074 32 38 00      [13]   84     ld (back_buffer_0), a
-   0077 32 61 00      [13]   85     ld (back_buffer_1), a
-                             86 
-   007A 21 81 00      [10]   87     ld hl, #change_screen_to_C000
-   007D 22 6A 00      [16]   88     ld (change_screen_fptr), hl
-                             89 
-   0080 C9            [10]   90     ret
-                             91 
-   0081                      92 change_screen_to_C000:
-   0081 11 30 0C      [10]   93     ld de, #0x0C30
-   0084 CD 00 00      [17]   94     call set_crtc
-   0087 3E C4         [ 7]   95     ld a, #0xC4
-   0089 32 38 00      [13]   96     ld (back_buffer_0), a
-   008C 32 61 00      [13]   97     ld (back_buffer_1), a
-                             98 
-   008F 21 6C 00      [10]   99     ld hl, #change_screen_to_C400
-   0092 22 6A 00      [16]  100     ld (change_screen_fptr), hl
-                            101 
-   0095 C9            [10]  102     ret
-                            103 
-   0096                     104 render_system_update::
-   0096 CD 53 00      [17]  105     call render_system_draw_tilemap
-                            106 
-   0099 3E A0         [ 7]  107     ld a, #(ent_mask_alive|ent_mask_render)
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 99.
-Hexadecimal [16-Bits]
-
-
-
-   009B 21 36 00      [10]  108     ld hl, #render_system_render_one_entity
-   009E CD 00 00      [17]  109     call entity_manager_forall
-                            110 
-   00A1 CD 69 00      [17]  111     call change_screen
-                            112 
-   00A4 C9            [10]  113     ret
+   4A1A                      40 input_system_update::
+   4A1A 3E D0         [ 7]   41     ld a, #(ent_mask_alive|ent_mask_physics|ent_mask_input)
+   4A1C 21 EE 49      [10]   42     ld hl, #input_system_update_one_entity
+   4A1F CD 94 49      [17]   43     call entity_manager_forall
+   4A22 C9            [10]   44     ret
