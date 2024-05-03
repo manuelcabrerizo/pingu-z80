@@ -9,7 +9,8 @@
 camera::
     .dw _tilemap_00    ;; Tilemap camera pointer
     .db 0, 0           ;; Camera (x, y) coordinates
-
+    .db 0, 0           ;; Camera Target Screen Coords
+    .db 0              ;; Camera Scroll State
 
 camera_system_init::
     ;; initialize the camera
@@ -18,26 +19,77 @@ camera_system_init::
     ld a, #0
     ld (camera + camera_x), a
     ld (camera + camera_y), a
-
+    ld (camera + camera_tx), a
+    ld (camera + camera_ty), a
+    ld (camera + camera_scroll), a
     ret
 
 scroll_left:
     ld hl, (camera + camera_ptr)
-    dec hl
+    ld bc, #-1
+    add hl, bc
     ld (camera + camera_ptr), hl
     ld a, (camera + camera_x)
-    sub #4
+    add #-4
     ld (camera + camera_x), a
+
+    ld hl, #(camera + camera_scroll)
+    inc (hl)
+
     ret
 
 scroll_right:
     ld hl, (camera + camera_ptr)
-    inc hl
+    ld bc, #1
+    add hl, bc
     ld (camera + camera_ptr), hl
     ld a, (camera + camera_x)
     add #4
     ld (camera + camera_x), a
+
+    ld hl, #(camera + camera_scroll)
+    dec (hl)
+
     ret
+
+start_scroll_left:
+    ;; check if we can scroll
+    ld a, (camera + camera_x)
+    cp #0
+    ret z
+    ld a, #-8
+    ld (camera + camera_scroll), a
+    ret
+
+
+start_scroll_right:
+    ;; check if we can scroll
+    ld a, (camera + camera_x)
+    cp #(32*4)
+    ret z
+
+    ld a, #8
+    ld (camera + camera_scroll), a
+    ret
+
+
+camera_system_scroll:
+    ;; Do scroll when in scroll state
+    ld a, (camera + camera_scroll)
+    bit 7, a
+    jr nz, scroll_left
+    or a
+    jr nz, scroll_right
+
+    ;; the camera can scroll
+    ld a, (camera + camera_tx)
+    cp #48
+    jp nc, start_scroll_right    
+    cp #16
+    jp c, start_scroll_left
+
+    ret
+
 
 
 camera_system_update_one_entity:
@@ -59,30 +111,7 @@ camera_system_update_one_entity:
 
 camera_system_update::
 
-   ;; Scroll Left
-    ld hl, #Key_E
-    call cpct_isKeyPressed_asm
-    jr z, e_not_press
-
-    ld a, (camera + camera_x)
-    cp #0
-    jr z, e_not_press
-
-    call scroll_left
-
-e_not_press:
-    ;; Scroll Right
-    ld hl, #Key_R
-    call cpct_isKeyPressed_asm
-    jr z, r_not_press
-
-    ld a, (camera + camera_x)
-    cp #(32*2)
-    jr z, r_not_press
-
-    call scroll_right
-
-r_not_press:
+    call camera_system_scroll
 
     ld a, #(ent_mask_alive|ent_mask_render)
     ld hl, #camera_system_update_one_entity

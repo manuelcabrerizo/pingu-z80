@@ -86,40 +86,37 @@ Hexadecimal [16-Bits]
 
 
                               3 
-   4AEC                       4 physics_system_init::
-   4AEC C9            [10]    5     ret
+   4CB6                       4 physics_system_init::
+   4CB6 C9            [10]    5     ret
                               6 
                               7 
-   4AED                       8 physics_system_update_one_entity:
-                              9     
-                             10 
-                             11     
-                             12     ;; update the x position
-   4AED DD 7E 01      [19]   13     ld a, ent_x(ix)
-   4AF0 DD 86 07      [19]   14     add  ent_dx(ix)
-   4AF3 DD 77 01      [19]   15     ld ent_x(ix), a
-                             16     ;; update the y position
-   4AF6 DD 7E 02      [19]   17     ld a, ent_y(ix)
-   4AF9 DD 86 08      [19]   18     add  ent_dy(ix)
-   4AFC DD 77 02      [19]   19     ld ent_y(ix), a
-                             20 
-                             21 
-                             22     ;; Apply gravity
-   4AFF DD 7E 08      [19]   23     ld a, ent_dy(ix)
-                             24     ;; if the gravity is negative allways apply it
-   4B02 CB 7F         [ 8]   25     bit 7, a
-   4B04 20 04         [12]   26     jr nz, apply_gravity
-                             27     ;; if is positive i clamp it the max_gravity
-   4B06 FE 04         [ 7]   28     cp #max_gravity
-   4B08 30 03         [12]   29     jr nc, no_more_gravity
-   4B0A                      30 apply_gravity:
-   4B0A DD 34 08      [23]   31     inc ent_dy(ix)
-   4B0D                      32 no_more_gravity:
-                             33 
-   4B0D C9            [10]   34     ret
-                             35 
-   4B0E                      36 physics_system_update::
-   4B0E 3E C0         [ 7]   37     ld a, #(ent_mask_alive|ent_mask_physics)
-   4B10 21 ED 4A      [10]   38     ld hl, #physics_system_update_one_entity
-   4B13 CD B2 49      [17]   39     call entity_manager_forall
-   4B16 C9            [10]   40     ret
+   4CB7                       8 physics_system_update_one_entity:
+                              9         
+                             10     ;; update the x position
+   4CB7 DD 7E 01      [19]   11     ld a, ent_x(ix)
+   4CBA DD 86 07      [19]   12     add  ent_dx(ix)
+   4CBD DD 77 01      [19]   13     ld ent_x(ix), a
+                             14     ;; update the y position
+   4CC0 DD 7E 02      [19]   15     ld a, ent_y(ix)
+   4CC3 DD 86 08      [19]   16     add  ent_dy(ix)
+   4CC6 DD 77 02      [19]   17     ld ent_y(ix), a
+                             18 
+                             19     ;; Apply gravity
+   4CC9 DD 7E 08      [19]   20     ld a, ent_dy(ix)
+                             21     ;; if the gravity is negative allways apply it
+   4CCC CB 7F         [ 8]   22     bit 7, a
+   4CCE 20 04         [12]   23     jr nz, apply_gravity
+                             24     ;; if is positive i clamp it the max_gravity
+   4CD0 FE 04         [ 7]   25     cp #max_gravity
+   4CD2 30 03         [12]   26     jr nc, no_more_gravity
+   4CD4                      27 apply_gravity:
+   4CD4 DD 34 08      [23]   28     inc ent_dy(ix)
+   4CD7                      29 no_more_gravity:
+                             30 
+   4CD7 C9            [10]   31     ret
+                             32 
+   4CD8                      33 physics_system_update::
+   4CD8 3E C0         [ 7]   34     ld a, #(ent_mask_alive|ent_mask_physics)
+   4CDA 21 B7 4C      [10]   35     ld hl, #physics_system_update_one_entity
+   4CDD CD B2 4A      [17]   36     call entity_manager_forall
+   4CE0 C9            [10]   37     ret

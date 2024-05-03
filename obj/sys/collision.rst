@@ -5077,8 +5077,8 @@ Hexadecimal [16-Bits]
                               3 
                               4 .globl _tilemap_00
                               5 
-   4A50                       6 collision_system_init::
-   4A50 C9            [10]    7     ret
+   4B79                       6 collision_system_init::
+   4B79 C9            [10]    7     ret
                               8 
                               9 ;;==============================================
                              10 ;; get the tile position from the (x, y) coords
@@ -5090,94 +5090,205 @@ Hexadecimal [16-Bits]
                              16 ;; MODIFY REGISTERS:
                              17 ;;     A, HL, DE
                              18 ;;==============================================
-   4A51                      19 get_tile_from_coord:
-   4A51 78            [ 4]   20     ld a, b
-   4A52 E6 F8         [ 7]   21     and #0b11111000
-   4A54 26 00         [ 7]   22     ld h, #0
-   4A56 6F            [ 4]   23     ld l, a
-   4A57 29            [11]   24     add hl, hl        ;; tileY * 16
-   4A58 29            [11]   25     add hl, hl        ;; tileY * 32
-   4A59 79            [ 4]   26     ld a, c
-   4A5A CB 3F         [ 8]   27     srl a
-   4A5C CB 3F         [ 8]   28     srl a
-   000E                      29     add_hl_a          ;; (tileY * tilemapWidth) + tileX
-   000E                       1    add_REGPAIR_a  h, l
+   4B7A                      19 get_tile_from_coord:
+   4B7A 78            [ 4]   20     ld a, b
+   4B7B E6 F8         [ 7]   21     and #0b11111000
+   4B7D 26 00         [ 7]   22     ld h, #0
+   4B7F 6F            [ 4]   23     ld l, a
+   4B80 29            [11]   24     add hl, hl        ;; tileY * 16
+   4B81 5D            [ 4]   25     ld e, l
+   4B82 54            [ 4]   26     ld d, h
+   4B83 29            [11]   27     add hl, hl        ;; tileY * 32
+   4B84 19            [11]   28     add hl, de
+   4B85 79            [ 4]   29     ld a, c
+   4B86 CB 3F         [ 8]   30     srl a
+   4B88 CB 3F         [ 8]   31     srl a
+   0011                      32     add_hl_a          ;; (tileY * tilemapWidth) + tileX
+   0011                       1    add_REGPAIR_a  h, l
                               1    ;; First Perform RH = E + A
-   4A5E 85            [ 4]    2    add l    ;; [1] A' = RL + A 
-   4A5F 6F            [ 4]    3    ld  l, a ;; [1] RL' = A' = RL + A. It might generate Carry that must be added to RH
+   4B8A 85            [ 4]    2    add l    ;; [1] A' = RL + A 
+   4B8B 6F            [ 4]    3    ld  l, a ;; [1] RL' = A' = RL + A. It might generate Carry that must be added to RH
                               4    
                               5    ;; Then Perform RH = RH + Carry 
-   4A60 8C            [ 4]    6    adc h    ;; [1] A'' = A' + RH + Carry = RL + A + RH + Carry
-   4A61 95            [ 4]    7    sub l    ;; [1] Remove RL'. A''' = A'' - RL' = RL + A + RH + Carry - (RL + A) = RH + Carry
-   4A62 67            [ 4]    8    ld  h, a ;; [1] Save into RH (RH' = A''' = RH + Carry)
-   4A63 11 BA 44      [10]   30     ld de, #_tilemap_00
-   4A66 19            [11]   31     add hl, de        ;; HL = tilemapStart + (tileY * tilemapWidth) + tileX
-   4A67 C9            [10]   32     ret
-                             33 
-   4A68                      34 resolve_floor_collision:
-   4A68 DD 7E 02      [19]   35     ld a, ent_y(ix)
-   4A6B E6 F8         [ 7]   36     and #0b11111000
-   4A6D DD 77 02      [19]   37     ld ent_y(ix), a
-   4A70 DD 36 08 00   [19]   38     ld ent_dy(ix), #0
-   4A74 C9            [10]   39     ret
-                             40 
-                             41 
-                             42 
-                             43 
-   4A75                      44 collision_system_test_floor:
-                             45 ;; bottom left collision check
-   4A75                      46 bottom_left_collision_check:
-   4A75 DD 56 06      [19]   47     ld d, ent_h(ix)
-   4A78 15            [ 4]   48     dec d
+   4B8C 8C            [ 4]    6    adc h    ;; [1] A'' = A' + RH + Carry = RL + A + RH + Carry
+   4B8D 95            [ 4]    7    sub l    ;; [1] Remove RL'. A''' = A'' - RL' = RL + A + RH + Carry - (RL + A) = RH + Carry
+   4B8E 67            [ 4]    8    ld  h, a ;; [1] Save into RH (RH' = A''' = RH + Carry)
+   4B8F 11 BA 44      [10]   33     ld de, #_tilemap_00
+   4B92 19            [11]   34     add hl, de        ;; HL = tilemapStart + (tileY * tilemapWidth) + tileX
+   4B93 C9            [10]   35     ret
+                             36 
+                             37 
+                             38 
+                             39 ;;====================================================
+                             40 ;; Funtion for collision resolution with the tilemap
+                             41 ;;====================================================
+   4B94                      42 resolve_floor_collision:
+   4B94 DD 7E 02      [19]   43     ld a, ent_y(ix)
+   4B97 E6 F8         [ 7]   44     and #0b11111000
+   4B99 DD 77 02      [19]   45     ld ent_y(ix), a
+   4B9C DD 36 08 00   [19]   46     ld ent_dy(ix), #0
+   4BA0 C9            [10]   47     ret
+                             48 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 98.
 Hexadecimal [16-Bits]
 
 
 
-   4A79 DD 7E 02      [19]   49     ld a, ent_y(ix)
-   4A7C 82            [ 4]   50     add d
-   4A7D 47            [ 4]   51     ld b, a
-   4A7E DD 4E 01      [19]   52     ld c, ent_x(ix)
-   4A81 CD 51 4A      [17]   53     call get_tile_from_coord
-                             54 
-   4A84 7E            [ 7]   55     ld a, (hl)
-   4A85 E6 F8         [ 7]   56     and #0b11111000 ;; test the tile
-   4A87 20 03         [12]   57     jr nz, bottom_right_collision_check
-   4A89 CD 68 4A      [17]   58     call resolve_floor_collision
-                             59 
-                             60 ;; bottom right collision check
-   4A8C                      61 bottom_right_collision_check:
-   4A8C DD 56 06      [19]   62     ld d, ent_h(ix)
-   4A8F 15            [ 4]   63     dec d
-   4A90 DD 7E 02      [19]   64     ld a, ent_y(ix)
-   4A93 82            [ 4]   65     add d
-   4A94 47            [ 4]   66     ld b, a
-   4A95 DD 4E 05      [19]   67     ld c, ent_w(ix)
-   4A98 0D            [ 4]   68     dec c
-   4A99 DD 7E 01      [19]   69     ld a, ent_x(ix)
-   4A9C 81            [ 4]   70     add c
-   4A9D 4F            [ 4]   71     ld c, a
-   4A9E CD 51 4A      [17]   72     call get_tile_from_coord
-                             73 
-   4AA1 7E            [ 7]   74     ld a, (hl)
-   4AA2 E6 F8         [ 7]   75     and #0b11111000 ;; test the tile
-   4AA4 C0            [11]   76     ret nz
-   4AA5 CD 68 4A      [17]   77     call resolve_floor_collision
-                             78 
-   4AA8 C9            [10]   79     ret
-                             80 
-                             81 
-                             82 
-                             83 
-                             84 
-   4AA9                      85 collision_system_update_one_entity:
-   4AA9 CD 75 4A      [17]   86     call collision_system_test_floor
-   4AAC C9            [10]   87     ret
-                             88 
-                             89 
-                             90 
-   4AAD                      91 collision_system_update::
-   4AAD 3E C8         [ 7]   92     ld a, #(ent_mask_alive|ent_mask_physics|ent_mask_collision)
-   4AAF 21 A9 4A      [10]   93     ld hl, #collision_system_update_one_entity
-   4AB2 CD B2 49      [17]   94     call entity_manager_forall
-   4AB5 C9            [10]   95     ret
+   4BA1                      49 resolve_roof_collision:
+   4BA1 DD 7E 02      [19]   50     ld a, ent_y(ix)
+   4BA4 E6 F8         [ 7]   51     and #0b11111000
+   4BA6 C6 08         [ 7]   52     add #8
+   4BA8 DD 77 02      [19]   53     ld ent_y(ix), a
+   4BAB DD 36 08 00   [19]   54     ld ent_dy(ix), #0
+   4BAF C9            [10]   55     ret
+                             56 
+   4BB0                      57 resolve_right_wall_collision:
+   4BB0 DD 7E 01      [19]   58     ld a, ent_x(ix)
+   4BB3 E6 FC         [ 7]   59     and #0b11111100
+   4BB5 DD 77 01      [19]   60     ld ent_x(ix), a
+   4BB8 DD 36 07 00   [19]   61     ld ent_dx(ix), #0
+   4BBC C9            [10]   62     ret
+                             63 
+                             64 
+   4BBD                      65 resolve_left_wall_collision:
+   4BBD DD 7E 01      [19]   66     ld a, ent_x(ix)
+   4BC0 E6 FC         [ 7]   67     and #0b11111100
+   4BC2 C6 04         [ 7]   68     add #4
+   4BC4 DD 77 01      [19]   69     ld ent_x(ix), a
+   4BC7 DD 36 07 00   [19]   70     ld ent_dx(ix), #0
+   4BCB C9            [10]   71     ret
+                             72 
+                             73 ;;=======================================================
+                             74 ;; Function for test collision with the tilemap
+                             75 ;;=======================================================
+   4BCC                      76 collision_system_test_floor:
+                             77 ;; bottom left collision check
+   4BCC DD 56 06      [19]   78     ld d, ent_h(ix)
+   4BCF 15            [ 4]   79     dec d
+   4BD0 DD 7E 02      [19]   80     ld a, ent_y(ix)
+   4BD3 82            [ 4]   81     add d
+   4BD4 47            [ 4]   82     ld b, a
+   4BD5 DD 4E 01      [19]   83     ld c, ent_x(ix)
+   4BD8 CD 7A 4B      [17]   84     call get_tile_from_coord
+                             85 
+   4BDB 7E            [ 7]   86     ld a, (hl)
+   4BDC FE 05         [ 7]   87     cp #5
+   4BDE 30 04         [12]   88     jr nc, bottom_right_collision_check
+   4BE0 CD 94 4B      [17]   89     call resolve_floor_collision
+   4BE3 C9            [10]   90     ret
+   4BE4                      91 bottom_right_collision_check:
+   4BE4 DD 56 06      [19]   92     ld d, ent_h(ix)
+   4BE7 15            [ 4]   93     dec d
+   4BE8 DD 7E 02      [19]   94     ld a, ent_y(ix)
+   4BEB 82            [ 4]   95     add d
+   4BEC 47            [ 4]   96     ld b, a
+   4BED DD 4E 05      [19]   97     ld c, ent_w(ix)
+   4BF0 0D            [ 4]   98     dec c
+   4BF1 DD 7E 01      [19]   99     ld a, ent_x(ix)
+   4BF4 81            [ 4]  100     add c
+   4BF5 4F            [ 4]  101     ld c, a
+   4BF6 CD 7A 4B      [17]  102     call get_tile_from_coord
+                            103 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 99.
+Hexadecimal [16-Bits]
+
+
+
+   4BF9 7E            [ 7]  104     ld a, (hl)
+   4BFA FE 05         [ 7]  105     cp #5
+   4BFC D0            [11]  106     ret nc
+   4BFD CD 94 4B      [17]  107     call resolve_floor_collision
+                            108 
+   4C00 C9            [10]  109     ret
+                            110 
+                            111 ;;=======================================================
+                            112 ;; Function for test collision with the tilemap
+                            113 ;;=======================================================
+   4C01                     114 collision_system_test_roof:
+                            115 ;; top left collision check
+   4C01 DD 46 02      [19]  116     ld b, ent_y(ix)
+   4C04 DD 4E 01      [19]  117     ld c, ent_x(ix)
+   4C07 CD 7A 4B      [17]  118     call get_tile_from_coord
+                            119 
+   4C0A 7E            [ 7]  120     ld a, (hl)
+   4C0B FE 05         [ 7]  121     cp #5
+   4C0D 30 04         [12]  122     jr nc, top_right_collision_check
+   4C0F CD A1 4B      [17]  123     call resolve_roof_collision
+   4C12 C9            [10]  124     ret
+   4C13                     125 top_right_collision_check:
+   4C13 DD 46 02      [19]  126     ld b, ent_y(ix)
+   4C16 DD 4E 05      [19]  127     ld c, ent_w(ix)
+   4C19 0D            [ 4]  128     dec c
+   4C1A DD 7E 01      [19]  129     ld a, ent_x(ix)
+   4C1D 81            [ 4]  130     add c
+   4C1E 4F            [ 4]  131     ld c, a
+   4C1F CD 7A 4B      [17]  132     call get_tile_from_coord
+                            133 
+   4C22 7E            [ 7]  134     ld a, (hl)
+   4C23 FE 05         [ 7]  135     cp #5
+   4C25 D0            [11]  136     ret nc
+   4C26 CD A1 4B      [17]  137     call resolve_roof_collision
+                            138 
+   4C29 C9            [10]  139     ret
+                            140 
+                            141 ;;=======================================================
+                            142 ;; Function for test collision with the tilemap
+                            143 ;;=======================================================
+   4C2A                     144 collision_system_test_right_wall:
+   4C2A DD 56 06      [19]  145     ld d, ent_h(ix)
+   4C2D 15            [ 4]  146     dec d
+   4C2E DD 7E 02      [19]  147     ld a, ent_y(ix)
+   4C31 82            [ 4]  148     add d
+   4C32 47            [ 4]  149     ld b, a
+   4C33 DD 4E 05      [19]  150     ld c, ent_w(ix)
+   4C36 0D            [ 4]  151     dec c
+   4C37 DD 7E 01      [19]  152     ld a, ent_x(ix)
+   4C3A 81            [ 4]  153     add c
+   4C3B 4F            [ 4]  154     ld c, a
+   4C3C CD 7A 4B      [17]  155     call get_tile_from_coord
+                            156 
+   4C3F 7E            [ 7]  157     ld a, (hl)
+   4C40 FE 05         [ 7]  158     cp #5
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 100.
+Hexadecimal [16-Bits]
+
+
+
+   4C42 D0            [11]  159     ret nc
+   4C43 CD B0 4B      [17]  160     call resolve_right_wall_collision
+                            161 
+   4C46 C9            [10]  162     ret
+                            163 
+                            164 ;;=======================================================
+                            165 ;; Functions for test collision with the tilemap
+                            166 ;;=======================================================
+   4C47                     167 collision_system_test_left_wall:
+   4C47 DD 56 06      [19]  168     ld d, ent_h(ix)
+   4C4A 15            [ 4]  169     dec d
+   4C4B DD 7E 02      [19]  170     ld a, ent_y(ix)
+   4C4E 82            [ 4]  171     add d
+   4C4F 47            [ 4]  172     ld b, a
+   4C50 DD 4E 01      [19]  173     ld c, ent_x(ix)
+   4C53 CD 7A 4B      [17]  174     call get_tile_from_coord
+                            175 
+   4C56 7E            [ 7]  176     ld a, (hl)
+   4C57 FE 05         [ 7]  177     cp #5
+   4C59 D0            [11]  178     ret nc
+   4C5A CD BD 4B      [17]  179     call resolve_left_wall_collision
+                            180 
+   4C5D C9            [10]  181     ret
+                            182 
+                            183 
+   4C5E                     184 collision_system_update_one_entity:
+   4C5E CD CC 4B      [17]  185     call collision_system_test_floor
+   4C61 CD 2A 4C      [17]  186     call collision_system_test_right_wall
+   4C64 CD 47 4C      [17]  187     call collision_system_test_left_wall
+   4C67 CD 01 4C      [17]  188     call collision_system_test_roof    
+   4C6A C9            [10]  189     ret
+                            190 
+                            191 
+   4C6B                     192 collision_system_update::
+   4C6B 3E C8         [ 7]  193     ld a, #(ent_mask_alive|ent_mask_physics|ent_mask_collision)
+   4C6D 21 5E 4C      [10]  194     ld hl, #collision_system_update_one_entity
+   4C70 CD B2 4A      [17]  195     call entity_manager_forall
+   4C73 C9            [10]  196     ret

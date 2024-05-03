@@ -5082,9 +5082,12 @@ Hexadecimal [16-Bits]
                               5 
                               6 .globl camera
                               7 
-                     0000     8 camera_ptr = 0
-                     0002     9 camera_x   = 2
-                     0003    10 camera_y   = 3
+                     0000     8 camera_ptr    = 0
+                     0002     9 camera_x      = 2
+                     0003    10 camera_y      = 3
+                     0004    11 camera_tx     = 4
+                     0005    12 camera_ty     = 5
+                     0006    13 camera_scroll = 6
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 98.
 Hexadecimal [16-Bits]
 
@@ -5099,35 +5102,41 @@ Hexadecimal [16-Bits]
                              10 
    0001                      11 input_system_update_one_entity:
                              12 
-   0001 CD 00 00      [17]   13     call cpct_scanKeyboard_asm
-                             14 
-   0004 DD 36 07 00   [19]   15     ld ent_dx(ix), #0
-                             16 
-   0008 21 03 08      [10]   17     ld hl, #Key_P
-   000B CD 00 00      [17]   18     call cpct_isKeyPressed_asm
-   000E 28 04         [12]   19     jr z, p_not_press
-   0010 DD 36 07 01   [19]   20     ld ent_dx(ix), #1
-                             21 
-   0014                      22 p_not_press:
-                             23 
-   0014 21 04 04      [10]   24     ld hl, #Key_O
-   0017 CD 00 00      [17]   25     call cpct_isKeyPressed_asm
-   001A 28 04         [12]   26     jr z, o_not_press
-   001C DD 36 07 FF   [19]   27     ld ent_dx(ix), #-1
-                             28 
-   0020                      29 o_not_press:
-                             30 
-   0020 21 05 80      [10]   31     ld hl, #Key_Space
-   0023 CD 00 00      [17]   32     call cpct_isKeyPressed_asm
-   0026 28 04         [12]   33     jr z, space_not_press
-   0028 DD 36 08 FB   [19]   34     ld ent_dy(ix), #-5
-                             35 
-   002C                      36 space_not_press:
-   002C C9            [10]   37     ret
-                             38     
-                             39 
-   002D                      40 input_system_update::
-   002D 3E D0         [ 7]   41     ld a, #(ent_mask_alive|ent_mask_physics|ent_mask_input)
-   002F 21 01 00      [10]   42     ld hl, #input_system_update_one_entity
-   0032 CD 00 00      [17]   43     call entity_manager_forall
-   0035 C9            [10]   44     ret
+                             13     ;; Update the camera target to follow this entity
+   0001 DD 7E 03      [19]   14     ld a, ent_sx(ix);
+   0004 32 04 00      [13]   15     ld (camera + camera_tx), a
+   0007 DD 7E 04      [19]   16     ld a, ent_sy(ix);
+   000A 32 05 00      [13]   17     ld (camera + camera_ty), a
+                             18 
+   000D CD 00 00      [17]   19     call cpct_scanKeyboard_asm
+                             20 
+   0010 DD 36 07 00   [19]   21     ld ent_dx(ix), #0
+                             22 
+   0014 21 03 08      [10]   23     ld hl, #Key_P
+   0017 CD 00 00      [17]   24     call cpct_isKeyPressed_asm
+   001A 28 04         [12]   25     jr z, p_not_press
+   001C DD 36 07 01   [19]   26     ld ent_dx(ix), #1
+                             27 
+   0020                      28 p_not_press:
+                             29 
+   0020 21 04 04      [10]   30     ld hl, #Key_O
+   0023 CD 00 00      [17]   31     call cpct_isKeyPressed_asm
+   0026 28 04         [12]   32     jr z, o_not_press
+   0028 DD 36 07 FF   [19]   33     ld ent_dx(ix), #-1
+                             34 
+   002C                      35 o_not_press:
+                             36 
+   002C 21 05 80      [10]   37     ld hl, #Key_Space
+   002F CD 00 00      [17]   38     call cpct_isKeyPressed_asm
+   0032 28 04         [12]   39     jr z, space_not_press
+   0034 DD 36 08 FB   [19]   40     ld ent_dy(ix), #-5
+                             41 
+   0038                      42 space_not_press:
+   0038 C9            [10]   43     ret
+                             44     
+                             45 
+   0039                      46 input_system_update::
+   0039 3E D0         [ 7]   47     ld a, #(ent_mask_alive|ent_mask_physics|ent_mask_input)
+   003B 21 01 00      [10]   48     ld hl, #input_system_update_one_entity
+   003E CD 00 00      [17]   49     call entity_manager_forall
+   0041 C9            [10]   50     ret

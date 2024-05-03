@@ -4,20 +4,20 @@ Hexadecimal [16-Bits]
 
 
                               1 ;;
-                              2 ;; File tilemaps/test_00.tmx converted to csv using cpct_tmx2data [Fri May  3 12:57:47 2024]
+                              2 ;; File tilemaps/map00.tmx converted to csv using cpct_tmx2data [Fri May  3 19:06:21 2024]
                               3 ;;   * Visible Layers:  1
-                              4 ;;   * Layer Width:     32
+                              4 ;;   * Layer Width:     48
                               5 ;;   * Layer Height:    16
                               6 ;;   * Bits per tile:   8
-                              7 ;;   * Layer Bytes:     512 (32 x 16 items, 8 bits per item)
-                              8 ;;   * Total Bytes:     512 (512 x 1, bytes per layer times layers)
+                              7 ;;   * Layer Bytes:     768 (48 x 16 items, 8 bits per item)
+                              8 ;;   * Total Bytes:     768 (768 x 1, bytes per layer times layers)
                               9 ;;
                              10 ;;#### Width and height constants ####
-                     0020    11 _tilemap_00_W = 32
+                     0030    11 _tilemap_00_W = 48
                      0010    12 _tilemap_00_H = 16
                              13 
                              14 ;;#### Converted layer tilemaps ####
                              15 ;;   Visible layers: 1
                              16 ;;
                              17 .globl _tilemap_00
-                     0200    18 _tilemap_00_SIZE = 512
+                     0300    18 _tilemap_00_SIZE = 768

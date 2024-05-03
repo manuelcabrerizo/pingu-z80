@@ -5141,9 +5141,12 @@ Hexadecimal [16-Bits]
                               5 
                               6 .globl camera
                               7 
-                     0000     8 camera_ptr = 0
-                     0002     9 camera_x   = 2
-                     0003    10 camera_y   = 3
+                     0000     8 camera_ptr    = 0
+                     0002     9 camera_x      = 2
+                     0003    10 camera_y      = 3
+                     0004    11 camera_tx     = 4
+                     0005    12 camera_ty     = 5
+                     0006    13 camera_scroll = 6
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 103.
 Hexadecimal [16-Bits]
 
@@ -5158,66 +5161,66 @@ Hexadecimal [16-Bits]
                              15 .globl _pre_face
                              16 .globl _spr_pingu_0
                              17 
-   0000                      18 test_face:  DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision), 16, 5, 4,  8, 0, 0, _pre_face
+   0000                      18 test_face:  DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision|ent_mask_input), 16, 5, 4,  8, 0, 0, _pre_face
                               1 ;; public data
-   46BA E8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision)
-   46BB 10                    3     .db 16    ;; world coord
-   46BC 05                    4     .db 5    ;; world coord
-   46BD 10                    5     .db 16    ;; screen coord
-   46BE 05                    6     .db 5    ;; screen coord
-   46BF 04                    7     .db 4
-   46C0 08                    8     .db 8
-   46C1 00                    9     .db 0
-   46C2 00                   10     .db 0
-   46C3 9A 44                11     .dw _pre_face
-   000B                      19 test_pingu: DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_input|ent_mask_collision), 0,  5, 8, 24, 0, 0, _spr_pingu_0
+   47BA F8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision|ent_mask_input)
+   47BB 10                    3     .db 16    ;; world coord
+   47BC 05                    4     .db 5    ;; world coord
+   47BD 10                    5     .db 16    ;; screen coord
+   47BE 05                    6     .db 5    ;; screen coord
+   47BF 04                    7     .db 4
+   47C0 08                    8     .db 8
+   47C1 00                    9     .db 0
+   47C2 00                   10     .db 0
+   47C3 9A 44                11     .dw _pre_face
+   000B                      19 test_pingu: DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision), 0,  5, 8, 24, 0, 0, _spr_pingu_0
                               1 ;; public data
-   46C5 F8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_input|ent_mask_collision)
-   46C6 00                    3     .db 0    ;; world coord
-   46C7 05                    4     .db 5    ;; world coord
-   46C8 00                    5     .db 0    ;; screen coord
-   46C9 05                    6     .db 5    ;; screen coord
-   46CA 08                    7     .db 8
-   46CB 18                    8     .db 24
-   46CC 00                    9     .db 0
-   46CD 00                   10     .db 0
-   46CE 88 41                11     .dw _spr_pingu_0
+   47C5 E8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision)
+   47C6 00                    3     .db 0    ;; world coord
+   47C7 05                    4     .db 5    ;; world coord
+   47C8 00                    5     .db 0    ;; screen coord
+   47C9 05                    6     .db 5    ;; screen coord
+   47CA 08                    7     .db 8
+   47CB 18                    8     .db 24
+   47CC 00                    9     .db 0
+   47CD 00                   10     .db 0
+   47CE 88 41                11     .dw _spr_pingu_0
                              20 
                              21 ;;
                              22 ;; MAIN function. This is the entry point of the application.
                              23 ;;    _main:: global symbol is required for correctly compiling and linking
                              24 ;;
-   46D0                      25 _main::
+   47D0                      25 _main::
                              26    ;; Disable firmware to prevent it from interfering with string drawing
-   46D0 CD 13 4C      [17]   27    call cpct_disableFirmware_asm
+   47D0 CD DD 4D      [17]   27    call cpct_disableFirmware_asm
                              28 
                              29    ;; initialize managers
-   46D3 CD B2 48      [17]   30    call entity_manager_init
+   47D3 CD B2 49      [17]   30    call entity_manager_init
                              31    ;; initialize subsystems
-   46D6 CD 20 4B      [17]   32    call render_system_init
-   46D9 CD B6 4A      [17]   33    call input_system_init
-   46DC CD EC 4A      [17]   34    call physics_system_init
-   46DF CD 50 4A      [17]   35    call collision_system_init
-   46E2 CD DD 49      [17]   36    call camera_system_init
+   47D6 CD EA 4C      [17]   32    call render_system_init
+   47D9 CD 74 4C      [17]   33    call input_system_init
+   47DC CD B6 4C      [17]   34    call physics_system_init
+   47DF CD 79 4B      [17]   35    call collision_system_init
+   47E2 CD E0 4A      [17]   36    call camera_system_init
                              37    
-   46E5 CD E5 48      [17]   38    call entity_manager_create_entity
-   46E8 21 BA 46      [10]   39    ld hl, #test_face
-   46EB ED B0         [21]   40    ldir
+   47E5 CD E5 49      [17]   38    call entity_manager_create_entity
+   47E8 21 BA 47      [10]   39    ld hl, #test_face
+   47EB ED B0         [21]   40    ldir
                              41 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 104.
 Hexadecimal [16-Bits]
 
 
 
-   46ED CD E5 48      [17]   42    call entity_manager_create_entity
-   46F0 21 C5 46      [10]   43    ld hl, #test_pingu
-   46F3 ED B0         [21]   44    ldir
+   47ED CD E5 49      [17]   42    call entity_manager_create_entity
+   47F0 21 C5 47      [10]   43    ld hl, #test_pingu
+   47F3 ED B0         [21]   44    ldir
                              45 
-   46F5                      46 game_loop:
+   47F5                      46 game_loop:
                              47    ;; Update subsystems
-   46F5 CD E3 4A      [17]   48    call input_system_update
-   46F8 CD 0E 4B      [17]   49    call physics_system_update
-   46FB CD AD 4A      [17]   50    call collision_system_update
-   46FE CD 23 4A      [17]   51    call camera_system_update
-   4701 CD BC 4B      [17]   52    call render_system_update
-   4704 18 EF         [12]   53    jr game_loop
+   47F5 CD AD 4C      [17]   48    call input_system_update
+   47F8 CD D8 4C      [17]   49    call physics_system_update
+   47FB CD 6B 4C      [17]   50    call collision_system_update
+   47FE CD 6D 4B      [17]   51    call camera_system_update
+   4801 CD 86 4D      [17]   52    call render_system_update
+   4804 18 EF         [12]   53    jr game_loop

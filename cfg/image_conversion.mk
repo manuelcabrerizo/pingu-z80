@@ -47,7 +47,7 @@
 
 ## Example firmware palette definition as variable in cpct_img2tileset format
 #PALETTE={0 1 3 4 7 9 10 12 13 16 19 20 21 24 25 26}
-PALETTE={0 1 2 9 10 11 12 14 15 18 19 20 21 22 23 26}
+PALETTE={1 2 3 4 5 9 10 11 14 15 16 19 22 23 25 26}
 
 ## AUTOMATED IMAGE CONVERSION EXAMPLE (Uncomment EVAL line to use)
 ##

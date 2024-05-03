@@ -10,6 +10,12 @@ input_system_init::
 
 input_system_update_one_entity:
 
+    ;; Update the camera target to follow this entity
+    ld a, ent_sx(ix);
+    ld (camera + camera_tx), a
+    ld a, ent_sy(ix);
+    ld (camera + camera_ty), a
+
     call cpct_scanKeyboard_asm
 
     ld ent_dx(ix), #0

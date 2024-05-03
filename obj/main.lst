@@ -5141,9 +5141,12 @@ Hexadecimal [16-Bits]
                               5 
                               6 .globl camera
                               7 
-                     0000     8 camera_ptr = 0
-                     0002     9 camera_x   = 2
-                     0003    10 camera_y   = 3
+                     0000     8 camera_ptr    = 0
+                     0002     9 camera_x      = 2
+                     0003    10 camera_y      = 3
+                     0004    11 camera_tx     = 4
+                     0005    12 camera_ty     = 5
+                     0006    13 camera_scroll = 6
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 103.
 Hexadecimal [16-Bits]
 
@@ -5158,9 +5161,9 @@ Hexadecimal [16-Bits]
                              15 .globl _pre_face
                              16 .globl _spr_pingu_0
                              17 
-   0000                      18 test_face:  DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision), 16, 5, 4,  8, 0, 0, _pre_face
+   0000                      18 test_face:  DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision|ent_mask_input), 16, 5, 4,  8, 0, 0, _pre_face
                               1 ;; public data
-   0000 E8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision)
+   0000 F8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision|ent_mask_input)
    0001 10                    3     .db 16    ;; world coord
    0002 05                    4     .db 5    ;; world coord
    0003 10                    5     .db 16    ;; screen coord
@@ -5170,9 +5173,9 @@ Hexadecimal [16-Bits]
    0007 00                    9     .db 0
    0008 00                   10     .db 0
    0009 00 00                11     .dw _pre_face
-   000B                      19 test_pingu: DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_input|ent_mask_collision), 0,  5, 8, 24, 0, 0, _spr_pingu_0
+   000B                      19 test_pingu: DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision), 0,  5, 8, 24, 0, 0, _spr_pingu_0
                               1 ;; public data
-   000B F8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_input|ent_mask_collision)
+   000B E8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision)
    000C 00                    3     .db 0    ;; world coord
    000D 05                    4     .db 5    ;; world coord
    000E 00                    5     .db 0    ;; screen coord

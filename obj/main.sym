@@ -56,13 +56,14 @@ Symbol Table
     PAL_INKR=  0040     |     PAL_PENR=  0000     |     PPI_PORT=  00F5 
   0 _main      0016 GR  |     _pre_fac   **** GX  |     _spr_pin   **** GX
     _tilemap   **** GX  |     camera     **** GX  |     camera_p=  0000 
-    camera_s   **** GX  |     camera_s   **** GX  |     camera_x=  0002 
-    camera_y=  0003     |     collisio   **** GX  |     collisio   **** GX
+    camera_s=  0006     |     camera_s   **** GX  |     camera_s   **** GX
+    camera_t=  0004     |     camera_t=  0005     |     camera_x=  0002 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]
 
 Symbol Table
 
+    camera_y=  0003     |     collisio   **** GX  |     collisio   **** GX
     cpct_dis   **** GX  |     cpct_pag=  0000     |     cpct_pag=  0010 
     cpct_pag=  0020     |     cpct_pag=  0030     |     cpct_wai   **** GX
     drawSoli   **** GX  |     drawSpri   **** GX  |     drawTile   **** GX

@@ -30,7 +30,7 @@ S entity_manager_destroy_entity Ref0000
 A _CODE size 4C flags 0 addr 0
 S _main Def0016
 A _DATA size 0 flags 0 addr 0
-T 00 00 E8 10 05 10 05 04 08 00 00 00 00 F8 00 05
+T 00 00 F8 10 05 10 05 04 08 00 00 00 00 E8 00 05
 R 00 00 00 00 02 0B 06 00
 T 0E 00 00 05 08 18 00 00 00 00
 R 00 00 00 00 02 08 01 00

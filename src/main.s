@@ -15,8 +15,8 @@
 .globl _pre_face
 .globl _spr_pingu_0
 
-test_face:  DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision), 16, 5, 4,  8, 0, 0, _pre_face
-test_pingu: DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_input|ent_mask_collision), 0,  5, 8, 24, 0, 0, _spr_pingu_0
+test_face:  DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision|ent_mask_input), 16, 5, 4,  8, 0, 0, _pre_face
+test_pingu: DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision), 0,  5, 8, 24, 0, 0, _spr_pingu_0
 
 ;;
 ;; MAIN function. This is the entry point of the application.

@@ -5,7 +5,8 @@ Symbol Table
 
     .__.$$$.=  2710 L   |     .__.ABS.=  0000 G   |     .__.CPU.=  0000 L
     .__.H$L.=  0000 L   |     camera     **** GX  |     camera_p=  0000 
-    camera_s   **** GX  |     camera_s   **** GX  |     camera_x=  0002 
+    camera_s=  0006     |     camera_s   **** GX  |     camera_s   **** GX
+    camera_t=  0004     |     camera_t=  0005     |     camera_x=  0002 
     camera_y=  0003 
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.

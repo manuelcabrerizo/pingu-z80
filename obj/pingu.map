@@ -18,21 +18,21 @@ Area                                    Addr        Size        Decimal Bytes (A
      00000000  l__INITIALIZER                  
      00000000  s__CABS                         
      00000000  s__DABS                         
-     00000C55  l__CODE                         
+     00000E1F  l__CODE                         
      00004000  s__CODE                         
-     00004C55  s__DATA                         
-     00004C55  s__GSFINAL                      
-     00004C55  s__GSINIT                       
-     00004C55  s__HOME                         
-     00004C55  s__INITIALIZED                  
-     00004C55  s__INITIALIZER                  
+     00004E1F  s__DATA                         
+     00004E1F  s__GSFINAL                      
+     00004E1F  s__GSINIT                       
+     00004E1F  s__HOME                         
+     00004E1F  s__INITIALIZED                  
+     00004E1F  s__INITIALIZER                  
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 2.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00004000    00000C55 =        3157. bytes (REL,CON)
+_CODE                               00004000    00000E1F =        3615. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
@@ -57,53 +57,53 @@ _CODE                               00004000    00000C55 =        3157. bytes (R
      00004498  _pre_tileset                       face
      0000449A  _pre_face                          face
      000044BA  _tilemap_00                        
-     000046D0  _main                              cpct_keyboard
-     00004706  drawTilemap4x8_ag_32x16            cpct_keyboard
-     0000479F  setDrawTileMap4x8_ag_32x16         cpct_keyboard
-     000047CB  getScreenPtr_32x16                 cpct_keyboard
-     000047D9  drawSprite_32x16                   cpct_keyboard
-     000047FF  drawSolidBox_32x16                 cpct_keyboard
-     00004830  entities                           entity_manager
-     000048B2  entity_manager_init                entity_manager
-     000048E5  entity_manager_create_entity       entity_manager
-     00004941  entity_manager_destroy_entity      entity_manager
-     000049B2  entity_manager_forall              entity_manager
-     000049D9  camera                             cpct_keyboard
-     000049DD  camera_system_init                 cpct_keyboard
-     00004A23  camera_system_update               cpct_keyboard
-     00004A50  collision_system_init              cpct_keyboard
-     00004AAD  collision_system_update            cpct_keyboard
-     00004AB6  input_system_init                  cpct_keyboard
-     00004AE3  input_system_update                cpct_keyboard
-     00004AEC  physics_system_init                entity_manager
-     00004B0E  physics_system_update              entity_manager
-     00004B20  render_system_init                 cpct_keyboard
-     00004B78  render_system_draw_tilemap         cpct_keyboard
-     00004BBC  render_system_update               cpct_keyboard
-     00004BCB  cpct_setPalette_asm                cpct_video
-     00004BDE  _cpct_isKeyPressed                 cpct_keyboard
-     00004BDE  cpct_isKeyPressed_asm              cpct_keyboard
-     00004BEA  cpct_setPALColour_asm              cpct_video
-     00004BF4  _cpct_keyboardStatusBuffer         cpct_keyboard
-     00004BFE  cpct_setVideoMode_asm              cpct_video
+     000047D0  _main                              cpct_keyboard
+     00004806  drawTilemap4x8_ag_32x16            cpct_keyboard
+     0000489F  setDrawTileMap4x8_ag_32x16         cpct_keyboard
+     000048CB  getScreenPtr_32x16                 cpct_keyboard
+     000048D9  drawSprite_32x16                   cpct_keyboard
+     000048FF  drawSolidBox_32x16                 cpct_keyboard
+     00004930  entities                           entity_manager
+     000049B2  entity_manager_init                entity_manager
+     000049E5  entity_manager_create_entity       entity_manager
+     00004A41  entity_manager_destroy_entity      entity_manager
+     00004AB2  entity_manager_forall              entity_manager
+     00004AD9  camera                             cpct_keyboard
+     00004AE0  camera_system_init                 cpct_keyboard
+     00004B6D  camera_system_update               cpct_keyboard
+     00004B79  collision_system_init              cpct_keyboard
+     00004C6B  collision_system_update            cpct_keyboard
+     00004C74  input_system_init                  cpct_keyboard
+     00004CAD  input_system_update                cpct_keyboard
+     00004CB6  physics_system_init                entity_manager
+     00004CD8  physics_system_update              entity_manager
+     00004CEA  render_system_init                 cpct_keyboard
+     00004D42  render_system_draw_tilemap         cpct_keyboard
+     00004D86  render_system_update               cpct_keyboard
+     00004D95  cpct_setPalette_asm                cpct_video
+     00004DA8  _cpct_isKeyPressed                 cpct_keyboard
+     00004DA8  cpct_isKeyPressed_asm              cpct_keyboard
+     00004DB4  cpct_setPALColour_asm              cpct_video
+     00004DBE  _cpct_keyboardStatusBuffer         cpct_keyboard
+     00004DC8  cpct_setVideoMode_asm              cpct_video
 ASxxxx Linker V03.00 + NoICE + sdld,  page 3.
 Hexadecimal  [32-Bits]
 
 Area                                    Addr        Size        Decimal Bytes (Attributes)
 --------------------------------        ----        ----        ------- ----- ------------
-_CODE                               00004000    00000C55 =        3157. bytes (REL,CON)
+_CODE                               00004000    00000E1F =        3615. bytes (REL,CON)
 
       Value  Global                              Global Defined In Module
       -----  --------------------------------   ------------------------
-     00004C0B  _cpct_waitVSYNC                    cpct_video
-     00004C0B  cpct_waitVSYNC_asm                 cpct_video
-     00004C13  _cpct_disableFirmware              cpct_firmware
-     00004C13  _cpct_removeInterruptHandler       cpct_firmware
-     00004C13  cpct_disableFirmware_asm           cpct_firmware
-     00004C13  cpct_removeInterruptHandler_asm    cpct_firmware
-     00004C23  _cpct_mode_rom_status              cpct_firmware
-     00004C24  _cpct_scanKeyboard                 cpct_keyboard
-     00004C24  cpct_scanKeyboard_asm              cpct_keyboard
+     00004DD5  _cpct_waitVSYNC                    cpct_video
+     00004DD5  cpct_waitVSYNC_asm                 cpct_video
+     00004DDD  _cpct_disableFirmware              cpct_firmware
+     00004DDD  _cpct_removeInterruptHandler       cpct_firmware
+     00004DDD  cpct_disableFirmware_asm           cpct_firmware
+     00004DDD  cpct_removeInterruptHandler_asm    cpct_firmware
+     00004DED  _cpct_mode_rom_status              cpct_firmware
+     00004DEE  _cpct_scanKeyboard                 cpct_keyboard
+     00004DEE  cpct_scanKeyboard_asm              cpct_keyboard
 
 ASxxxx Linker V03.00 + NoICE + sdld,  page 4.
 
@@ -112,8 +112,8 @@ Files Linked                              [ module(s) ]
 obj/tilemap.rel                           [ tilemap ]
 obj/pingu.rel                             [ pingu ]
 obj/face.rel                              [ face ]
-obj/test_00.h.rel                         [  ]
-obj/test_00.rel                           [  ]
+obj/map00.h.rel                           [  ]
+obj/map00.rel                             [  ]
 obj/main.rel                              [ cpct_keyboard ]
 obj/cpct/cpct32x16.h.rel                  [ cpct32x16 ]
 obj/cpct/cpct32x16.rel                    [ cpct_keyboard ]

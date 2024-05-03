@@ -79,7 +79,7 @@ back_buffer_0 = . + 2
 
 render_system_draw_tilemap::
     ld bc, #0x1010
-    ld de, #32
+    ld de, #48
     ld hl, #_tile_tilemap_00
     call setDrawTileMap4x8_ag_32x16
 back_buffer_1 = . + 2   

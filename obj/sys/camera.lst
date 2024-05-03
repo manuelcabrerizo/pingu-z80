@@ -5013,9 +5013,12 @@ Hexadecimal [16-Bits]
                               5 
                               6 .globl camera
                               7 
-                     0000     8 camera_ptr = 0
-                     0002     9 camera_x   = 2
-                     0003    10 camera_y   = 3
+                     0000     8 camera_ptr    = 0
+                     0002     9 camera_x      = 2
+                     0003    10 camera_y      = 3
+                     0004    11 camera_tx     = 4
+                     0005    12 camera_ty     = 5
+                     0006    13 camera_scroll = 6
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 96.
 Hexadecimal [16-Bits]
 
@@ -5109,88 +5112,122 @@ Hexadecimal [16-Bits]
    0000                       9 camera::
    0000 00 00                10     .dw _tilemap_00    ;; Tilemap camera pointer
    0002 00 00                11     .db 0, 0           ;; Camera (x, y) coordinates
-                             12 
-                             13 
-   0004                      14 camera_system_init::
-                             15     ;; initialize the camera
-   0004 21 00 00      [10]   16     ld hl, #_tilemap_00
-   0007 22 00 00      [16]   17     ld (camera + camera_ptr), hl
-   000A 3E 00         [ 7]   18     ld a, #0
-   000C 32 02 00      [13]   19     ld (camera + camera_x), a
-   000F 32 03 00      [13]   20     ld (camera + camera_y), a
-                             21 
-   0012 C9            [10]   22     ret
-                             23 
-   0013                      24 scroll_left:
-   0013 2A 00 00      [16]   25     ld hl, (camera + camera_ptr)
-   0016 2B            [ 6]   26     dec hl
-   0017 22 00 00      [16]   27     ld (camera + camera_ptr), hl
-   001A 3A 02 00      [13]   28     ld a, (camera + camera_x)
-   001D D6 04         [ 7]   29     sub #4
-   001F 32 02 00      [13]   30     ld (camera + camera_x), a
-   0022 C9            [10]   31     ret
-                             32 
-   0023                      33 scroll_right:
-   0023 2A 00 00      [16]   34     ld hl, (camera + camera_ptr)
-   0026 23            [ 6]   35     inc hl
-   0027 22 00 00      [16]   36     ld (camera + camera_ptr), hl
-   002A 3A 02 00      [13]   37     ld a, (camera + camera_x)
-   002D C6 04         [ 7]   38     add #4
-   002F 32 02 00      [13]   39     ld (camera + camera_x), a
-   0032 C9            [10]   40     ret
-                             41 
-                             42 
-   0033                      43 camera_system_update_one_entity:
-                             44     ;; ent_sx = ent_x - camera_x
-   0033 3A 02 00      [13]   45     ld a, (camera + camera_x)
-   0036 47            [ 4]   46     ld b, a
-   0037 DD 7E 01      [19]   47     ld a, ent_x(ix)
-   003A 90            [ 4]   48     sub b
-   003B DD 77 03      [19]   49     ld ent_sx(ix), a
-                             50     ;; ent_sy = ent_y - camera_y
-   003E 3A 03 00      [13]   51     ld a, (camera + camera_y)
-   0041 47            [ 4]   52     ld b, a
-   0042 DD 7E 02      [19]   53     ld a, ent_y(ix)
-   0045 90            [ 4]   54     sub b
-   0046 DD 77 04      [19]   55     ld ent_sy(ix), a
-                             56 
-   0049 C9            [10]   57     ret
-                             58 
-                             59 
+   0004 00 00                12     .db 0, 0           ;; Camera Target Screen Coords
+   0006 00                   13     .db 0              ;; Camera Scroll State
+                             14 
+   0007                      15 camera_system_init::
+                             16     ;; initialize the camera
+   0007 21 00 00      [10]   17     ld hl, #_tilemap_00
+   000A 22 00 00      [16]   18     ld (camera + camera_ptr), hl
+   000D 3E 00         [ 7]   19     ld a, #0
+   000F 32 02 00      [13]   20     ld (camera + camera_x), a
+   0012 32 03 00      [13]   21     ld (camera + camera_y), a
+   0015 32 04 00      [13]   22     ld (camera + camera_tx), a
+   0018 32 05 00      [13]   23     ld (camera + camera_ty), a
+   001B 32 06 00      [13]   24     ld (camera + camera_scroll), a
+   001E C9            [10]   25     ret
+                             26 
+   001F                      27 scroll_left:
+   001F 2A 00 00      [16]   28     ld hl, (camera + camera_ptr)
+   0022 01 FF FF      [10]   29     ld bc, #-1
+   0025 09            [11]   30     add hl, bc
+   0026 22 00 00      [16]   31     ld (camera + camera_ptr), hl
+   0029 3A 02 00      [13]   32     ld a, (camera + camera_x)
+   002C C6 FC         [ 7]   33     add #-4
+   002E 32 02 00      [13]   34     ld (camera + camera_x), a
+                             35 
+   0031 21 06 00      [10]   36     ld hl, #(camera + camera_scroll)
+   0034 34            [11]   37     inc (hl)
+                             38 
+   0035 C9            [10]   39     ret
+                             40 
+   0036                      41 scroll_right:
+   0036 2A 00 00      [16]   42     ld hl, (camera + camera_ptr)
+   0039 01 01 00      [10]   43     ld bc, #1
+   003C 09            [11]   44     add hl, bc
+   003D 22 00 00      [16]   45     ld (camera + camera_ptr), hl
+   0040 3A 02 00      [13]   46     ld a, (camera + camera_x)
+   0043 C6 04         [ 7]   47     add #4
+   0045 32 02 00      [13]   48     ld (camera + camera_x), a
+                             49 
+   0048 21 06 00      [10]   50     ld hl, #(camera + camera_scroll)
+   004B 35            [11]   51     dec (hl)
+                             52 
+   004C C9            [10]   53     ret
+                             54 
+   004D                      55 start_scroll_left:
+                             56     ;; check if we can scroll
+   004D 3A 02 00      [13]   57     ld a, (camera + camera_x)
+   0050 FE 00         [ 7]   58     cp #0
+   0052 C8            [11]   59     ret z
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 100.
 Hexadecimal [16-Bits]
 
 
 
-   004A                      60 camera_system_update::
-                             61 
-                             62    ;; Scroll Left
-   004A 21 07 04      [10]   63     ld hl, #Key_E
-   004D CD 00 00      [17]   64     call cpct_isKeyPressed_asm
-   0050 28 0A         [12]   65     jr z, e_not_press
-                             66 
-   0052 3A 02 00      [13]   67     ld a, (camera + camera_x)
-   0055 FE 00         [ 7]   68     cp #0
-   0057 28 03         [12]   69     jr z, e_not_press
+   0053 3E F8         [ 7]   60     ld a, #-8
+   0055 32 06 00      [13]   61     ld (camera + camera_scroll), a
+   0058 C9            [10]   62     ret
+                             63 
+                             64 
+   0059                      65 start_scroll_right:
+                             66     ;; check if we can scroll
+   0059 3A 02 00      [13]   67     ld a, (camera + camera_x)
+   005C FE 80         [ 7]   68     cp #(32*4)
+   005E C8            [11]   69     ret z
                              70 
-   0059 CD 13 00      [17]   71     call scroll_left
-                             72 
-   005C                      73 e_not_press:
-                             74     ;; Scroll Right
-   005C 21 06 04      [10]   75     ld hl, #Key_R
-   005F CD 00 00      [17]   76     call cpct_isKeyPressed_asm
-   0062 28 0A         [12]   77     jr z, r_not_press
-                             78 
-   0064 3A 02 00      [13]   79     ld a, (camera + camera_x)
-   0067 FE 40         [ 7]   80     cp #(32*2)
-   0069 28 03         [12]   81     jr z, r_not_press
-                             82 
-   006B CD 23 00      [17]   83     call scroll_right
-                             84 
-   006E                      85 r_not_press:
-                             86 
-   006E 3E A0         [ 7]   87     ld a, #(ent_mask_alive|ent_mask_render)
-   0070 21 33 00      [10]   88     ld hl, #camera_system_update_one_entity
-   0073 CD 00 00      [17]   89     call entity_manager_forall
+   005F 3E 08         [ 7]   71     ld a, #8
+   0061 32 06 00      [13]   72     ld (camera + camera_scroll), a
+   0064 C9            [10]   73     ret
+                             74 
+                             75 
+   0065                      76 camera_system_scroll:
+                             77     ;; Do scroll when in scroll state
+   0065 3A 06 00      [13]   78     ld a, (camera + camera_scroll)
+   0068 CB 7F         [ 8]   79     bit 7, a
+   006A 20 B3         [12]   80     jr nz, scroll_left
+   006C B7            [ 4]   81     or a
+   006D 20 C7         [12]   82     jr nz, scroll_right
+                             83 
+                             84     ;; the camera can scroll
+   006F 3A 04 00      [13]   85     ld a, (camera + camera_tx)
+   0072 FE 30         [ 7]   86     cp #48
+   0074 D2 59 00      [10]   87     jp nc, start_scroll_right    
+   0077 FE 10         [ 7]   88     cp #16
+   0079 DA 4D 00      [10]   89     jp c, start_scroll_left
                              90 
-   0076 C9            [10]   91     ret
+   007C C9            [10]   91     ret
+                             92 
+                             93 
+                             94 
+   007D                      95 camera_system_update_one_entity:
+                             96     ;; ent_sx = ent_x - camera_x
+   007D 3A 02 00      [13]   97     ld a, (camera + camera_x)
+   0080 47            [ 4]   98     ld b, a
+   0081 DD 7E 01      [19]   99     ld a, ent_x(ix)
+   0084 90            [ 4]  100     sub b
+   0085 DD 77 03      [19]  101     ld ent_sx(ix), a
+                            102     ;; ent_sy = ent_y - camera_y
+   0088 3A 03 00      [13]  103     ld a, (camera + camera_y)
+   008B 47            [ 4]  104     ld b, a
+   008C DD 7E 02      [19]  105     ld a, ent_y(ix)
+   008F 90            [ 4]  106     sub b
+   0090 DD 77 04      [19]  107     ld ent_sy(ix), a
+                            108 
+   0093 C9            [10]  109     ret
+                            110 
+                            111 
+   0094                     112 camera_system_update::
+                            113 
+   0094 CD 65 00      [17]  114     call camera_system_scroll
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 101.
+Hexadecimal [16-Bits]
+
+
+
+                            115 
+   0097 3E A0         [ 7]  116     ld a, #(ent_mask_alive|ent_mask_render)
+   0099 21 7D 00      [10]  117     ld hl, #camera_system_update_one_entity
+   009C CD 00 00      [17]  118     call entity_manager_forall
+                            119 
+   009F C9            [10]  120     ret

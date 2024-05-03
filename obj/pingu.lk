@@ -10,8 +10,8 @@
 obj/tilemap.rel
 obj/pingu.rel
 obj/face.rel
-obj/test_00.h.rel
-obj/test_00.rel
+obj/map00.h.rel
+obj/map00.rel
 obj/main.rel
 obj/cpct/cpct32x16.h.rel
 obj/cpct/cpct32x16.rel

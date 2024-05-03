@@ -6,9 +6,7 @@ physics_system_init::
 
 
 physics_system_update_one_entity:
-    
-
-    
+        
     ;; update the x position
     ld a, ent_x(ix)
     add  ent_dx(ix)
@@ -17,7 +15,6 @@ physics_system_update_one_entity:
     ld a, ent_y(ix)
     add  ent_dy(ix)
     ld ent_y(ix), a
-
 
     ;; Apply gravity
     ld a, ent_dy(ix)

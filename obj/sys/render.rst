@@ -5096,9 +5096,12 @@ Hexadecimal [16-Bits]
                               5 
                               6 .globl camera
                               7 
-                     0000     8 camera_ptr = 0
-                     0002     9 camera_x   = 2
-                     0003    10 camera_y   = 3
+                     0000     8 camera_ptr    = 0
+                     0002     9 camera_x      = 2
+                     0003    10 camera_y      = 3
+                     0004    11 camera_tx     = 4
+                     0005    12 camera_ty     = 5
+                     0006    13 camera_scroll = 6
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 99.
 Hexadecimal [16-Bits]
 
@@ -5115,132 +5118,132 @@ Hexadecimal [16-Bits]
                              13 
                              14 ; D = Registro
                              15 ; E = Valor
-   4B17                      16 set_crtc:
-   4B17 01 00 BC      [10]   17    ld bc, #0xBC00
-   4B1A ED 51         [12]   18    out (c), d
-   4B1C 04            [ 4]   19    inc b
-   4B1D ED 59         [12]   20    out (c), e
-   4B1F C9            [10]   21    ret
+   4CE1                      16 set_crtc:
+   4CE1 01 00 BC      [10]   17    ld bc, #0xBC00
+   4CE4 ED 51         [12]   18    out (c), d
+   4CE6 04            [ 4]   19    inc b
+   4CE7 ED 59         [12]   20    out (c), e
+   4CE9 C9            [10]   21    ret
                              22 
                              23 
-   4B20                      24 render_system_init::
+   4CEA                      24 render_system_init::
                              25     ;; Setup the display 
-   4B20 11 20 01      [10]   26     ld de, #0x0120
-   4B23 CD 17 4B      [17]   27     call set_crtc
+   4CEA 11 20 01      [10]   26     ld de, #0x0120
+   4CED CD E1 4C      [17]   27     call set_crtc
                              28 
-   4B26 11 2A 02      [10]   29     ld de, #0x022A
-   4B29 CD 17 4B      [17]   30     call set_crtc
+   4CF0 11 2A 02      [10]   29     ld de, #0x022A
+   4CF3 CD E1 4C      [17]   30     call set_crtc
                              31 
-   4B2C 11 10 06      [10]   32     ld de, #0x0610
-   4B2F CD 17 4B      [17]   33     call set_crtc
+   4CF6 11 10 06      [10]   32     ld de, #0x0610
+   4CF9 CD E1 4C      [17]   33     call set_crtc
                              34 
-   4B32 11 1A 07      [10]   35     ld de, #0x071A
-   4B35 CD 17 4B      [17]   36     call set_crtc
+   4CFC 11 1A 07      [10]   35     ld de, #0x071A
+   4CFF CD E1 4C      [17]   36     call set_crtc
                              37 
    0021                      38     cpctm_setBorder_asm HW_WHITE
                               1    .radix h
    0021                       2    cpctm_setBorder_raw_asm \HW_WHITE ;; [28] Macro that does the job, but requires a number value to be passed
                               1    .globl cpct_setPALColour_asm
-   4B38 21 10 00      [10]    2    ld   hl, #0x010         ;; [3]  H=Hardware value of desired colour, L=Border INK (16)
-   4B3B CD EA 4B      [17]    3    call cpct_setPALColour_asm  ;; [25] Set Palette colour of the border
+   4D02 21 10 00      [10]    2    ld   hl, #0x010         ;; [3]  H=Hardware value of desired colour, L=Border INK (16)
+   4D05 CD B4 4D      [17]    3    call cpct_setPALColour_asm  ;; [25] Set Palette colour of the border
                               3    .radix d
-   4B3E 0E 00         [ 7]   39     ld c, #0
-   4B40 CD FE 4B      [17]   40     call cpct_setVideoMode_asm
+   4D08 0E 00         [ 7]   39     ld c, #0
+   4D0A CD C8 4D      [17]   40     call cpct_setVideoMode_asm
                              41 
-   4B43 21 88 44      [10]   42     ld hl, #_pre_palette
-   4B46 11 10 00      [10]   43     ld de, #16
-   4B49 CD CB 4B      [17]   44     call cpct_setPalette_asm
+   4D0D 21 88 44      [10]   42     ld hl, #_pre_palette
+   4D10 11 10 00      [10]   43     ld de, #16
+   4D13 CD 95 4D      [17]   44     call cpct_setPalette_asm
                              45 
-   4B4C C9            [10]   46     ret
+   4D16 C9            [10]   46     ret
                              47 
                              48 
                              49 
-   4B4D                      50 render_system_render_one_entity:
+   4D17                      50 render_system_render_one_entity:
                              51 
                              52     ;; check if an entity is inside the camera
-   4B4D DD 7E 05      [19]   53     ld a, ent_w(ix)
+   4D17 DD 7E 05      [19]   53     ld a, ent_w(ix)
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 100.
 Hexadecimal [16-Bits]
 
 
 
-   4B50 47            [ 4]   54     ld b, a
-   4B51 05            [ 4]   55     dec b
-   4B52 3E 40         [ 7]   56     ld a, #64
-   4B54 90            [ 4]   57     sub b
-   4B55 47            [ 4]   58     ld b, a
+   4D1A 47            [ 4]   54     ld b, a
+   4D1B 05            [ 4]   55     dec b
+   4D1C 3E 40         [ 7]   56     ld a, #64
+   4D1E 90            [ 4]   57     sub b
+   4D1F 47            [ 4]   58     ld b, a
                              59     
-   4B56 DD 7E 03      [19]   60     ld a, ent_sx(ix)
-   4B59 B8            [ 4]   61     cp b
-   4B5A D0            [11]   62     ret nc
+   4D20 DD 7E 03      [19]   60     ld a, ent_sx(ix)
+   4D23 B8            [ 4]   61     cp b
+   4D24 D0            [11]   62     ret nc
                              63 
                      0046    64 back_buffer_0 = . + 2
-   4B5B 11 00 C4      [10]   65     ld   de, #0xC400 ;; DE = Pointer to start of the screen
-   4B5E DD 46 04      [19]   66     ld    b, ent_sy(ix)            ;; B = y coordinate (24 = 0x18)
-   4B61 DD 4E 03      [19]   67     ld    c, ent_sx(ix)            ;; C = x coordinate (16 = 0x10)
-   4B64 CD CB 47      [17]   68     call getScreenPtr_32x16       ;; Calculate video memory location and return it in HL
+   4D25 11 00 C4      [10]   65     ld   de, #0xC400 ;; DE = Pointer to start of the screen
+   4D28 DD 46 04      [19]   66     ld    b, ent_sy(ix)            ;; B = y coordinate (24 = 0x18)
+   4D2B DD 4E 03      [19]   67     ld    c, ent_sx(ix)            ;; C = x coordinate (16 = 0x10)
+   4D2E CD CB 48      [17]   68     call getScreenPtr_32x16       ;; Calculate video memory location and return it in HL
                              69 
-   4B67 EB            [ 4]   70     ex de, hl
+   4D31 EB            [ 4]   70     ex de, hl
                              71 
-   4B68 DD 6E 09      [19]   72     ld l,  ent_tex(ix)
-   4B6B DD 66 0A      [19]   73     ld h, ent_tex+1(ix)
-   4B6E DD 46 06      [19]   74     ld b, ent_h(ix)
-   4B71 DD 4E 05      [19]   75     ld c, ent_w(ix)
-   4B74 CD D9 47      [17]   76     call drawSprite_32x16
+   4D32 DD 6E 09      [19]   72     ld l,  ent_tex(ix)
+   4D35 DD 66 0A      [19]   73     ld h, ent_tex+1(ix)
+   4D38 DD 46 06      [19]   74     ld b, ent_h(ix)
+   4D3B DD 4E 05      [19]   75     ld c, ent_w(ix)
+   4D3E CD D9 48      [17]   76     call drawSprite_32x16
                              77 
-   4B77 C9            [10]   78     ret
+   4D41 C9            [10]   78     ret
                              79 
-   4B78                      80 render_system_draw_tilemap::
-   4B78 01 10 10      [10]   81     ld bc, #0x1010
-   4B7B 11 20 00      [10]   82     ld de, #32
-   4B7E 21 00 40      [10]   83     ld hl, #_tile_tilemap_00
-   4B81 CD 9F 47      [17]   84     call setDrawTileMap4x8_ag_32x16
+   4D42                      80 render_system_draw_tilemap::
+   4D42 01 10 10      [10]   81     ld bc, #0x1010
+   4D45 11 30 00      [10]   82     ld de, #48
+   4D48 21 00 40      [10]   83     ld hl, #_tile_tilemap_00
+   4D4B CD 9F 48      [17]   84     call setDrawTileMap4x8_ag_32x16
                      006F    85 back_buffer_1 = . + 2   
-   4B84 21 00 C4      [10]   86     ld hl, #0xC400
-   4B87 ED 5B D9 49   [20]   87     ld de, (camera + camera_ptr)
-   4B8B CD 06 47      [17]   88     call drawTilemap4x8_ag_32x16
-   4B8E C9            [10]   89     ret
+   4D4E 21 00 C4      [10]   86     ld hl, #0xC400
+   4D51 ED 5B D9 4A   [20]   87     ld de, (camera + camera_ptr)
+   4D55 CD 06 48      [17]   88     call drawTilemap4x8_ag_32x16
+   4D58 C9            [10]   89     ret
                              90 
-   4B8F                      91 change_screen:
+   4D59                      91 change_screen:
                      0079    92 change_screen_fptr = . + 1
-   4B8F C3 92 4B      [10]   93     jp change_screen_to_C400
+   4D59 C3 5C 4D      [10]   93     jp change_screen_to_C400
                              94 
-   4B92                      95 change_screen_to_C400:
-   4B92 11 32 0C      [10]   96     ld de, #0x0C32
-   4B95 CD 17 4B      [17]   97     call set_crtc
-   4B98 3E C0         [ 7]   98     ld a, #0xC0
-   4B9A 32 5D 4B      [13]   99     ld (back_buffer_0), a
-   4B9D 32 86 4B      [13]  100     ld (back_buffer_1), a
+   4D5C                      95 change_screen_to_C400:
+   4D5C 11 32 0C      [10]   96     ld de, #0x0C32
+   4D5F CD E1 4C      [17]   97     call set_crtc
+   4D62 3E C0         [ 7]   98     ld a, #0xC0
+   4D64 32 27 4D      [13]   99     ld (back_buffer_0), a
+   4D67 32 50 4D      [13]  100     ld (back_buffer_1), a
                             101 
-   4BA0 21 A7 4B      [10]  102     ld hl, #change_screen_to_C000
-   4BA3 22 90 4B      [16]  103     ld (change_screen_fptr), hl
+   4D6A 21 71 4D      [10]  102     ld hl, #change_screen_to_C000
+   4D6D 22 5A 4D      [16]  103     ld (change_screen_fptr), hl
                             104 
-   4BA6 C9            [10]  105     ret
+   4D70 C9            [10]  105     ret
                             106 
-   4BA7                     107 change_screen_to_C000:
-   4BA7 11 30 0C      [10]  108     ld de, #0x0C30
+   4D71                     107 change_screen_to_C000:
+   4D71 11 30 0C      [10]  108     ld de, #0x0C30
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 101.
 Hexadecimal [16-Bits]
 
 
 
-   4BAA CD 17 4B      [17]  109     call set_crtc
-   4BAD 3E C4         [ 7]  110     ld a, #0xC4
-   4BAF 32 5D 4B      [13]  111     ld (back_buffer_0), a
-   4BB2 32 86 4B      [13]  112     ld (back_buffer_1), a
+   4D74 CD E1 4C      [17]  109     call set_crtc
+   4D77 3E C4         [ 7]  110     ld a, #0xC4
+   4D79 32 27 4D      [13]  111     ld (back_buffer_0), a
+   4D7C 32 50 4D      [13]  112     ld (back_buffer_1), a
                             113 
-   4BB5 21 92 4B      [10]  114     ld hl, #change_screen_to_C400
-   4BB8 22 90 4B      [16]  115     ld (change_screen_fptr), hl
+   4D7F 21 5C 4D      [10]  114     ld hl, #change_screen_to_C400
+   4D82 22 5A 4D      [16]  115     ld (change_screen_fptr), hl
                             116 
-   4BBB C9            [10]  117     ret
+   4D85 C9            [10]  117     ret
                             118 
-   4BBC                     119 render_system_update::
-   4BBC CD 78 4B      [17]  120     call render_system_draw_tilemap
+   4D86                     119 render_system_update::
+   4D86 CD 42 4D      [17]  120     call render_system_draw_tilemap
                             121 
-   4BBF 3E A0         [ 7]  122     ld a, #(ent_mask_alive|ent_mask_render)
-   4BC1 21 4D 4B      [10]  123     ld hl, #render_system_render_one_entity
-   4BC4 CD B2 49      [17]  124     call entity_manager_forall
+   4D89 3E A0         [ 7]  122     ld a, #(ent_mask_alive|ent_mask_render)
+   4D8B 21 17 4D      [10]  123     ld hl, #render_system_render_one_entity
+   4D8E CD B2 4A      [17]  124     call entity_manager_forall
                             125 
-   4BC7 CD 8F 4B      [17]  126     call change_screen
+   4D91 CD 59 4D      [17]  126     call change_screen
                             127 
-   4BCA C9            [10]  128     ret
+   4D94 C9            [10]  128     ret
