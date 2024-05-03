@@ -40,6 +40,11 @@ get_tile_from_coord:
 ;; Funtion for collision resolution with the tilemap
 ;;====================================================
 resolve_floor_collision:
+    ;; set the jump flag
+    ld a, ent_flags(ix)
+    set ent_jump_bit, a
+    ld ent_flags(ix), a
+
     ld a, ent_y(ix)
     and #0b11111000
     ld ent_y(ix), a

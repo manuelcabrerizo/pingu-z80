@@ -4,16 +4,17 @@ Hexadecimal [16-Bits]
 Symbol Table
 
     .__.$$$.=  2710 L   |     .__.ABS.=  0000 G   |     .__.CPU.=  0000 L
-    .__.H$L.=  0000 L   |     ent_data=  000B     |     ent_dx  =  0007 
-    ent_dy  =  0008     |     ent_h   =  0006     |     ent_mask=  0080 
-    ent_mask=  0008     |     ent_mask=  0010     |     ent_mask=  0000 
-    ent_mask=  0040     |     ent_mask=  0020     |     ent_next=  000B 
-    ent_size=  000D     |     ent_sx  =  0003     |     ent_sy  =  0004 
-    ent_tex =  0009     |     ent_type=  0000     |     ent_type=  0007 
-    ent_type=  0003     |     ent_type=  0004     |     ent_type=  0006 
-    ent_type=  0005     |     ent_w   =  0005     |     ent_x   =  0001 
-    ent_y   =  0002     |     entity_m   **** GX  |     entity_m   **** GX
-    entity_m   **** GX  |     entity_m   **** GX  |     entity_m=  000A 
+    .__.H$L.=  0000 L   |     ent_data=  000C     |     ent_dx  =  0007 
+    ent_dy  =  0008     |     ent_flag=  0009     |     ent_h   =  0006 
+    ent_jump=  0007     |     ent_mask=  0080     |     ent_mask=  0008 
+    ent_mask=  0010     |     ent_mask=  0000     |     ent_mask=  0040 
+    ent_mask=  0020     |     ent_next=  000C     |     ent_size=  000E 
+    ent_sx  =  0003     |     ent_sy  =  0004     |     ent_tex =  000A 
+    ent_type=  0000     |     ent_type=  0007     |     ent_type=  0003 
+    ent_type=  0004     |     ent_type=  0006     |     ent_type=  0005 
+    ent_w   =  0005     |     ent_x   =  0001     |     ent_y   =  0002 
+    entity_m   **** GX  |     entity_m   **** GX  |     entity_m   **** GX
+    entity_m   **** GX  |     entity_m=  000A 
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]

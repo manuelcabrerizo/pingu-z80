@@ -16,6 +16,7 @@
     .db _h
     .db _dx
     .db _dy
+    .db 0
     .dw _tex
 .endm
 
@@ -30,12 +31,13 @@ ent_w     = 5  ;; 1 bytes
 ent_h     = 6  ;; 1 bytes
 ent_dx    = 7  ;; 1 bytes
 ent_dy    = 8  ;; 1 bytes
-ent_tex   = 9  ;; 2 bytes
+ent_flags = 9  ;; 1 bytes
+ent_tex   = 10 ;; 2 bytes
 ;; private DATA (:()
-ent_next  = 11 ;; 2 bytes
+ent_next  = 12 ;; 2 bytes
 ;;===============================
 
-ent_size = 13
+ent_size = 14
 ent_data_size = ent_size - 2
 entity_manager_max_entities = 10
 
@@ -56,3 +58,9 @@ ent_mask_physics   = (1 << ent_type_physics_bit)
 ent_mask_render    = (1 << ent_type_render_bit)
 ent_mask_input     = (1 << ent_type_input_bit)
 ent_mask_collision = (1 << ent_type_collision_bit)
+
+
+;;===================================
+;; Entity Flags
+;;===================================
+ent_jump_bit  = 7

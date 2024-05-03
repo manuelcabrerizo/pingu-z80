@@ -11,9 +11,9 @@ S entity_manager_init Ref0000
 S entity_manager_forall Ref0000
 S entity_manager_destroy_entity Ref0000
 S cpct_scanKeyboard_asm Ref0000
-A _CODE size 42 flags 0 addr 0
+A _CODE size 4E flags 0 addr 0
 S input_system_init Def0000
-S input_system_update Def0039
+S input_system_update Def0045
 T 00 00
 R 00 00 00 00
 T 00 00 C9
@@ -32,13 +32,15 @@ T 20 00 21 04 04 CD 00 00 28 04 DD 36 07 FF
 R 00 00 00 00 02 06 01 00
 T 2C 00
 R 00 00 00 00
-T 2C 00 21 05 80 CD 00 00 28 04 DD 36 08 FB
-R 00 00 00 00 02 06 01 00
-T 38 00
+T 2C 00 DD 7E 09 CB 7F 28 11 21 05 80 CD 00 00 28
+R 00 00 00 00 02 0D 01 00
+T 3A 00 09 DD 36 08 FA CB BF DD 77 09
 R 00 00 00 00
-T 38 00 C9
+T 44 00
 R 00 00 00 00
-T 39 00
+T 44 00 C9
 R 00 00 00 00
-T 39 00 3E D0 21 01 00 CD 00 00 C9
+T 45 00
+R 00 00 00 00
+T 45 00 3E D0 21 01 00 CD 00 00 C9
 R 00 00 00 00 00 05 00 00 02 08 07 00

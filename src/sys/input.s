@@ -34,10 +34,18 @@ p_not_press:
 
 o_not_press:
 
+    ld a, ent_flags(ix)
+    bit ent_jump_bit, a
+    jr z, space_not_press
+
     ld hl, #Key_Space
     call cpct_isKeyPressed_asm
     jr z, space_not_press
-    ld ent_dy(ix), #-5
+    ld ent_dy(ix), #-6
+
+    ;; unset set the jump flag
+    res ent_jump_bit, a
+    ld ent_flags(ix), a
 
 space_not_press:
     ret

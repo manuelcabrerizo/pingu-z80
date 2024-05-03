@@ -63,37 +63,37 @@
    4498                      63 _pre_tileset:
    4498 9A 44                64 	.dw _pre_face
    449A                      65 _pre_face:
-   449A 03                   66 	.db #0x03	; 3
-   449B 3F                   67 	.db #0x3f	; 63
-   449C 3F                   68 	.db #0x3f	; 63
-   449D 03                   69 	.db #0x03	; 3
-   449E 17                   70 	.db #0x17	; 23
-   449F 3F                   71 	.db #0x3f	; 63
-   44A0 3F                   72 	.db #0x3f	; 63
-   44A1 2B                   73 	.db #0x2b	; 43
-   44A2 7F                   74 	.db #0x7f	; 127
-   44A3 BF                   75 	.db #0xbf	; 191
+   449A 46                   66 	.db #0x46	; 70	'F'
+   449B CC                   67 	.db #0xcc	; 204
+   449C CC                   68 	.db #0xcc	; 204
+   449D 89                   69 	.db #0x89	; 137
+   449E 8D                   70 	.db #0x8d	; 141
+   449F 0F                   71 	.db #0x0f	; 15
+   44A0 0F                   72 	.db #0x0f	; 15
+   44A1 4E                   73 	.db #0x4e	; 78	'N'
+   44A2 DD                   74 	.db #0xdd	; 221
+   44A3 AF                   75 	.db #0xaf	; 175
    44A4 FF                   76 	.db #0xff	; 255
-   44A5 3F                   77 	.db #0x3f	; 63
-   44A6 7F                   78 	.db #0x7f	; 127
-   44A7 15                   79 	.db #0x15	; 21
+   44A5 4E                   77 	.db #0x4e	; 78	'N'
+   44A6 DD                   78 	.db #0xdd	; 221
+   44A7 05                   79 	.db #0x05	; 5
    44A8 AA                   80 	.db #0xaa	; 170
-   44A9 3F                   81 	.db #0x3f	; 63
-   44AA 3F                   82 	.db #0x3f	; 63
-   44AB 3F                   83 	.db #0x3f	; 63
-   44AC 3F                   84 	.db #0x3f	; 63
-   44AD 3F                   85 	.db #0x3f	; 63
-   44AE 3F                   86 	.db #0x3f	; 63
-   44AF 2A                   87 	.db #0x2a	; 42
-   44B0 00                   88 	.db #0x00	; 0
-   44B1 3F                   89 	.db #0x3f	; 63
-   44B2 17                   90 	.db #0x17	; 23
-   44B3 3F                   91 	.db #0x3f	; 63
-   44B4 3F                   92 	.db #0x3f	; 63
-   44B5 2B                   93 	.db #0x2b	; 43
-   44B6 03                   94 	.db #0x03	; 3
-   44B7 3F                   95 	.db #0x3f	; 63
-   44B8 3F                   96 	.db #0x3f	; 63
-   44B9 03                   97 	.db #0x03	; 3
+   44A9 4E                   81 	.db #0x4e	; 78	'N'
+   44AA 8D                   82 	.db #0x8d	; 141
+   44AB 0F                   83 	.db #0x0f	; 15
+   44AC 0F                   84 	.db #0x0f	; 15
+   44AD 4E                   85 	.db #0x4e	; 78	'N'
+   44AE 8D                   86 	.db #0x8d	; 141
+   44AF 0A                   87 	.db #0x0a	; 10
+   44B0 05                   88 	.db #0x05	; 5
+   44B1 4E                   89 	.db #0x4e	; 78	'N'
+   44B2 8D                   90 	.db #0x8d	; 141
+   44B3 0F                   91 	.db #0x0f	; 15
+   44B4 0F                   92 	.db #0x0f	; 15
+   44B5 4E                   93 	.db #0x4e	; 78	'N'
+   44B6 46                   94 	.db #0x46	; 70	'F'
+   44B7 CC                   95 	.db #0xcc	; 204
+   44B8 CC                   96 	.db #0xcc	; 204
+   44B9 89                   97 	.db #0x89	; 137
                              98 	.area _INITIALIZER
                              99 	.area _CABS (ABS)

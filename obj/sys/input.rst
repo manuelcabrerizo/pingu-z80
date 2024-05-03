@@ -5024,51 +5024,59 @@ Hexadecimal [16-Bits]
                              16     .db _h
                              17     .db _dx
                              18     .db _dy
-                             19     .dw _tex
-                             20 .endm
-                             21 
-                             22 ;;===============================
-                             23 ;; public DATA (:))
-                     0000    24 ent_type  = 0  ;; 1 bytes
-                     0001    25 ent_x     = 1  ;; 1 bytes
-                     0002    26 ent_y     = 2  ;; 1 bytes
-                     0003    27 ent_sx    = 3  ;; 1 bytes
-                     0004    28 ent_sy    = 4  ;; 1 bytes
-                     0005    29 ent_w     = 5  ;; 1 bytes
-                     0006    30 ent_h     = 6  ;; 1 bytes
-                     0007    31 ent_dx    = 7  ;; 1 bytes
-                     0008    32 ent_dy    = 8  ;; 1 bytes
-                     0009    33 ent_tex   = 9  ;; 2 bytes
-                             34 ;; private DATA (:()
-                     000B    35 ent_next  = 11 ;; 2 bytes
-                             36 ;;===============================
-                             37 
-                     000D    38 ent_size = 13
-                     000B    39 ent_data_size = ent_size - 2
-                     000A    40 entity_manager_max_entities = 10
-                             41 
-                             42 
+                             19     .db 0
+                             20     .dw _tex
+                             21 .endm
+                             22 
+                             23 ;;===============================
+                             24 ;; public DATA (:))
+                     0000    25 ent_type  = 0  ;; 1 bytes
+                     0001    26 ent_x     = 1  ;; 1 bytes
+                     0002    27 ent_y     = 2  ;; 1 bytes
+                     0003    28 ent_sx    = 3  ;; 1 bytes
+                     0004    29 ent_sy    = 4  ;; 1 bytes
+                     0005    30 ent_w     = 5  ;; 1 bytes
+                     0006    31 ent_h     = 6  ;; 1 bytes
+                     0007    32 ent_dx    = 7  ;; 1 bytes
+                     0008    33 ent_dy    = 8  ;; 1 bytes
+                     0009    34 ent_flags = 9  ;; 1 bytes
+                     000A    35 ent_tex   = 10 ;; 2 bytes
+                             36 ;; private DATA (:()
+                     000C    37 ent_next  = 12 ;; 2 bytes
+                             38 ;;===============================
+                             39 
+                     000E    40 ent_size = 14
+                     000C    41 ent_data_size = ent_size - 2
+                     000A    42 entity_manager_max_entities = 10
                              43 
-                             44 ;;===================================
-                             45 ;; Entity Bitfield
+                             44 
+                             45 
                              46 ;;===================================
-                     0007    47 ent_type_alive_bit     = 7
-                     0006    48 ent_type_physics_bit   = 6
-                     0005    49 ent_type_render_bit    = 5
-                     0004    50 ent_type_input_bit     = 4
-                     0003    51 ent_type_collision_bit = 3
-                             52 
-                     0000    53 ent_mask_invalid   = 0x00
-                     0080    54 ent_mask_alive     = (1 << ent_type_alive_bit)
+                             47 ;; Entity Bitfield
+                             48 ;;===================================
+                     0007    49 ent_type_alive_bit     = 7
+                     0006    50 ent_type_physics_bit   = 6
+                     0005    51 ent_type_render_bit    = 5
+                     0004    52 ent_type_input_bit     = 4
+                     0003    53 ent_type_collision_bit = 3
+                             54 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 96.
 Hexadecimal [16-Bits]
 
 
 
-                     0040    55 ent_mask_physics   = (1 << ent_type_physics_bit)
-                     0020    56 ent_mask_render    = (1 << ent_type_render_bit)
-                     0010    57 ent_mask_input     = (1 << ent_type_input_bit)
-                     0008    58 ent_mask_collision = (1 << ent_type_collision_bit)
+                     0000    55 ent_mask_invalid   = 0x00
+                     0080    56 ent_mask_alive     = (1 << ent_type_alive_bit)
+                     0040    57 ent_mask_physics   = (1 << ent_type_physics_bit)
+                     0020    58 ent_mask_render    = (1 << ent_type_render_bit)
+                     0010    59 ent_mask_input     = (1 << ent_type_input_bit)
+                     0008    60 ent_mask_collision = (1 << ent_type_collision_bit)
+                             61 
+                             62 
+                             63 ;;===================================
+                             64 ;; Entity Flags
+                             65 ;;===================================
+                     0007    66 ent_jump_bit  = 7
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 97.
 Hexadecimal [16-Bits]
 
@@ -5097,46 +5105,54 @@ Hexadecimal [16-Bits]
                               5 .globl cpct_scanKeyboard_asm
                               6 .globl cpct_isKeyPressed_asm
                               7 
-   4C74                       8 input_system_init::
-   4C74 C9            [10]    9     ret
+   4C88                       8 input_system_init::
+   4C88 C9            [10]    9     ret
                              10 
-   4C75                      11 input_system_update_one_entity:
+   4C89                      11 input_system_update_one_entity:
                              12 
                              13     ;; Update the camera target to follow this entity
-   4C75 DD 7E 03      [19]   14     ld a, ent_sx(ix);
-   4C78 32 DD 4A      [13]   15     ld (camera + camera_tx), a
-   4C7B DD 7E 04      [19]   16     ld a, ent_sy(ix);
-   4C7E 32 DE 4A      [13]   17     ld (camera + camera_ty), a
+   4C89 DD 7E 03      [19]   14     ld a, ent_sx(ix);
+   4C8C 32 E9 4A      [13]   15     ld (camera + camera_tx), a
+   4C8F DD 7E 04      [19]   16     ld a, ent_sy(ix);
+   4C92 32 EA 4A      [13]   17     ld (camera + camera_ty), a
                              18 
-   4C81 CD EE 4D      [17]   19     call cpct_scanKeyboard_asm
+   4C95 CD 0E 4E      [17]   19     call cpct_scanKeyboard_asm
                              20 
-   4C84 DD 36 07 00   [19]   21     ld ent_dx(ix), #0
+   4C98 DD 36 07 00   [19]   21     ld ent_dx(ix), #0
                              22 
-   4C88 21 03 08      [10]   23     ld hl, #Key_P
-   4C8B CD A8 4D      [17]   24     call cpct_isKeyPressed_asm
-   4C8E 28 04         [12]   25     jr z, p_not_press
-   4C90 DD 36 07 01   [19]   26     ld ent_dx(ix), #1
+   4C9C 21 03 08      [10]   23     ld hl, #Key_P
+   4C9F CD C8 4D      [17]   24     call cpct_isKeyPressed_asm
+   4CA2 28 04         [12]   25     jr z, p_not_press
+   4CA4 DD 36 07 01   [19]   26     ld ent_dx(ix), #1
                              27 
-   4C94                      28 p_not_press:
+   4CA8                      28 p_not_press:
                              29 
-   4C94 21 04 04      [10]   30     ld hl, #Key_O
-   4C97 CD A8 4D      [17]   31     call cpct_isKeyPressed_asm
-   4C9A 28 04         [12]   32     jr z, o_not_press
-   4C9C DD 36 07 FF   [19]   33     ld ent_dx(ix), #-1
+   4CA8 21 04 04      [10]   30     ld hl, #Key_O
+   4CAB CD C8 4D      [17]   31     call cpct_isKeyPressed_asm
+   4CAE 28 04         [12]   32     jr z, o_not_press
+   4CB0 DD 36 07 FF   [19]   33     ld ent_dx(ix), #-1
                              34 
-   4CA0                      35 o_not_press:
+   4CB4                      35 o_not_press:
                              36 
-   4CA0 21 05 80      [10]   37     ld hl, #Key_Space
-   4CA3 CD A8 4D      [17]   38     call cpct_isKeyPressed_asm
-   4CA6 28 04         [12]   39     jr z, space_not_press
-   4CA8 DD 36 08 FB   [19]   40     ld ent_dy(ix), #-5
-                             41 
-   4CAC                      42 space_not_press:
-   4CAC C9            [10]   43     ret
-                             44     
+   4CB4 DD 7E 09      [19]   37     ld a, ent_flags(ix)
+   4CB7 CB 7F         [ 8]   38     bit ent_jump_bit, a
+   4CB9 28 11         [12]   39     jr z, space_not_press
+                             40 
+   4CBB 21 05 80      [10]   41     ld hl, #Key_Space
+   4CBE CD C8 4D      [17]   42     call cpct_isKeyPressed_asm
+   4CC1 28 09         [12]   43     jr z, space_not_press
+   4CC3 DD 36 08 FA   [19]   44     ld ent_dy(ix), #-6
                              45 
-   4CAD                      46 input_system_update::
-   4CAD 3E D0         [ 7]   47     ld a, #(ent_mask_alive|ent_mask_physics|ent_mask_input)
-   4CAF 21 75 4C      [10]   48     ld hl, #input_system_update_one_entity
-   4CB2 CD B2 4A      [17]   49     call entity_manager_forall
-   4CB5 C9            [10]   50     ret
+                             46     ;; unset set the jump flag
+   4CC7 CB BF         [ 8]   47     res ent_jump_bit, a
+   4CC9 DD 77 09      [19]   48     ld ent_flags(ix), a
+                             49 
+   4CCC                      50 space_not_press:
+   4CCC C9            [10]   51     ret
+                             52     
+                             53 
+   4CCD                      54 input_system_update::
+   4CCD 3E D0         [ 7]   55     ld a, #(ent_mask_alive|ent_mask_physics|ent_mask_input)
+   4CCF 21 89 4C      [10]   56     ld hl, #input_system_update_one_entity
+   4CD2 CD BE 4A      [17]   57     call entity_manager_forall
+   4CD5 C9            [10]   58     ret

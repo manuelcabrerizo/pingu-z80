@@ -54,7 +54,7 @@ Symbol Table
     Key_U   =  0405     |     Key_V   =  8006     |     Key_W   =  0807 
     Key_X   =  8007     |     Key_Y   =  0805     |     Key_Z   =  8008 
     PAL_INKR=  0040     |     PAL_PENR=  0000     |     PPI_PORT=  00F5 
-  0 _main      0016 GR  |     _pre_fac   **** GX  |     _spr_pin   **** GX
+  0 _main      0018 GR  |     _pre_fac   **** GX  |     _spr_pin   **** GX
     _tilemap   **** GX  |     camera     **** GX  |     camera_p=  0000 
     camera_s=  0006     |     camera_s   **** GX  |     camera_s   **** GX
     camera_t=  0004     |     camera_t=  0005     |     camera_x=  0002 
@@ -67,28 +67,28 @@ Symbol Table
     cpct_dis   **** GX  |     cpct_pag=  0000     |     cpct_pag=  0010 
     cpct_pag=  0020     |     cpct_pag=  0030     |     cpct_wai   **** GX
     drawSoli   **** GX  |     drawSpri   **** GX  |     drawTile   **** GX
-    ent_data=  000B     |     ent_dx  =  0007     |     ent_dy  =  0008 
-    ent_h   =  0006     |     ent_mask=  0080     |     ent_mask=  0008 
-    ent_mask=  0010     |     ent_mask=  0000     |     ent_mask=  0040 
-    ent_mask=  0020     |     ent_next=  000B     |     ent_size=  000D 
-    ent_sx  =  0003     |     ent_sy  =  0004     |     ent_tex =  0009 
-    ent_type=  0000     |     ent_type=  0007     |     ent_type=  0003 
-    ent_type=  0004     |     ent_type=  0006     |     ent_type=  0005 
-    ent_w   =  0005     |     ent_x   =  0001     |     ent_y   =  0002 
+    ent_data=  000C     |     ent_dx  =  0007     |     ent_dy  =  0008 
+    ent_flag=  0009     |     ent_h   =  0006     |     ent_jump=  0007 
+    ent_mask=  0080     |     ent_mask=  0008     |     ent_mask=  0010 
+    ent_mask=  0000     |     ent_mask=  0040     |     ent_mask=  0020 
+    ent_next=  000C     |     ent_size=  000E     |     ent_sx  =  0003 
+    ent_sy  =  0004     |     ent_tex =  000A     |     ent_type=  0000 
+    ent_type=  0007     |     ent_type=  0003     |     ent_type=  0004 
+    ent_type=  0006     |     ent_type=  0005     |     ent_w   =  0005 
+    ent_x   =  0001     |     ent_y   =  0002     |     entity_m   **** GX
     entity_m   **** GX  |     entity_m   **** GX  |     entity_m   **** GX
-    entity_m   **** GX  |     entity_m=  000A     |     firmware=  0038 
-  0 game_loo   003B R   |     getScree   **** GX  |     input_sy   **** GX
-    input_sy   **** GX  |     max_grav=  0004     |     opc_DI  =  00F3 
-    opc_EI  =  00FB     |     opc_JR  =  0018     |     opc_LD_D=  0016 
-    physics_   **** GX  |     physics_   **** GX  |     render_s   **** GX
-    render_s   **** GX  |     setDrawT   **** GX  |   0 test_fac   0000 R
-  0 test_pin   000B R
+    entity_m=  000A     |     firmware=  0038     |   0 game_loo   003D R
+    getScree   **** GX  |     input_sy   **** GX  |     input_sy   **** GX
+    max_grav=  0004     |     opc_DI  =  00F3     |     opc_EI  =  00FB 
+    opc_JR  =  0018     |     opc_LD_D=  0016     |     physics_   **** GX
+    physics_   **** GX  |     render_s   **** GX  |     render_s   **** GX
+    setDrawT   **** GX  |   0 test_fac   0000 R   |   0 test_pin   000C R
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
 Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE      size   4C   flags    0
+   0 _CODE      size   4E   flags    0
    1 _DATA      size    0   flags    0
 
