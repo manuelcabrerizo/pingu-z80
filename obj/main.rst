@@ -5030,50 +5030,60 @@ Hexadecimal [16-Bits]
                               8 .macro DefineEntity _type, _x, _y, _w, _h, _dx, _dy, _tex
                               9 ;; public data
                              10     .db _type
-                             11     .db _x
-                             12     .db _y
-                             13     .db _w
-                             14     .db _h
-                             15     .db _dx
-                             16     .db _dy
-                             17     .dw _tex
-                             18 .endm
-                             19 
-                             20 ;;===============================
-                             21 ;; public DATA (:))
-                     0000    22 ent_type  = 0  ;; 1 bytes
-                     0001    23 ent_x     = 1  ;; 1 bytes
-                     0002    24 ent_y     = 2  ;; 1 bytes
-                     0003    25 ent_w     = 3  ;; 1 bytes
-                     0004    26 ent_h     = 4  ;; 1 bytes
-                     0005    27 ent_dx    = 5  ;; 1 bytes
-                     0006    28 ent_dy    = 6  ;; 1 bytes
-                     0007    29 ent_tex   = 7  ;; 2 bytes
-                             30 ;; private DATA (:()
-                     0009    31 ent_next  = 9  ;; 2 bytes
-                             32 ;;===============================
-                             33 
-                     000B    34 ent_size = 11
-                     000A    35 entity_manager_max_entities = 10
-                     0009    36 ent_data_size = 9
+                             11     .db _x    ;; world coord
+                             12     .db _y    ;; world coord
+                             13     .db _x    ;; screen coord
+                             14     .db _y    ;; screen coord
+                             15     .db _w
+                             16     .db _h
+                             17     .db _dx
+                             18     .db _dy
+                             19     .dw _tex
+                             20 .endm
+                             21 
+                             22 ;;===============================
+                             23 ;; public DATA (:))
+                     0000    24 ent_type  = 0  ;; 1 bytes
+                     0001    25 ent_x     = 1  ;; 1 bytes
+                     0002    26 ent_y     = 2  ;; 1 bytes
+                     0003    27 ent_sx    = 3  ;; 1 bytes
+                     0004    28 ent_sy    = 4  ;; 1 bytes
+                     0005    29 ent_w     = 5  ;; 1 bytes
+                     0006    30 ent_h     = 6  ;; 1 bytes
+                     0007    31 ent_dx    = 7  ;; 1 bytes
+                     0008    32 ent_dy    = 8  ;; 1 bytes
+                     0009    33 ent_tex   = 9  ;; 2 bytes
+                             34 ;; private DATA (:()
+                     000B    35 ent_next  = 11 ;; 2 bytes
+                             36 ;;===============================
                              37 
-                             38 
-                             39 ;;===================================
-                             40 ;; Entity Bitfield
-                             41 ;;===================================
-                     0007    42 ent_type_alive_bit     = 7
-                     0006    43 ent_type_physics_bit   = 6
-                     0005    44 ent_type_render_bit    = 5
-                     0004    45 ent_type_input_bit     = 4
-                     0003    46 ent_type_collision_bit = 3
-                             47 
-                     0000    48 ent_mask_invalid   = 0x00
-                     0080    49 ent_mask_alive     = (1 << ent_type_alive_bit)
-                     0040    50 ent_mask_physics   = (1 << ent_type_physics_bit)
-                     0020    51 ent_mask_render    = (1 << ent_type_render_bit)
-                     0010    52 ent_mask_input     = (1 << ent_type_input_bit)
-                     0008    53 ent_mask_collision = (1 << ent_type_collision_bit)
+                     000D    38 ent_size = 13
+                     000B    39 ent_data_size = ent_size - 2
+                     000A    40 entity_manager_max_entities = 10
+                             41 
+                             42 
+                             43 
+                             44 ;;===================================
+                             45 ;; Entity Bitfield
+                             46 ;;===================================
+                     0007    47 ent_type_alive_bit     = 7
+                     0006    48 ent_type_physics_bit   = 6
+                     0005    49 ent_type_render_bit    = 5
+                     0004    50 ent_type_input_bit     = 4
+                     0003    51 ent_type_collision_bit = 3
+                             52 
+                     0000    53 ent_mask_invalid   = 0x00
+                     0080    54 ent_mask_alive     = (1 << ent_type_alive_bit)
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 97.
+Hexadecimal [16-Bits]
+
+
+
+                     0040    55 ent_mask_physics   = (1 << ent_type_physics_bit)
+                     0020    56 ent_mask_render    = (1 << ent_type_render_bit)
+                     0010    57 ent_mask_input     = (1 << ent_type_input_bit)
+                     0008    58 ent_mask_collision = (1 << ent_type_collision_bit)
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 98.
 Hexadecimal [16-Bits]
 
 
@@ -5083,7 +5093,9 @@ Hexadecimal [16-Bits]
                               2 
                               3 .globl render_system_init
                               4 .globl render_system_update
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 98.
+                              5 
+                              6 .globl _tilemap_00
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 99.
 Hexadecimal [16-Bits]
 
 
@@ -5093,7 +5105,10 @@ Hexadecimal [16-Bits]
                               2 
                               3 .globl physics_system_init
                               4 .globl physics_system_update
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 99.
+                              5 
+                              6 
+                     0004     7 max_gravity = 4
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 100.
 Hexadecimal [16-Bits]
 
 
@@ -5103,7 +5118,7 @@ Hexadecimal [16-Bits]
                               2 
                               3 .globl input_system_init
                               4 .globl input_system_update
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 100.
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 101.
 Hexadecimal [16-Bits]
 
 
@@ -5113,75 +5128,96 @@ Hexadecimal [16-Bits]
                               2 
                               3 .globl collision_system_init
                               4 .globl collision_system_update
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 101.
-Hexadecimal [16-Bits]
-
-
-
-                              8 
-                              9 .area _DATA 
-                             10 .area _CODE
-                             11 
-                             12 .globl cpct_disableFirmware_asm
-                             13 .globl cpct_waitVSYNC_asm
-                             14 .globl _pre_face
-                             15 .globl _spr_pingu_0
-                             16 
-   0000                      17 test_face:  DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision), 16, 5, 4,  8, 0, 0, _pre_face
-                              1 ;; public data
-   46BA E8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision)
-   46BB 10                    3     .db 16
-   46BC 05                    4     .db 5
-   46BD 04                    5     .db 4
-   46BE 08                    6     .db 8
-   46BF 00                    7     .db 0
-   46C0 00                    8     .db 0
-   46C1 9A 44                 9     .dw _pre_face
-   0009                      18 test_pingu: DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_input|ent_mask_collision), 0,  5, 8, 24, 0, 0, _spr_pingu_0
-                              1 ;; public data
-   46C3 F8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_input|ent_mask_collision)
-   46C4 00                    3     .db 0
-   46C5 05                    4     .db 5
-   46C6 08                    5     .db 8
-   46C7 18                    6     .db 24
-   46C8 00                    7     .db 0
-   46C9 00                    8     .db 0
-   46CA 88 41                 9     .dw _spr_pingu_0
-                             19 
-                             20 ;;
-                             21 ;; MAIN function. This is the entry point of the application.
-                             22 ;;    _main:: global symbol is required for correctly compiling and linking
-                             23 ;;
-   46CC                      24 _main::
-                             25    ;; Disable firmware to prevent it from interfering with string drawing
-   46CC CD 43 4B      [17]   26    call cpct_disableFirmware_asm
-                             27 
-                             28    ;; initialize managers
-   46CF CD 94 48      [17]   29    call entity_manager_init
-                             30    ;; initialize subsystems
-   46D2 CD 5F 4A      [17]   31    call render_system_init
-   46D5 CD ED 49      [17]   32    call input_system_init
-   46D8 CD 23 4A      [17]   33    call physics_system_init
-   46DB CD BB 49      [17]   34    call collision_system_init
-                             35    
-                             36    
-   46DE CD C7 48      [17]   37    call entity_manager_create_entity
-   46E1 21 BA 46      [10]   38    ld hl, #test_face
-   46E4 ED B0         [21]   39    ldir
-                             40 
-   46E6 CD C7 48      [17]   41    call entity_manager_create_entity
-   46E9 21 C3 46      [10]   42    ld hl, #test_pingu
-   46EC ED B0         [21]   43    ldir
-                             44 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 102.
 Hexadecimal [16-Bits]
 
 
 
-   46EE                      45 game_loop:
-   46EE CD 1A 4A      [17]   46    call input_system_update
-   46F1 CD 4D 4A      [17]   47    call physics_system_update
-   46F4 CD E4 49      [17]   48    call collision_system_update
-                             49 
-   46F7 CD EC 4A      [17]   50    call render_system_update
-   46FA 18 F2         [12]   51    jr game_loop
+                              8 .include "sys/camera.h.s"
+                              1 .module camera_system
+                              2 
+                              3 .globl camera_system_init
+                              4 .globl camera_system_update
+                              5 
+                              6 .globl camera
+                              7 
+                     0000     8 camera_ptr = 0
+                     0002     9 camera_x   = 2
+                     0003    10 camera_y   = 3
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 103.
+Hexadecimal [16-Bits]
+
+
+
+                              9 
+                             10 .area _DATA 
+                             11 .area _CODE
+                             12 
+                             13 .globl cpct_disableFirmware_asm
+                             14 .globl cpct_waitVSYNC_asm
+                             15 .globl _pre_face
+                             16 .globl _spr_pingu_0
+                             17 
+   0000                      18 test_face:  DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision), 16, 5, 4,  8, 0, 0, _pre_face
+                              1 ;; public data
+   46BA E8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_collision)
+   46BB 10                    3     .db 16    ;; world coord
+   46BC 05                    4     .db 5    ;; world coord
+   46BD 10                    5     .db 16    ;; screen coord
+   46BE 05                    6     .db 5    ;; screen coord
+   46BF 04                    7     .db 4
+   46C0 08                    8     .db 8
+   46C1 00                    9     .db 0
+   46C2 00                   10     .db 0
+   46C3 9A 44                11     .dw _pre_face
+   000B                      19 test_pingu: DefineEntity (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_input|ent_mask_collision), 0,  5, 8, 24, 0, 0, _spr_pingu_0
+                              1 ;; public data
+   46C5 F8                    2     .db (ent_mask_alive|ent_mask_physics|ent_mask_render|ent_mask_input|ent_mask_collision)
+   46C6 00                    3     .db 0    ;; world coord
+   46C7 05                    4     .db 5    ;; world coord
+   46C8 00                    5     .db 0    ;; screen coord
+   46C9 05                    6     .db 5    ;; screen coord
+   46CA 08                    7     .db 8
+   46CB 18                    8     .db 24
+   46CC 00                    9     .db 0
+   46CD 00                   10     .db 0
+   46CE 88 41                11     .dw _spr_pingu_0
+                             20 
+                             21 ;;
+                             22 ;; MAIN function. This is the entry point of the application.
+                             23 ;;    _main:: global symbol is required for correctly compiling and linking
+                             24 ;;
+   46D0                      25 _main::
+                             26    ;; Disable firmware to prevent it from interfering with string drawing
+   46D0 CD 13 4C      [17]   27    call cpct_disableFirmware_asm
+                             28 
+                             29    ;; initialize managers
+   46D3 CD B2 48      [17]   30    call entity_manager_init
+                             31    ;; initialize subsystems
+   46D6 CD 20 4B      [17]   32    call render_system_init
+   46D9 CD B6 4A      [17]   33    call input_system_init
+   46DC CD EC 4A      [17]   34    call physics_system_init
+   46DF CD 50 4A      [17]   35    call collision_system_init
+   46E2 CD DD 49      [17]   36    call camera_system_init
+                             37    
+   46E5 CD E5 48      [17]   38    call entity_manager_create_entity
+   46E8 21 BA 46      [10]   39    ld hl, #test_face
+   46EB ED B0         [21]   40    ldir
+                             41 
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 104.
+Hexadecimal [16-Bits]
+
+
+
+   46ED CD E5 48      [17]   42    call entity_manager_create_entity
+   46F0 21 C5 46      [10]   43    ld hl, #test_pingu
+   46F3 ED B0         [21]   44    ldir
+                             45 
+   46F5                      46 game_loop:
+                             47    ;; Update subsystems
+   46F5 CD E3 4A      [17]   48    call input_system_update
+   46F8 CD 0E 4B      [17]   49    call physics_system_update
+   46FB CD AD 4A      [17]   50    call collision_system_update
+   46FE CD 23 4A      [17]   51    call camera_system_update
+   4701 CD BC 4B      [17]   52    call render_system_update
+   4704 18 EF         [12]   53    jr game_loop

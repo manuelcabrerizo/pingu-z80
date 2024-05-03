@@ -54,34 +54,35 @@ Symbol Table
     Key_U   =  0405     |     Key_V   =  8006     |     Key_W   =  0807 
     Key_X   =  8007     |     Key_Y   =  0805     |     Key_Z   =  8008 
     PAL_INKR=  0040     |     PAL_PENR=  0000     |     PPI_PORT=  00F5 
-  0 add_enti   015E R   |     cpct_pag=  0000     |     cpct_pag=  0010 
-    cpct_pag=  0020     |     cpct_pag=  0030     |     ent_data=  0009 
-    ent_dx  =  0005     |     ent_dy  =  0006     |     ent_h   =  0004 
-  0 ent_man_=  00A7 R   |   0 ent_man_   008E R   |     ent_mask=  0080 
+  0 add_enti   0172 R   |     cpct_pag=  0000     |     cpct_pag=  0010 
+    cpct_pag=  0020     |     cpct_pag=  0030     |     ent_data=  000B 
+    ent_dx  =  0007     |     ent_dy  =  0008     |     ent_h   =  0006 
+  0 ent_man_=  00BB R   |   0 ent_man_   00A2 R   |     ent_mask=  0080 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 2.
 Hexadecimal [16-Bits]
 
 Symbol Table
 
     ent_mask=  0008     |     ent_mask=  0010     |     ent_mask=  0000 
-    ent_mask=  0040     |     ent_mask=  0020     |     ent_next=  0009 
-    ent_size=  000B     |     ent_tex =  0007     |     ent_type=  0000 
-    ent_type=  0007     |     ent_type=  0003     |     ent_type=  0004 
-    ent_type=  0006     |     ent_type=  0005     |     ent_w   =  0003 
-    ent_x   =  0001     |     ent_y   =  0002     |   0 entities   0005 GR
-  0 entity_c   0000 R   |   0 entity_i   011E R   |   0 entity_m   00D9 R
-  0 entity_m   00A9 R   |   0 entity_m   00A6 GR  |   0 entity_m   0102 GR
-  0 entity_m   0173 GR  |   0 entity_m   0073 GR  |     entity_m=  000A 
-    firmware=  0038     |   0 first_en   0003 R   |   0 first_fr   0001 R
-  0 forall_e   017E R   |   0 forall_f=  0188 R   |   0 forall_n   018B R
-  0 loop_cou=  0156 R   |   0 next_ent=  0093 R   |   0 next_ent   014B R
-    opc_DI  =  00F3     |     opc_EI  =  00FB     |     opc_JR  =  0018 
-    opc_LD_D=  0016     |   0 prev_ent   0129 R
+    ent_mask=  0040     |     ent_mask=  0020     |     ent_next=  000B 
+    ent_size=  000D     |     ent_sx  =  0003     |     ent_sy  =  0004 
+    ent_tex =  0009     |     ent_type=  0000     |     ent_type=  0007 
+    ent_type=  0003     |     ent_type=  0004     |     ent_type=  0006 
+    ent_type=  0005     |     ent_w   =  0005     |     ent_x   =  0001 
+    ent_y   =  0002     |   0 entities   0005 GR  |   0 entity_c   0000 R
+  0 entity_i   0132 R   |   0 entity_m   00ED R   |   0 entity_m   00BD R
+  0 entity_m   00BA GR  |   0 entity_m   0116 GR  |   0 entity_m   0187 GR
+  0 entity_m   0087 GR  |     entity_m=  000A     |     firmware=  0038 
+  0 first_en   0003 R   |   0 first_fr   0001 R   |   0 forall_e   0192 R
+  0 forall_f=  019C R   |   0 forall_n   019F R   |   0 loop_cou=  016A R
+  0 next_ent=  00A7 R   |   0 next_ent   015F R   |     opc_DI  =  00F3 
+    opc_EI  =  00FB     |     opc_JR  =  0018     |     opc_LD_D=  0016 
+  0 prev_ent   013D R
 
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 3.
 Hexadecimal [16-Bits]
 
 Area Table
 
-   0 _CODE      size  19A   flags    0
+   0 _CODE      size  1AE   flags    0
 

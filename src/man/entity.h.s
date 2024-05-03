@@ -8,8 +8,10 @@
 .macro DefineEntity _type, _x, _y, _w, _h, _dx, _dy, _tex
 ;; public data
     .db _type
-    .db _x
-    .db _y
+    .db _x    ;; world coord
+    .db _y    ;; world coord
+    .db _x    ;; screen coord
+    .db _y    ;; screen coord
     .db _w
     .db _h
     .db _dx
@@ -22,18 +24,21 @@
 ent_type  = 0  ;; 1 bytes
 ent_x     = 1  ;; 1 bytes
 ent_y     = 2  ;; 1 bytes
-ent_w     = 3  ;; 1 bytes
-ent_h     = 4  ;; 1 bytes
-ent_dx    = 5  ;; 1 bytes
-ent_dy    = 6  ;; 1 bytes
-ent_tex   = 7  ;; 2 bytes
+ent_sx    = 3  ;; 1 bytes
+ent_sy    = 4  ;; 1 bytes
+ent_w     = 5  ;; 1 bytes
+ent_h     = 6  ;; 1 bytes
+ent_dx    = 7  ;; 1 bytes
+ent_dy    = 8  ;; 1 bytes
+ent_tex   = 9  ;; 2 bytes
 ;; private DATA (:()
-ent_next  = 9  ;; 2 bytes
+ent_next  = 11 ;; 2 bytes
 ;;===============================
 
-ent_size = 11
+ent_size = 13
+ent_data_size = ent_size - 2
 entity_manager_max_entities = 10
-ent_data_size = 9
+
 
 
 ;;===================================

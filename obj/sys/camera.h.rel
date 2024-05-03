@@ -1,0 +1,8 @@
+XL2
+H 1 areas 4 global symbols
+M camera_system
+S camera_system_init Ref0000
+S camera_system_update Ref0000
+S .__.ABS. Def0000
+S camera Ref0000
+A _CODE size 0 flags 0 addr 0

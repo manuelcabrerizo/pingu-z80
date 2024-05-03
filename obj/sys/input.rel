@@ -1,9 +1,12 @@
 XL2
-H 1 areas 9 global symbols
+H 1 areas C global symbols
 M cpct_keyboard
+S camera_system_init Ref0000
 S cpct_isKeyPressed_asm Ref0000
+S camera_system_update Ref0000
 S .__.ABS. Def0000
 S entity_manager_create_entity Ref0000
+S camera Ref0000
 S entity_manager_init Ref0000
 S entity_manager_forall Ref0000
 S entity_manager_destroy_entity Ref0000
@@ -17,18 +20,18 @@ T 00 00 C9
 R 00 00 00 00
 T 01 00
 R 00 00 00 00
-T 01 00 CD 00 00 DD 36 05 00 21 03 08 CD 00 00 28
-R 00 00 00 00 02 03 06 00 02 0D 00 00
-T 0F 00 04 DD 36 05 01
+T 01 00 CD 00 00 DD 36 07 00 21 03 08 CD 00 00 28
+R 00 00 00 00 02 03 09 00 02 0D 01 00
+T 0F 00 04 DD 36 07 01
 R 00 00 00 00
 T 14 00
 R 00 00 00 00
-T 14 00 21 04 04 CD 00 00 28 04 DD 36 05 FF
-R 00 00 00 00 02 06 00 00
+T 14 00 21 04 04 CD 00 00 28 04 DD 36 07 FF
+R 00 00 00 00 02 06 01 00
 T 20 00
 R 00 00 00 00
-T 20 00 21 05 80 CD 00 00 28 04 DD 36 06 F8
-R 00 00 00 00 02 06 00 00
+T 20 00 21 05 80 CD 00 00 28 04 DD 36 08 FB
+R 00 00 00 00 02 06 01 00
 T 2C 00
 R 00 00 00 00
 T 2C 00 C9
@@ -36,4 +39,4 @@ R 00 00 00 00
 T 2D 00
 R 00 00 00 00
 T 2D 00 3E D0 21 01 00 CD 00 00 C9
-R 00 00 00 00 00 05 00 00 02 08 04 00
+R 00 00 00 00 00 05 00 00 02 08 07 00

@@ -19,6 +19,8 @@ obj/man/entity.h.rel
 obj/man/entity.rel
 obj/man/game.h.rel
 obj/man/game.rel
+obj/sys/camera.h.rel
+obj/sys/camera.rel
 obj/sys/collision.h.rel
 obj/sys/collision.rel
 obj/sys/input.h.rel

@@ -1,13 +1,15 @@
 .include "cpctelera.h.s"
 .include "cpct/cpct32x16.h.s"
 .include "man/entity.h.s"
+.include "sys/camera.h.s"
 
 .globl cpct_setVideoMode_asm
 .globl cpct_setPalette_asm
 .globl _pre_palette
 
 .globl _tile_tilemap_00
-.globl _tilemap_00
+
+
 
 ; D = Registro
 ; E = Valor
@@ -40,16 +42,29 @@ render_system_init::
     ld hl, #_pre_palette
     ld de, #16
     call cpct_setPalette_asm
+
     ret
 
 
 
 render_system_render_one_entity:
 
+    ;; check if an entity is inside the camera
+    ld a, ent_w(ix)
+    ld b, a
+    dec b
+    ld a, #64
+    sub b
+    ld b, a
+    
+    ld a, ent_sx(ix)
+    cp b
+    ret nc
+
 back_buffer_0 = . + 2
     ld   de, #0xC400 ;; DE = Pointer to start of the screen
-    ld    b, ent_y(ix)            ;; B = y coordinate (24 = 0x18)
-    ld    c, ent_x(ix)            ;; C = x coordinate (16 = 0x10)
+    ld    b, ent_sy(ix)            ;; B = y coordinate (24 = 0x18)
+    ld    c, ent_sx(ix)            ;; C = x coordinate (16 = 0x10)
     call getScreenPtr_32x16       ;; Calculate video memory location and return it in HL
 
     ex de, hl
@@ -69,7 +84,7 @@ render_system_draw_tilemap::
     call setDrawTileMap4x8_ag_32x16
 back_buffer_1 = . + 2   
     ld hl, #0xC400
-    ld de, #_tilemap_00; + 16
+    ld de, (camera + camera_ptr)
     call drawTilemap4x8_ag_32x16
     ret
 

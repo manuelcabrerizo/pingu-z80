@@ -1,6 +1,7 @@
 XL2
-H 1 areas 3 global symbols
+H 1 areas 4 global symbols
 M render_system
+S _tilemap_00 Ref0000
 S render_system_init Ref0000
 S .__.ABS. Def0000
 S render_system_update Ref0000

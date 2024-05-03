@@ -7,3 +7,5 @@ Hexadecimal [16-Bits]
                               2 
                               3 .globl render_system_init
                               4 .globl render_system_update
+                              5 
+                              6 .globl _tilemap_00

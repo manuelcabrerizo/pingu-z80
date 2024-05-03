@@ -1,5 +1,6 @@
 .include "cpctelera.h.s"
 .include "man/entity.h.s"
+.include "sys/camera.h.s"
 
 .globl cpct_scanKeyboard_asm
 .globl cpct_isKeyPressed_asm
@@ -30,10 +31,9 @@ o_not_press:
     ld hl, #Key_Space
     call cpct_isKeyPressed_asm
     jr z, space_not_press
-    ld ent_dy(ix), #-8
+    ld ent_dy(ix), #-5
 
 space_not_press:
-
     ret
     
 

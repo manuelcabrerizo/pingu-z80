@@ -5016,50 +5016,60 @@ Hexadecimal [16-Bits]
                               8 .macro DefineEntity _type, _x, _y, _w, _h, _dx, _dy, _tex
                               9 ;; public data
                              10     .db _type
-                             11     .db _x
-                             12     .db _y
-                             13     .db _w
-                             14     .db _h
-                             15     .db _dx
-                             16     .db _dy
-                             17     .dw _tex
-                             18 .endm
-                             19 
-                             20 ;;===============================
-                             21 ;; public DATA (:))
-                     0000    22 ent_type  = 0  ;; 1 bytes
-                     0001    23 ent_x     = 1  ;; 1 bytes
-                     0002    24 ent_y     = 2  ;; 1 bytes
-                     0003    25 ent_w     = 3  ;; 1 bytes
-                     0004    26 ent_h     = 4  ;; 1 bytes
-                     0005    27 ent_dx    = 5  ;; 1 bytes
-                     0006    28 ent_dy    = 6  ;; 1 bytes
-                     0007    29 ent_tex   = 7  ;; 2 bytes
-                             30 ;; private DATA (:()
-                     0009    31 ent_next  = 9  ;; 2 bytes
-                             32 ;;===============================
-                             33 
-                     000B    34 ent_size = 11
-                     000A    35 entity_manager_max_entities = 10
-                     0009    36 ent_data_size = 9
+                             11     .db _x    ;; world coord
+                             12     .db _y    ;; world coord
+                             13     .db _x    ;; screen coord
+                             14     .db _y    ;; screen coord
+                             15     .db _w
+                             16     .db _h
+                             17     .db _dx
+                             18     .db _dy
+                             19     .dw _tex
+                             20 .endm
+                             21 
+                             22 ;;===============================
+                             23 ;; public DATA (:))
+                     0000    24 ent_type  = 0  ;; 1 bytes
+                     0001    25 ent_x     = 1  ;; 1 bytes
+                     0002    26 ent_y     = 2  ;; 1 bytes
+                     0003    27 ent_sx    = 3  ;; 1 bytes
+                     0004    28 ent_sy    = 4  ;; 1 bytes
+                     0005    29 ent_w     = 5  ;; 1 bytes
+                     0006    30 ent_h     = 6  ;; 1 bytes
+                     0007    31 ent_dx    = 7  ;; 1 bytes
+                     0008    32 ent_dy    = 8  ;; 1 bytes
+                     0009    33 ent_tex   = 9  ;; 2 bytes
+                             34 ;; private DATA (:()
+                     000B    35 ent_next  = 11 ;; 2 bytes
+                             36 ;;===============================
                              37 
-                             38 
-                             39 ;;===================================
-                             40 ;; Entity Bitfield
-                             41 ;;===================================
-                     0007    42 ent_type_alive_bit     = 7
-                     0006    43 ent_type_physics_bit   = 6
-                     0005    44 ent_type_render_bit    = 5
-                     0004    45 ent_type_input_bit     = 4
-                     0003    46 ent_type_collision_bit = 3
-                             47 
-                     0000    48 ent_mask_invalid   = 0x00
-                     0080    49 ent_mask_alive     = (1 << ent_type_alive_bit)
-                     0040    50 ent_mask_physics   = (1 << ent_type_physics_bit)
-                     0020    51 ent_mask_render    = (1 << ent_type_render_bit)
-                     0010    52 ent_mask_input     = (1 << ent_type_input_bit)
-                     0008    53 ent_mask_collision = (1 << ent_type_collision_bit)
+                     000D    38 ent_size = 13
+                     000B    39 ent_data_size = ent_size - 2
+                     000A    40 entity_manager_max_entities = 10
+                             41 
+                             42 
+                             43 
+                             44 ;;===================================
+                             45 ;; Entity Bitfield
+                             46 ;;===================================
+                     0007    47 ent_type_alive_bit     = 7
+                     0006    48 ent_type_physics_bit   = 6
+                     0005    49 ent_type_render_bit    = 5
+                     0004    50 ent_type_input_bit     = 4
+                     0003    51 ent_type_collision_bit = 3
+                             52 
+                     0000    53 ent_mask_invalid   = 0x00
+                     0080    54 ent_mask_alive     = (1 << ent_type_alive_bit)
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 96.
+Hexadecimal [16-Bits]
+
+
+
+                     0040    55 ent_mask_physics   = (1 << ent_type_physics_bit)
+                     0020    56 ent_mask_render    = (1 << ent_type_render_bit)
+                     0010    57 ent_mask_input     = (1 << ent_type_input_bit)
+                     0008    58 ent_mask_collision = (1 << ent_type_collision_bit)
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 97.
 Hexadecimal [16-Bits]
 
 
@@ -5067,65 +5077,107 @@ Hexadecimal [16-Bits]
                               3 
                               4 .globl _tilemap_00
                               5 
-   49BB                       6 collision_system_init::
-   49BB C9            [10]    7     ret
+   4A50                       6 collision_system_init::
+   4A50 C9            [10]    7     ret
                               8 
-   49BC                       9 collision_system_update_one_entity:
-                             10     ;; tilemapWidth = 32
-                             11     ;; tileY = y >> 3
-                             12     ;; tileX = x >> 2
-                             13     ;; tilemapStart + (tileY * tilemapWidth) + tileX
-   49BC DD 46 04      [19]   14     ld b, ent_h(ix)
-   49BF 05            [ 4]   15     dec b
-                             16 
-   49C0 DD 7E 02      [19]   17     ld a, ent_y(ix)
-   49C3 80            [ 4]   18     add b
-                             19     ;srl a
-                             20     ;srl a
-                             21     ;srl a
-   49C4 E6 F8         [ 7]   22     and #0b11111000
-                             23 
-   49C6 26 00         [ 7]   24     ld h, #0
-   49C8 6F            [ 4]   25     ld l, a
-                             26     ;add hl, hl       ;; tileY * 2
-                             27     ;add hl, hl       ;; tileY * 4
-                             28     ;add hl, hl       ;; tileY * 8
-   49C9 29            [11]   29     add hl, hl        ;; tileY * 16
-   49CA 29            [11]   30     add hl, hl        ;; tileY * 32
-                             31 
-   49CB DD 7E 01      [19]   32     ld a, ent_x(ix)
-   49CE CB 3F         [ 8]   33     srl a
-   49D0 CB 3F         [ 8]   34     srl a
-                             35 
-   0017                      36     add_hl_a          ;; (tileY * tilemapWidth) + tileX
-   0017                       1    add_REGPAIR_a  h, l
+                              9 ;;==============================================
+                             10 ;; get the tile position from the (x, y) coords
+                             11 ;; PARAMETERS:
+                             12 ;;     B = y
+                             13 ;;     C = x
+                             14 ;; RETURN VALUE:
+                             15 ;;     HL = addrs of the tile
+                             16 ;; MODIFY REGISTERS:
+                             17 ;;     A, HL, DE
+                             18 ;;==============================================
+   4A51                      19 get_tile_from_coord:
+   4A51 78            [ 4]   20     ld a, b
+   4A52 E6 F8         [ 7]   21     and #0b11111000
+   4A54 26 00         [ 7]   22     ld h, #0
+   4A56 6F            [ 4]   23     ld l, a
+   4A57 29            [11]   24     add hl, hl        ;; tileY * 16
+   4A58 29            [11]   25     add hl, hl        ;; tileY * 32
+   4A59 79            [ 4]   26     ld a, c
+   4A5A CB 3F         [ 8]   27     srl a
+   4A5C CB 3F         [ 8]   28     srl a
+   000E                      29     add_hl_a          ;; (tileY * tilemapWidth) + tileX
+   000E                       1    add_REGPAIR_a  h, l
                               1    ;; First Perform RH = E + A
-   49D2 85            [ 4]    2    add l    ;; [1] A' = RL + A 
-   49D3 6F            [ 4]    3    ld  l, a ;; [1] RL' = A' = RL + A. It might generate Carry that must be added to RH
+   4A5E 85            [ 4]    2    add l    ;; [1] A' = RL + A 
+   4A5F 6F            [ 4]    3    ld  l, a ;; [1] RL' = A' = RL + A. It might generate Carry that must be added to RH
                               4    
                               5    ;; Then Perform RH = RH + Carry 
-   49D4 8C            [ 4]    6    adc h    ;; [1] A'' = A' + RH + Carry = RL + A + RH + Carry
-   49D5 95            [ 4]    7    sub l    ;; [1] Remove RL'. A''' = A'' - RL' = RL + A + RH + Carry - (RL + A) = RH + Carry
-   49D6 67            [ 4]    8    ld  h, a ;; [1] Save into RH (RH' = A''' = RH + Carry)
-   49D7 11 BA 44      [10]   37     ld de, #_tilemap_00
-   49DA 19            [11]   38     add hl, de
-                             39 
-                             40     ;; HL = tilemapStart + (tileY * tilemapWidth) + tileX
-   49DB 7E            [ 7]   41     ld a, (hl)
-   49DC E6 F8         [ 7]   42     and #0b11111000
-   49DE C0            [11]   43     ret nz
-                             44 
-   49DF DD 36 06 00   [19]   45     ld ent_dy(ix), #0
-                             46 
-   49E3 C9            [10]   47     ret
-                             48 
-ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 97.
+   4A60 8C            [ 4]    6    adc h    ;; [1] A'' = A' + RH + Carry = RL + A + RH + Carry
+   4A61 95            [ 4]    7    sub l    ;; [1] Remove RL'. A''' = A'' - RL' = RL + A + RH + Carry - (RL + A) = RH + Carry
+   4A62 67            [ 4]    8    ld  h, a ;; [1] Save into RH (RH' = A''' = RH + Carry)
+   4A63 11 BA 44      [10]   30     ld de, #_tilemap_00
+   4A66 19            [11]   31     add hl, de        ;; HL = tilemapStart + (tileY * tilemapWidth) + tileX
+   4A67 C9            [10]   32     ret
+                             33 
+   4A68                      34 resolve_floor_collision:
+   4A68 DD 7E 02      [19]   35     ld a, ent_y(ix)
+   4A6B E6 F8         [ 7]   36     and #0b11111000
+   4A6D DD 77 02      [19]   37     ld ent_y(ix), a
+   4A70 DD 36 08 00   [19]   38     ld ent_dy(ix), #0
+   4A74 C9            [10]   39     ret
+                             40 
+                             41 
+                             42 
+                             43 
+   4A75                      44 collision_system_test_floor:
+                             45 ;; bottom left collision check
+   4A75                      46 bottom_left_collision_check:
+   4A75 DD 56 06      [19]   47     ld d, ent_h(ix)
+   4A78 15            [ 4]   48     dec d
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 98.
 Hexadecimal [16-Bits]
 
 
 
-   49E4                      49 collision_system_update::
-   49E4 3E C8         [ 7]   50     ld a, #(ent_mask_alive|ent_mask_physics|ent_mask_collision)
-   49E6 21 BC 49      [10]   51     ld hl, #collision_system_update_one_entity
-   49E9 CD 94 49      [17]   52     call entity_manager_forall
-   49EC C9            [10]   53     ret
+   4A79 DD 7E 02      [19]   49     ld a, ent_y(ix)
+   4A7C 82            [ 4]   50     add d
+   4A7D 47            [ 4]   51     ld b, a
+   4A7E DD 4E 01      [19]   52     ld c, ent_x(ix)
+   4A81 CD 51 4A      [17]   53     call get_tile_from_coord
+                             54 
+   4A84 7E            [ 7]   55     ld a, (hl)
+   4A85 E6 F8         [ 7]   56     and #0b11111000 ;; test the tile
+   4A87 20 03         [12]   57     jr nz, bottom_right_collision_check
+   4A89 CD 68 4A      [17]   58     call resolve_floor_collision
+                             59 
+                             60 ;; bottom right collision check
+   4A8C                      61 bottom_right_collision_check:
+   4A8C DD 56 06      [19]   62     ld d, ent_h(ix)
+   4A8F 15            [ 4]   63     dec d
+   4A90 DD 7E 02      [19]   64     ld a, ent_y(ix)
+   4A93 82            [ 4]   65     add d
+   4A94 47            [ 4]   66     ld b, a
+   4A95 DD 4E 05      [19]   67     ld c, ent_w(ix)
+   4A98 0D            [ 4]   68     dec c
+   4A99 DD 7E 01      [19]   69     ld a, ent_x(ix)
+   4A9C 81            [ 4]   70     add c
+   4A9D 4F            [ 4]   71     ld c, a
+   4A9E CD 51 4A      [17]   72     call get_tile_from_coord
+                             73 
+   4AA1 7E            [ 7]   74     ld a, (hl)
+   4AA2 E6 F8         [ 7]   75     and #0b11111000 ;; test the tile
+   4AA4 C0            [11]   76     ret nz
+   4AA5 CD 68 4A      [17]   77     call resolve_floor_collision
+                             78 
+   4AA8 C9            [10]   79     ret
+                             80 
+                             81 
+                             82 
+                             83 
+                             84 
+   4AA9                      85 collision_system_update_one_entity:
+   4AA9 CD 75 4A      [17]   86     call collision_system_test_floor
+   4AAC C9            [10]   87     ret
+                             88 
+                             89 
+                             90 
+   4AAD                      91 collision_system_update::
+   4AAD 3E C8         [ 7]   92     ld a, #(ent_mask_alive|ent_mask_physics|ent_mask_collision)
+   4AAF 21 A9 4A      [10]   93     ld hl, #collision_system_update_one_entity
+   4AB2 CD B2 49      [17]   94     call entity_manager_forall
+   4AB5 C9            [10]   95     ret

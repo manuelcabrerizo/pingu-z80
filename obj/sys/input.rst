@@ -5016,93 +5016,118 @@ Hexadecimal [16-Bits]
                               8 .macro DefineEntity _type, _x, _y, _w, _h, _dx, _dy, _tex
                               9 ;; public data
                              10     .db _type
-                             11     .db _x
-                             12     .db _y
-                             13     .db _w
-                             14     .db _h
-                             15     .db _dx
-                             16     .db _dy
-                             17     .dw _tex
-                             18 .endm
-                             19 
-                             20 ;;===============================
-                             21 ;; public DATA (:))
-                     0000    22 ent_type  = 0  ;; 1 bytes
-                     0001    23 ent_x     = 1  ;; 1 bytes
-                     0002    24 ent_y     = 2  ;; 1 bytes
-                     0003    25 ent_w     = 3  ;; 1 bytes
-                     0004    26 ent_h     = 4  ;; 1 bytes
-                     0005    27 ent_dx    = 5  ;; 1 bytes
-                     0006    28 ent_dy    = 6  ;; 1 bytes
-                     0007    29 ent_tex   = 7  ;; 2 bytes
-                             30 ;; private DATA (:()
-                     0009    31 ent_next  = 9  ;; 2 bytes
-                             32 ;;===============================
-                             33 
-                     000B    34 ent_size = 11
-                     000A    35 entity_manager_max_entities = 10
-                     0009    36 ent_data_size = 9
+                             11     .db _x    ;; world coord
+                             12     .db _y    ;; world coord
+                             13     .db _x    ;; screen coord
+                             14     .db _y    ;; screen coord
+                             15     .db _w
+                             16     .db _h
+                             17     .db _dx
+                             18     .db _dy
+                             19     .dw _tex
+                             20 .endm
+                             21 
+                             22 ;;===============================
+                             23 ;; public DATA (:))
+                     0000    24 ent_type  = 0  ;; 1 bytes
+                     0001    25 ent_x     = 1  ;; 1 bytes
+                     0002    26 ent_y     = 2  ;; 1 bytes
+                     0003    27 ent_sx    = 3  ;; 1 bytes
+                     0004    28 ent_sy    = 4  ;; 1 bytes
+                     0005    29 ent_w     = 5  ;; 1 bytes
+                     0006    30 ent_h     = 6  ;; 1 bytes
+                     0007    31 ent_dx    = 7  ;; 1 bytes
+                     0008    32 ent_dy    = 8  ;; 1 bytes
+                     0009    33 ent_tex   = 9  ;; 2 bytes
+                             34 ;; private DATA (:()
+                     000B    35 ent_next  = 11 ;; 2 bytes
+                             36 ;;===============================
                              37 
-                             38 
-                             39 ;;===================================
-                             40 ;; Entity Bitfield
-                             41 ;;===================================
-                     0007    42 ent_type_alive_bit     = 7
-                     0006    43 ent_type_physics_bit   = 6
-                     0005    44 ent_type_render_bit    = 5
-                     0004    45 ent_type_input_bit     = 4
-                     0003    46 ent_type_collision_bit = 3
-                             47 
-                     0000    48 ent_mask_invalid   = 0x00
-                     0080    49 ent_mask_alive     = (1 << ent_type_alive_bit)
-                     0040    50 ent_mask_physics   = (1 << ent_type_physics_bit)
-                     0020    51 ent_mask_render    = (1 << ent_type_render_bit)
-                     0010    52 ent_mask_input     = (1 << ent_type_input_bit)
-                     0008    53 ent_mask_collision = (1 << ent_type_collision_bit)
+                     000D    38 ent_size = 13
+                     000B    39 ent_data_size = ent_size - 2
+                     000A    40 entity_manager_max_entities = 10
+                             41 
+                             42 
+                             43 
+                             44 ;;===================================
+                             45 ;; Entity Bitfield
+                             46 ;;===================================
+                     0007    47 ent_type_alive_bit     = 7
+                     0006    48 ent_type_physics_bit   = 6
+                     0005    49 ent_type_render_bit    = 5
+                     0004    50 ent_type_input_bit     = 4
+                     0003    51 ent_type_collision_bit = 3
+                             52 
+                     0000    53 ent_mask_invalid   = 0x00
+                     0080    54 ent_mask_alive     = (1 << ent_type_alive_bit)
 ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 96.
 Hexadecimal [16-Bits]
 
 
 
-                              3 
-                              4 .globl cpct_scanKeyboard_asm
-                              5 .globl cpct_isKeyPressed_asm
-                              6 
-   49ED                       7 input_system_init::
-   49ED C9            [10]    8     ret
-                              9 
-   49EE                      10 input_system_update_one_entity:
-                             11 
-   49EE CD 54 4B      [17]   12     call cpct_scanKeyboard_asm
-                             13 
-   49F1 DD 36 05 00   [19]   14     ld ent_dx(ix), #0
-                             15 
-   49F5 21 03 08      [10]   16     ld hl, #Key_P
-   49F8 CD 0E 4B      [17]   17     call cpct_isKeyPressed_asm
-   49FB 28 04         [12]   18     jr z, p_not_press
-   49FD DD 36 05 01   [19]   19     ld ent_dx(ix), #1
-                             20 
-   4A01                      21 p_not_press:
-                             22 
-   4A01 21 04 04      [10]   23     ld hl, #Key_O
-   4A04 CD 0E 4B      [17]   24     call cpct_isKeyPressed_asm
-   4A07 28 04         [12]   25     jr z, o_not_press
-   4A09 DD 36 05 FF   [19]   26     ld ent_dx(ix), #-1
-                             27 
-   4A0D                      28 o_not_press:
-                             29 
-   4A0D 21 05 80      [10]   30     ld hl, #Key_Space
-   4A10 CD 0E 4B      [17]   31     call cpct_isKeyPressed_asm
-   4A13 28 04         [12]   32     jr z, space_not_press
-   4A15 DD 36 06 F8   [19]   33     ld ent_dy(ix), #-8
-                             34 
-   4A19                      35 space_not_press:
-                             36 
-   4A19 C9            [10]   37     ret
+                     0040    55 ent_mask_physics   = (1 << ent_type_physics_bit)
+                     0020    56 ent_mask_render    = (1 << ent_type_render_bit)
+                     0010    57 ent_mask_input     = (1 << ent_type_input_bit)
+                     0008    58 ent_mask_collision = (1 << ent_type_collision_bit)
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 97.
+Hexadecimal [16-Bits]
+
+
+
+                              3 .include "sys/camera.h.s"
+                              1 .module camera_system
+                              2 
+                              3 .globl camera_system_init
+                              4 .globl camera_system_update
+                              5 
+                              6 .globl camera
+                              7 
+                     0000     8 camera_ptr = 0
+                     0002     9 camera_x   = 2
+                     0003    10 camera_y   = 3
+ASxxxx Assembler V02.00 + NoICE + SDCC mods  (Zilog Z80 / Hitachi HD64180), page 98.
+Hexadecimal [16-Bits]
+
+
+
+                              4 
+                              5 .globl cpct_scanKeyboard_asm
+                              6 .globl cpct_isKeyPressed_asm
+                              7 
+   4AB6                       8 input_system_init::
+   4AB6 C9            [10]    9     ret
+                             10 
+   4AB7                      11 input_system_update_one_entity:
+                             12 
+   4AB7 CD 24 4C      [17]   13     call cpct_scanKeyboard_asm
+                             14 
+   4ABA DD 36 07 00   [19]   15     ld ent_dx(ix), #0
+                             16 
+   4ABE 21 03 08      [10]   17     ld hl, #Key_P
+   4AC1 CD DE 4B      [17]   18     call cpct_isKeyPressed_asm
+   4AC4 28 04         [12]   19     jr z, p_not_press
+   4AC6 DD 36 07 01   [19]   20     ld ent_dx(ix), #1
+                             21 
+   4ACA                      22 p_not_press:
+                             23 
+   4ACA 21 04 04      [10]   24     ld hl, #Key_O
+   4ACD CD DE 4B      [17]   25     call cpct_isKeyPressed_asm
+   4AD0 28 04         [12]   26     jr z, o_not_press
+   4AD2 DD 36 07 FF   [19]   27     ld ent_dx(ix), #-1
+                             28 
+   4AD6                      29 o_not_press:
+                             30 
+   4AD6 21 05 80      [10]   31     ld hl, #Key_Space
+   4AD9 CD DE 4B      [17]   32     call cpct_isKeyPressed_asm
+   4ADC 28 04         [12]   33     jr z, space_not_press
+   4ADE DD 36 08 FB   [19]   34     ld ent_dy(ix), #-5
+                             35 
+   4AE2                      36 space_not_press:
+   4AE2 C9            [10]   37     ret
                              38     
                              39 
-   4A1A                      40 input_system_update::
-   4A1A 3E D0         [ 7]   41     ld a, #(ent_mask_alive|ent_mask_physics|ent_mask_input)
-   4A1C 21 EE 49      [10]   42     ld hl, #input_system_update_one_entity
-   4A1F CD 94 49      [17]   43     call entity_manager_forall
-   4A22 C9            [10]   44     ret
+   4AE3                      40 input_system_update::
+   4AE3 3E D0         [ 7]   41     ld a, #(ent_mask_alive|ent_mask_physics|ent_mask_input)
+   4AE5 21 B7 4A      [10]   42     ld hl, #input_system_update_one_entity
+   4AE8 CD B2 49      [17]   43     call entity_manager_forall
+   4AEB C9            [10]   44     ret

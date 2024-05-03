@@ -1,4 +1,5 @@
 .include "man/entity.h.s"
+.include "sys/physics.h.s"
 
 physics_system_init::
     ret
@@ -17,22 +18,18 @@ physics_system_update_one_entity:
     add  ent_dy(ix)
     ld ent_y(ix), a
 
+
     ;; Apply gravity
+    ld a, ent_dy(ix)
+    ;; if the gravity is negative allways apply it
+    bit 7, a
+    jr nz, apply_gravity
+    ;; if is positive i clamp it the max_gravity
+    cp #max_gravity
+    jr nc, no_more_gravity
+apply_gravity:
     inc ent_dy(ix)
-    
-    ;; check collision with the floor
-    ;; if e_y < 128-h ret
-    ld c, a
-    ld a, #128
-    sub ent_h(ix)
-    ld b, a
-    ld a, #256
-    sub b
-    add c
-    ret nc
-    ;; if e_y > 128-h\
-    ld ent_dy(ix), #0
-    ld ent_y(ix), b
+no_more_gravity:
 
     ret
 

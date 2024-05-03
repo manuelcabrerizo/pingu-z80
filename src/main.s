@@ -5,6 +5,7 @@
 .include "sys/physics.h.s"
 .include "sys/input.h.s"
 .include "sys/collision.h.s"
+.include "sys/camera.h.s"
 
 .area _DATA 
 .area _CODE
@@ -32,7 +33,7 @@ _main::
    call input_system_init
    call physics_system_init
    call collision_system_init
-   
+   call camera_system_init
    
    call entity_manager_create_entity
    ld hl, #test_face
@@ -43,9 +44,10 @@ _main::
    ldir
 
 game_loop:
+   ;; Update subsystems
    call input_system_update
    call physics_system_update
    call collision_system_update
-
+   call camera_system_update
    call render_system_update
    jr game_loop
